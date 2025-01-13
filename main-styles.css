@@ -1,0 +1,29 @@
+h1{
+    font-weight: var(--type-light-weight);
+    font-size: 5em;
+    line-height: 1.1em;
+}
+
+p, h1, h2{
+    font-family: var(--type-body);
+}
+
+em{
+    font-family: var(--type-italic);
+    font-weight: var(--type-thin-weight);
+}
+
+a{
+    text-decoration: none; /* Add this line to remove underline */
+    color: var(--black);
+}
+
+a:visited{
+    color: var(--black);
+    text-decoration: underline;
+}
+
+li a:hover{
+    text-decoration: underline;
+    color: var(--black);
+}

@@ -1,0 +1,27 @@
+@import url("https://use.typekit.net/wzt0bea.css");
+
+
+:root{
+    --type-italic: "ivypresto-display", serif;
+    --italic-style: italic;
+
+    --type-body: "acumin-pro", sans-serif;
+    --body-style: normal;
+
+    --type-thin-weight: 100;
+    --type-light-weight: 300;
+    --type-regular-weight: 400;
+    --type-medium-weight: 500;
+    --type-semibold-weight: 600;
+
+    --white: #FAF9F6;
+    --black: #1B1212;
+    --red: #EB521A;
+    --pink: #FFAAF2;
+    --green: #B3AB2C;
+    --green-olive: #5D4F11;
+    --yellow: #FADA26;
+    --yellow-buttermilk: #EDDB75;
+    --blue: #77A2E9;
+    --blue-light: #CDEEFF;
+}

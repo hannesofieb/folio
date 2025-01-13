@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    <link rel="stylesheet" href="brandtoolkit.css">
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="layout.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <title>Hanne Sofie Berg</title>
+
+</head>
+<body>
+<!-- <div id="loading"></div> -->
+
+    <nav>
+        <ul>
+            <li><a href="#call-me">stay in touch</a></li>
+            <li></li>
+            <li></li>
+            <li><a href="#cover"><div class="square"></div></a></li> <!-- LOGO GOES HERE -->
+            <li><a href="#work-archive">project archive</a></li>
+            <li><a href="#cv">milestones</a></li>
+        </ul>
+    </nav>
+
+    <section id="cover">
+        <h1 id="intro">Hello my name is <em>Hanne Sofie</em> and I like making <em>the web</em> a bit more <em>easy and fun</em> to use.</h1>
+        <div class="frame"><img src="assets/imgs/CIMG9795.JPG" alt=""></div>
+    </section>
+
+    <section id="services">
+        <ul>
+            <li>UX design</li>
+            <li>UI design</li>
+            <li>Service Design</li>
+            <li>Conceptual Branding</li>
+        </ul>
+    </section>
+
+    <section id="work-archive">
+        <h2>work archive</h2>
+        <p>this is just some filler text for a little someth</p>
+        <div class="filter-sort"></div> <!-- NEED TO ADD IN FILTER SORT THINGO -- MAYBE DO THE SORT IN THE TH (LIKE ON DELPHI) -->
+        <table id="archive-table">
+            <thead>
+                <tr>
+                    <th id="proj-date">Date</th>
+                    <th id="proj-title">Project Title</th>
+                    <th id="proj-desc">About</th>
+                    <th id="proj-tags">Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <div id="pagination">
+            <button id="prev">back</button>
+            <span id="page-numbers"></span>
+            <button id="next">more</button>
+        </div>
+    </section> 
+
+    <section id="cv">
+
+    </section>     
+
+    <section id="recs"></section>    <!-- QUOTES ON ME AND MY WORK FROM PEOPLE WHO I'VE WORKED WITH GOES HERE -->
+
+    <footer id="call-me"></footer> <!-- CONTACT DETAILS GOES HERE -->
+    
+
+<!-- <script src="loading.js"></script> -->
+ <script src="work-archive.js"></script>
+</body>
+</html>
