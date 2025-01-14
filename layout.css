@@ -8,7 +8,7 @@ nav, #cover, #services, #work-archive, #cv, #recs, footer{
     padding-left: 5px;
 }
 
-/* loading pagelayout */
+/* ---------------------------------------------loading pagelayout */
 #loading {
     position: fixed;
     top: 0;
@@ -23,7 +23,7 @@ nav, #cover, #services, #work-archive, #cv, #recs, footer{
   }
 
 
-/* nav bar layout */
+/* ---------------------------------------------nav bar layout */
 nav{
     width:100%;
     height: auto;
@@ -51,10 +51,10 @@ li{
 }
 
 
-/* cover section layout */
+/* ---------------------------------------------cover section layout */
 #cover{
     width:100%;
-    height: 85vh;
+    height: 99vh;
     position: relative; /* Add this line to make #cover a positioned element */
 }
 
@@ -70,7 +70,7 @@ li{
     bottom: 50px;
     right: 0;
     width: 40%;
-    height: 60%;
+    height: 50%;
 }
 #cover img{
 
@@ -80,34 +80,34 @@ li{
     z-index: 1; /* Ensure the image is above the h1 */
 }
 
-/* services bar layout */
-#services{
-    margin: 0;
-    width:100%;
-    height: auto;
-    background-color: var(--black);
-    color: var(--white);
+
+
+.cursor {
+    display: inline-block;
+    margin-left: 5px;
+    animation: blink 0.7s steps(1, start) infinite;
 }
 
-#services li{
-    font-family: var(--type-italic);
-    font-weight: var(--type-thin-weight);
-    font-size: 2em;
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
 
-/* work archive section layout */
+
+/* ---------------------------------------------work archive section layout */
 #work-archive{
     width:100%;
     height: 120vh;
     overflow: hidden; /* Ensure the section does not overflow */
+    margin: 2% 5% 0 0;
 
 }
 
 #archive-table {
     width: 100%;
     border-collapse: collapse;
-    margin-left: 2%;
 }
 
 #archive-table th, #archive-table td {
@@ -115,7 +115,7 @@ li{
     text-align: left;
 }
 
-th#proj-date, th#proj-tags{
+th#proj-date{
     width: 10%;
 }
 
@@ -124,11 +124,15 @@ th#proj-title{
 }
 
 th#proj-desc{
-    width: 35%;
+    width: 25%;
 }
 
+th#proj-tags{
+    width: 20%;
+    /* margin-left: 5%; */
+}
 
-
+/* click to see more projects section */
 #pagination {
     display: flex;
     justify-content: center;
@@ -137,35 +141,36 @@ th#proj-desc{
 
 #pagination button {
     margin: 0 5px;
-    padding: 5px 10px;
-    background-color: var(--black);
-    color: var(--white);
+    background-color: #f0f0f000;
+    color: var(--black);
     border: none;
     cursor: pointer;
 }
 
 #pagination button:disabled {
-    background-color: var(--grey);
+    background-color: #f0f0f000;
+    color: #f0f0f000;
     cursor: not-allowed;
 }
 
-/* cv-milestones section layout */
+/* ---------------------------------------------cv-milestones section layout */
 #cv{
     width:100%;
     height: 60vh;
 }
 
-/* recs section layout */
+/* ---------------------------------------------recs section layout */
 #recs{
     width:100%;
     height: 40vh;
 }
 
 
-/* footer layout */
+/* ---------------------------------------------footer layout */
 footer{
     width:100%;
     height: 30vh;
 }
+
 
 

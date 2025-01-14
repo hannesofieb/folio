@@ -1,16 +1,32 @@
+p, h1, h2{
+    font-family: var(--type-body);
+}
+
 h1{
     font-weight: var(--type-light-weight);
     font-size: 5em;
     line-height: 1.1em;
 }
 
-p, h1, h2{
-    font-family: var(--type-body);
+p, h2, #services li{
+    font-size: 2em;
+    line-height: 1.1em;
+}
+
+h2{
+    font-weight: var(--type-semibold-weight);
 }
 
 em{
     font-family: var(--type-italic);
     font-weight: var(--type-thin-weight);
+}
+
+small{
+    font-size: 0.4em;
+    font-style: uppercase;
+    font-weight: var(--type-thin-weight);
+    text-transform: uppercase; /* Add this line to make text uppercase */
 }
 
 a{
@@ -26,4 +42,9 @@ a:visited{
 li a:hover{
     text-decoration: underline;
     color: var(--black);
+}
+
+#services li{
+    font-weight: var(--type-thin-weight);
+    font-size: 2em;
 }
