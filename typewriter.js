@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const words = ['none','UX design', 'UI design', 'Service Design', 'Creative Coding', 'Conceptual Branding'];
+    const words = [
+        { text: 'none', color: 'var(--black)' },
+        { text: 'UX design', color: 'var(--red)' },
+        { text: 'UI design', color: 'var(--pink)' },
+        { text: 'Service Design', color: 'var(--green)' },
+        { text: 'Creative Coding', color: 'var(--blue)' },
+        { text: 'Conceptual Branding', color: 'var(--yellow)' }
+    ];
     let currentWordIndex = 0;
     let isDeleting = false;
     let text = '';
@@ -14,14 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function type() {
         const currentWord = words[currentWordIndex];
         if (isDeleting) {
-            text = currentWord.substring(0, text.length - 1);
+            text = currentWord.text.substring(0, text.length - 1);
         } else {
-            text = currentWord.substring(0, text.length + 1);
+            text = currentWord.text.substring(0, text.length + 1);
         }
 
         element.textContent = text;
+        element.style.color = currentWord.color;
+        cursor.style.color = currentWord.color;
 
-        if (!isDeleting && text === currentWord) {
+        if (!isDeleting && text === currentWord.text) {
             setTimeout(() => {
                 isDeleting = true;
                 type();
