@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentWordIndex = 0;
     let isDeleting = false;
     let text = '';
-    const speed = 200;
+    const speed = 100;
     const pause = 2000;
     const element = document.getElementById('title-change');
     const cursor = document.createElement('span');
@@ -45,4 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     type();
+
+    
 });

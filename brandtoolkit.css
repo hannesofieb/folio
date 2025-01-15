@@ -1,11 +1,15 @@
 @import url("https://use.typekit.net/wzt0bea.css");
 
+@font-face {
+    font-family: 'Helvetica-Now-Display';
+    src: url("assets/fonts/HelveticaNowDisplay.otf") format("opentype");
+}
 
 :root{
     --type-italic: "ivypresto-display", serif;
     --italic-style: italic;
-
-    --type-body: "acumin-pro", sans-serif;
+    --type-body: "Helvetica-Now-Display", sans-serif;
+    --type-body-02: "acumin-pro", sans-serif;
     --body-style: normal;
 
     --type-thin-weight: 100;
@@ -25,3 +29,8 @@
     --blue: #77A2E9;
     --blue-light: #CDEEFF;
 }
+
+
+
+
+/* acumin-pro */

@@ -15,6 +15,7 @@
 
 </head>
 <body>
+<div class="custom-cursor" id="cursor"></div>
 <!-- <div id="loading"></div> -->
 
     <nav>
@@ -35,7 +36,16 @@
 
     <section id="work-archive">
         <h2>work archive</h2>
-        <p>the best ux design leaves no strain nor impression on the user — it's about creating a seamless user experience. My work aims to </p> <!-- NEED TO FIX THIS, LOOK @DEISGN POINTS -->
+        <p>Generally, the best ux design leaves no strain nor impression on the user — it's about creating a seamless user experience. However, I also believe that great UX design can truly captivate: creating something intuitive and visually compelling is often what makes people want to use (and keep using) a product. </p> 
+        <p> With my background in UX and graphic design, I love to to blend conceptual and creative elements with practical and accessible design frameworks. This balance allows me to craft projects where functionality meets excitement—delivering intuitive and visually engaging experiences that feel both fresh and recognisable.</p> 
+        <p>have a look at what i've done in 
+            <button>UX design</button>
+            <button>UI design</button>
+            <button>Service Design</button>
+            <button>Branding</button>
+            <button>(Creative) Coding</button>
+            or have a look at <button>it all</button>.
+        </p>
         <div class="filter-sort"></div> <!-- NEED TO ADD IN FILTER SORT THINGO -- MAYBE DO THE SORT IN THE TH (LIKE ON DELPHI) -->
         <table id="archive-table">
             <thead>
@@ -58,8 +68,9 @@
     </section> 
 
     <section id="cv">
-        <h2>milestones</h2>
-        <p>here's a quick snapshot of what I’ve been up to—exhibitions, installations, and lots of creative problem-solving along the way. Each step’s been a chance to learn, grow, and make something I’m proud of.</p>
+        <h2 class="intro">milestones</h2>
+        <p class="intro">here's a little timeline of what I’ve been up to —exhibitions, installations, and lots of creative problem solving along the way. Each step’s been a chance to learn, grow, and make something I’m proud of.</p>
+    
         <section id="timeline">
             <div class="milestone">
                 <div class="frame"><img class="milestone-photo" src="assets/imgs/sharks.jpg" frameborder="0"></div>
@@ -67,14 +78,14 @@
 
                 <div class="description">
                     <h3>moving to melbourne</h3>
-                    <caption>I moved to Melbourne January 2022, to start my studies at the University of Melbourne.</caption>
+                    <p class="caption">I moved to Melbourne January 2022, to start my studies at the University of Melbourne.</p>
                 </div>
             </div>
             <div class="milestone">
                 <div class="frame"><img class="milestone-photo" src="assets/imgs/auspost.jpg" frameborder="0"></div>
                 <div class="description">
                     <h3>working w/ australia post</h3>
-                    <caption>I was contacted by the Business Systems Manager (SAP Development) of <b>Australia post</b>, and asked to present a talk on UI and UX principles to his team of 20 developers. As part of the session, I also conducted a detailed review of one of their applications, offering insights to improve functionality and user experience.</caption>
+                    <p class="caption">I was contacted by the Business Systems Manager (SAP Development) of <b>Australia post</b> November 2023, and asked to present a talk on UI and UX principles to his team of 20 developers. As part of the session, I also conducted a detailed review of one of their applications, offering insights to improve functionality and user experience.</p>
                 </div>
             </div>
             <div class="milestone">
@@ -82,27 +93,58 @@
                 <div class="frame"><img class="milestone-photo" src="assets/imgs/eyePos.jpg" frameborder="0"></div>
                 <div class="description">
                     <h3>exhibitions</h3>
-                    <caption></caption>
+                    <p class="caption"></p>
                 </div>
             </div>
             <div class="milestone">
                 <div class="frame"><img class="milestone-photo" src="assets/imgs/graduation.jpg" frameborder="0"></div>
                 <div class="description">
                     <h3>graduating</h3>
-                    <caption></caption>
+                    <p class="caption">I graduated from unimelb December 2024 with a bachelor of Design, double majoring in User Experience Design and Graphic Design, with a Weighted Average Mark of 79.7 —Graduating in Second Class Honours Division A.</p>
                 </div>
             </div>
         </section>
 
     </section>     
 
-    <section id="recs"></section>    <!-- QUOTES ON ME AND MY WORK FROM PEOPLE WHO I'VE WORKED WITH GOES HERE -->
+    <section id="references">
+        <h2 class="intro">hear what other people are saying about me and my work</h2>
+        <section id="recommendations">
+            <div class="quote">
+                <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
+                <p class="caption"> — Email from the Business Systems Manager (SAP Development) of Australia Post, sent to me and my professors at the university</p>
+            </div>
 
-    <footer id="call-me"></footer> <!-- CONTACT DETAILS GOES HERE -->
+            <div class="quote">
+                <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
+                <p class="caption"> — Feedback on my final Capstone Project and contribution to class from Graphic Design Tutor</p>
+            </div>
+
+            <div class="quote">
+                <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
+                <p class="caption"> — Feedback on my final Capstone Project and contribution to class from Graphic Design Tutor</p>
+            </div>
+        </section>
+    </section>  
+
+    <footer id="call-me">
+        <h1>stay in touch!</h1>
+        <ul>
+            <li><a href="">linkedin</a></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li><a href="">cv</a></li>
+            <li><a href="">email</a></li>
+        </ul>
+        <p class="caption">*designed and developed by Hanne Sofie Berg.</p>
+    </footer> <!-- CONTACT DETAILS GOES HERE -->
     
 
 <!-- <script src="loading.js"></script> -->
  <script src="work-archive.js"></script>
 <script src="typewriter.js"></script>
+<script src="landingpage.js"></script>
 </body>
 </html>

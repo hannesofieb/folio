@@ -1,4 +1,21 @@
-p, h1, h2{
+@import url("https://use.typekit.net/wzt0bea.css");
+
+body{
+    cursor: default;
+}
+
+.custom-cursor {
+    position: fixed;
+    pointer-events: none; /* Prevent interference with interactions */
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    display: none; /* Initially hidden */
+}
+
+p, h1, h2, button, q{
     font-family: var(--type-body);
 }
 
@@ -17,16 +34,20 @@ h2{
     font-weight: var(--type-semibold-weight);
 }
 
+h3{
+    margin-bottom: 1em;
+    line-height: 0.1em;
+    font-size: 1em;
+}
+
 em{
     font-family: var(--type-italic);
     font-weight: var(--type-thin-weight);
 }
 
-small{
-    font-size: 0.4em;
-    font-style: uppercase;
+.caption{
     font-weight: var(--type-thin-weight);
-    text-transform: uppercase; /* Add this line to make text uppercase */
+    font-size: 1em;
 }
 
 a{
@@ -47,4 +68,25 @@ li a:hover{
 #services li{
     font-weight: var(--type-thin-weight);
     font-size: 2em;
+}
+
+button{
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid var(--black);
+    font-size: 1em;
+    line-height: 1.2em;
+}
+
+button:hover, button:focus{
+    color: var(--white);
+    background-color: var(--black);
+}
+
+q{
+    font-size: 2em;
+}
+
+b{
+    font-weight: 900;
+    color: var(--green);
 }

@@ -2,10 +2,15 @@ body{
     margin: 0;
     background-color: var(--white);
     overflow-x: hidden;
+    /* Remove cursor: none; */
 }
 
-nav, #cover, #services, #work-archive, #cv, #recs, footer{
+nav, #cover, #work-archive, #cv, #references, footer{
     padding-left: 2vw;
+}
+
+#work-archive, #cv{
+    margin-top: 20vh;
 }
 
 /* ---------------------------------------------loading pagelayout */
@@ -71,7 +76,9 @@ li{
     left: 30vw;
     width: 40%;
     height: 50%;
+    cursor: none; /* Remove the default cursor when hovering over the target */
 }
+
 img{
     width: 100%; /* Ensure the image fills the width */
     height: 100%; /* Ensure the image fills the height */
@@ -92,20 +99,42 @@ img{
     }
 }
 
+/* Custom cursor styling */
+.custom-cursor {
+    position: absolute;
+    pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
+    display: none; /* Initially hidden */
+    /* Add cursor: none; to hide the default cursor when the custom cursor is shown */
+    cursor: none;
+    font-family: var(--type-body); /* Use the var(--type-body) font for the custom cursor */
+}
 
+/* Ensure the custom cursor is visible when needed */
+.custom-cursor.show {
+    display: block;
+}
 
 /* ---------------------------------------------work archive section layout */
 #work-archive{
-    width:100%;
+    width:96vw;
     height: 120vh;
     overflow: hidden; /* Ensure the section does not overflow */
-    margin: 2% 5% 0 0;
-
+    /* margin: 2% 50% 0 0; */
 }
 
+#work-archive h2, #cv h2{
+    margin: 0 5% 0em 0;
+}
+
+#work-archive p{
+    margin: 1% 0 1% 0;
+}
+
+/* table layout */
 #archive-table {
     width: 96vw;
     border-collapse: collapse;
+    margin-top: 5%;
 }
 
 #archive-table th, #archive-table td {
@@ -154,8 +183,13 @@ th#proj-tags{
 /* ---------------------------------------------cv-milestones section layout */
 #cv{
     width:100%;
-    height: 60vh;
+    height: auto;
 }
+
+.intro{
+    width: 100%;
+}
+
 
 #timeline{
     display: flex;
@@ -167,34 +201,75 @@ th#proj-tags{
     display: flex;
     flex-direction: column;
     margin-right: 0.5vw;
-    width: 15vw;
+    width: 20vw;
     transition: all 0.3s ease;
+    cursor: none; /* Remove the default cursor when hovering over the target */
+
 }
 
 .milestone .frame{
     width: 100%;
-    height: auto;
+    max-height: 80%;
     padding: 1%;
 }
 
 .milestone:hover{
-    width: 30vw;
+    width: 22vw;
+}
+
+p.caption{
+    width: 100%;
 }
 
 
 
-/* ---------------------------------------------recs section layout */
-#recs{
+/* ---------------------------------------------references section layout */
+#references{
     width:100%;
-    height: 40vh;
+    height: auto;
+    margin: 35vh 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
 }
 
+#recommendations{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.quote{
+    margin-right: 2vw;
+    width: 45vw;
+}
 
 /* ---------------------------------------------footer layout */
 footer{
-    width:100%;
-    height: 30vh;
+    width:96vw;
+    display: flex;
+    flex-direction: column;
 }
+
+footer h1{
+    font-size: 10em;
+    margin: 0;
+}
+
+footer ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    justify-content: space-between;
+    position: relative;
+}
+
+footer li{
+    font-size: 2em;
+    position: relative;
+}
+
 
 
 
