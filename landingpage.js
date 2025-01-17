@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.classList.remove('show');
     });
 
+    
+
     // ------------------------------------ Make the #cover img draggable
     const frame = document.querySelector('#cover .frame');
     let isDragging = false;
@@ -79,15 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
     });
 
-    // ------------------------------------ Placement of #intro-bio on media query change
-    // Calculate the height of #cover .frame and set the top placement for #intro-bio
-    function adjustIntroBioPosition() {
-        const frameHeight = frame.offsetHeight;
-        introBio.style.top = `${frameHeight/2.5 +150}px`;
-    }
-
-    // Adjust the position on load and on window resize
-    window.addEventListener('load', adjustIntroBioPosition);
-    window.addEventListener('resize', adjustIntroBioPosition);
+    
     
 });

@@ -27,7 +27,7 @@ h1{
 
 p, h2, #services li{
     font-size: 2em;
-    line-height: 1.1em;
+    line-height: 1.3em;
 }
 
 h2{
@@ -89,4 +89,66 @@ q{
 b{
     font-weight: 900;
     color: var(--green);
+}
+
+@media screen and (max-width: 600px) {
+    h1{
+        font-size: 2.5em;
+    }
+
+    h2, #services li, p{
+        font-size: 1.5em;
+        line-height: 1.3em;
+    }
+
+    h2{
+        padding-left: 1.5em;
+    }
+    
+    
+    h3{
+        margin-bottom: 1em;
+        line-height: 0.1em;
+        font-size: 1.1em;
+    }
+
+    p{
+        padding: 1.5em;
+    }
+
+    ul{
+        padding: 0 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    li{
+        list-style: none;
+        padding-bottom: 2px;
+    }
+
+    .square {
+        width: 70px;
+        height: 70px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 15px;
+    }
+
+    button{
+        background-color: rgba(255, 255, 255, 0);
+        border: 1px solid var(--black);
+        font-size: 1em;
+        line-height: 1.2em;
+        margin: 7px 7px 0 0;
+    }
+    
+    button:hover, button:focus{
+        color: var(--white);
+        background-color: var(--black);
+    }
+    
 }
