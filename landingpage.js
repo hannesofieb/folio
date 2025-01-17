@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Calculate the height of #cover .frame and set the top placement for #intro-bio
     function adjustIntroBioPosition() {
         const frameHeight = frame.offsetHeight;
-        introBio.style.top = `${frameHeight/3 +70}px`;
+        introBio.style.top = `${frameHeight/2.5 +150}px`;
     }
 
     // Adjust the position on load and on window resize
