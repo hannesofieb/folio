@@ -55,17 +55,38 @@ li{
     background-color: var(--black);
 }
 
+@media screen and (max-width: 600px) {
+    ul{
+        padding: 0 5px; /* Add this line to remove default padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    li{
+        list-style: none;
+        padding-bottom: 2px;
+    }
+
+    .square {
+        width: 70px;
+        height: 70px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 15px;
+    }
+    
+}
+
 
 /* ---------------------------------------------cover section layout */
 #cover{
     width:100%;
     height: 99vh;
-    position: relative; /* Add this line to make #cover a positioned element */
-}
-
-#cover h1{
     width: 85%;
-    position: absolute; /* Ensure h1 is positioned */
+    position: relative; /* Ensure h1 is positioned */
     top: 15vh;
     z-index: 2; /* Ensure h1 is below the image */
 }
@@ -99,6 +120,36 @@ img{
     }
 }
 
+@media screen and (max-width:600px){
+    #cover{
+        width: 100%;
+        height: 120vh;
+        top: 0;
+    }
+
+    #cover .frame{
+        position: absolute; /* Position the image absolutely within #cover */
+        top: 0;
+        left: 0;
+        width: 96vw;
+        height: auto;
+        z-index: 3; /* Ensure the frame is above the intro-bio */
+    }
+
+    #intro-bio {
+        position: absolute;
+        z-index: 2; /* Ensure the intro-bio is below the frame */
+        font-size: 3em;
+    }
+
+    img{
+        width: 96vw; /* Ensure the image fills the width */
+        height: auto; /* Ensure the image fills the height */
+        object-fit: cover; /* Crop the image to fit the container */
+        z-index: 1; /* Ensure the image is above the h1 */
+    }
+}
+
 /* Custom cursor styling */
 .custom-cursor {
     position: absolute;
@@ -117,7 +168,7 @@ img{
 /* ---------------------------------------------work archive section layout */
 #work-archive{
     width:96vw;
-    height: 120vh;
+    height: auto;
     overflow: hidden; /* Ensure the section does not overflow */
     /* margin: 2% 50% 0 0; */
 }
@@ -269,7 +320,4 @@ footer li{
     font-size: 2em;
     position: relative;
 }
-
-
-
 

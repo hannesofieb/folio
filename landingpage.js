@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.getElementById('cursor');
     const coverImage = document.querySelector('#cover img');
+    const introBio = document.getElementById('intro-bio');
     const colors = ['var(--black)', 'var(--red)', 'var(--pink)', 'var(--green)','var(--white)', 'var(--yellow)', 'var(--blue)', 'var(--yellow-buttermilk)', 'var(----green-olive)', 'var(--blue-light)'];
     let colorIndex = 0;
 
@@ -77,5 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
     coverImage.addEventListener('dragstart', (e) => {
         e.preventDefault();
     });
+
+    // ------------------------------------ Placement of #intro-bio on media query change
+    // Calculate the height of #cover .frame and set the top placement for #intro-bio
+    function adjustIntroBioPosition() {
+        const frameHeight = frame.offsetHeight;
+        introBio.style.top = `${frameHeight/3 +70}px`;
+    }
+
+    // Adjust the position on load and on window resize
+    window.addEventListener('load', adjustIntroBioPosition);
+    window.addEventListener('resize', adjustIntroBioPosition);
     
 });
