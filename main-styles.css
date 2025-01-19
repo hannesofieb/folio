@@ -15,7 +15,7 @@ body{
     display: none; /* Initially hidden */
 }
 
-p, h1, h2, button, q{
+p, h1, h2, h3, button, q{
     font-family: var(--type-body);
 }
 
