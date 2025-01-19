@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.classList.add('show');
         colorIndex = (colorIndex + 1) % colors.length;
         cursor.style.color = colors[colorIndex];
-        cursor.textContent = 'move me';
+        cursor.textContent = 'move me around';
     });
 
     // Hide custom cursor when not hovering

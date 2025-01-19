@@ -1,14 +1,16 @@
 @import url("https://use.typekit.net/wzt0bea.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 @font-face {
     font-family: 'Helvetica-Now-Display';
     src: url("assets/fonts/HelveticaNowDisplay.otf") format("opentype");
 }
 
+
 :root{
     --type-italic: "ivypresto-display", serif;
     --italic-style: italic;
-    --type-body: "Helvetica-Now-Display", sans-serif;
+    --type-body: "Helvetica-Now-Display", "Inter", sans-serif;
     --type-body-02: "acumin-pro", sans-serif;
     --body-style: normal;
 

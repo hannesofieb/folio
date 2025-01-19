@@ -5,7 +5,7 @@ body{
     /* Remove cursor: none; */
 }
 
-nav, #cover, #work-archive, #cv, #references, footer{
+nav, #cover, #work-archive, #references, footer{
     padding-left: 2vw;
 }
 
@@ -44,8 +44,9 @@ nav, #cover, #work-archive, #cv, #references, footer{
 }
 
 /* ---------------------------------------------nav bar layout */
-nav{
-    width:96vw;
+nav {
+    width: 96vw;
+    padding-right: 2vw;
     height: auto;
     position: fixed;
     top: 0;
@@ -54,14 +55,33 @@ nav{
     z-index: 10;
 }
 
-ul{
+ul {
     padding: 0 5px; /* Add this line to remove default padding */
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
-li{
+ul.right {
+    margin-left: auto; /* Push the element to the right */
+}
+
+ul.right li {
+    margin-left: 10vw;
+}
+
+li {
     list-style: none;
+}
+
+li.center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+li.right {
+    margin-left: auto; /* Push the element to the right */
 }
 
 .square {
@@ -105,10 +125,16 @@ li{
     z-index: 2; /* Ensure h1 is below the image */
 }
 
+#intro-bio{
+    position: relative;
+    width: 86vw;
+    z-index: 5;
+}
+
 #cover .frame{
     position: absolute; /* Position the image absolutely within #cover */
-    bottom: 0vh;
-    left: 30vw;
+    bottom: 30vh;
+    left: 50vw;
     width: 40%;
     height: 50%;
     cursor: none; /* Remove the default cursor when hovering over the target */
@@ -136,8 +162,8 @@ img{
 
 @media screen and (max-width:600px){
     #cover{
-        width: 100%;
-        min-height: 100vh;
+        width: 96vw;
+        min-height: 120vh;
         top: 0;
     }
 
@@ -151,10 +177,13 @@ img{
     }
 
     #intro-bio {
+        width: 96vw;
         position: absolute;
         z-index: 2; /* Ensure the intro-bio is below the frame */
         top: 450px;
+        left: 2vw;
     }
+
 
     img{
         width: 96vw; /* Ensure the image fills the width */
@@ -162,11 +191,7 @@ img{
         object-fit: cover; /* Crop the image to fit the container */
         z-index: 1; /* Ensure the image is above the h1 */
     }
-    #intro-bio{
-        width: 96vw;
-        height: auto;
-        left: 2vw;
-    }
+    
 }
 
 /* ---------------------------------------------work archive section layout */
@@ -178,7 +203,7 @@ img{
 }
 
 #work-archive h2, #cv h2{
-    margin: 0 5% 0em 0;
+    margin: 0 5% 0 0;
 }
 
 #work-archive p{
@@ -192,9 +217,14 @@ img{
     margin-top: 5%;
 }
 
+#archive-table tr{
+    border-bottom: 0.5px solid var(--black);
+}
+
 #archive-table th, #archive-table td {
     padding: 10px;
     text-align: left;
+    align-content: baseline;
 }
 
 th#proj-date{
@@ -237,7 +267,7 @@ th#proj-tags{
 
 @media screen and (max-width:600px){
     #work-archive{
-        width: 100%;
+        width: 96vw;
         height: auto;
         overflow: hidden; /* Ensure the section does not overflow */
         margin: 0;
@@ -252,6 +282,7 @@ th#proj-tags{
     #archive-table th, #archive-table td {
         padding: 10px;
         text-align: left;
+        align-content: baseline;
     }
 
     th#proj-date{
@@ -296,45 +327,137 @@ th#proj-tags{
 
 /* ---------------------------------------------cv-milestones section layout */
 #cv{
-    width:100%;
+    width:100vw;
     height: auto;
 }
 
 .intro{
-    width: 100%;
+    width: 96%;
+    padding-left: 2vw;
 }
 
-
 #timeline{
+    margin-top: 3%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     transition: all 0.3s ease;
 }
 
 .milestone{
     display: flex;
     flex-direction: column;
-    margin-right: 0.5vw;
-    width: 20vw;
+    width: 23vw;
+    padding: 0 1% 0 1%;
+    height: 75vh;
     transition: all 0.3s ease;
     cursor: none; /* Remove the default cursor when hovering over the target */
+}
 
+.milestone:hover{
+    transform:translateY(-5%);
+}
+
+/* Add different background colors for each milestone */
+.milestone:nth-child(1) {
+    background-color: var(--yellow-buttermilk);
+}
+
+.milestone:nth-child(2) {
+    background-color: var(--red);
+}
+
+.milestone:nth-child(3) {
+    background-color: var(--green);
+}
+
+.milestone:nth-child(4) {
+    background-color: var(--blue);
 }
 
 .milestone .frame{
     width: 100%;
-    max-height: 80%;
-    padding: 1%;
+    height: 55%; /* Set a fixed height for the frame */
+    overflow: hidden; /* Ensure the image is cropped to fit the container */
+    padding: 9% 0 1% 4%;
 }
 
-.milestone:hover{
-    width: 22vw;
+.milestone .frame img{
+    width: 90%;
+    height: 100%;
+    object-fit: cover; /* Crop the image to fit the container */
+}
+
+p.caption, h3{
+    width: 90%;
+    padding-left: 4%;
 }
 
 p.caption{
-    width: 100%;
+    line-height: 1.3em;
 }
 
+p.caption +p{
+    padding-bottom: 0;
+}
+
+
+/* tablet POV */
+@media screen and (max-width: 1000px) and (min-width: 600px){
+    .milestone{
+        width: 50vw;
+        height: 50vh;
+        padding: 0;
+    }
+
+    .milestone .frame{
+        padding: 5% 0 0 5%;
+    }
+}
+
+/* mobile POV */
+@media  screen and (max-width: 600px){
+    #cv{
+        width: 96vw;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #timeline{
+        overflow-x: scroll;
+        display: flex;
+        flex-direction: row;
+        transition: all 0.3s ease;
+    }
+
+    .milestone{
+        display: flex;
+        flex-direction: column;
+        margin-right: 0.5vw;
+        width: 96vw;
+        height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    .milestone .frame{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 55vh;
+        padding: 1%;
+    }
+
+    .milestone .frame img{
+        width: 100%;
+
+    }
+
+    p.caption{
+        width: 100%;
+    }
+    
+}
 
 
 /* ---------------------------------------------references section layout */
@@ -367,6 +490,7 @@ footer{
 }
 
 footer h1{
+    width: 96vw;
     font-size: 10em;
     margin: 0;
 }

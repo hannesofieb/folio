@@ -1,0 +1,164 @@
+/* --------- OLD ----------- OLD -------------- OLD ----------nav bar layout */
+/* nav{
+    width:96vw;
+    padding-right: 2vw;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--white);
+    z-index: 10;
+}
+
+ul{
+    padding: 0 5px; 
+    display: flex;
+    justify-content: space-between;
+}
+
+li{
+    list-style: none;
+}
+
+.square {
+    width: 25px;
+    height: 25px;
+    background-color: var(--black);
+} */
+
+/* ---------------------------------------------nav bar layout */
+
+/* ---------------------------------------------cv-milestones section layout */
+#cv{
+    width:100vw;
+    height: auto;
+}
+
+.intro{
+    width: 96%;
+    padding-left: 2vw;
+}
+
+#timeline{
+    max-height: 75vh;
+    margin-top: 3%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    transition: all 0.3s ease;
+}
+
+.milestone{
+    display: flex;
+    flex-direction: column;
+    width: 23vw;
+    padding: 0 1% 0 1%;
+    height: 75vh;
+    transition: all 0.3s ease;
+    /* cursor: none; Remove the default cursor when hovering over the target */
+}
+
+.milestone:hover{
+    transform:translateY(-5%);
+}
+
+/* Add different background colors for each milestone */
+.milestone:nth-child(1) {
+    background-color: var(--yellow-buttermilk);
+}
+
+.milestone:nth-child(2) {
+    background-color: var(--red);
+}
+
+.milestone:nth-child(3) {
+    background-color: var(--green);
+}
+
+.milestone:nth-child(4) {
+    background-color: var(--blue);
+}
+
+.milestone .frame{
+    width: 100%;
+    height: 55%; /* Set a fixed height for the frame */
+    overflow: hidden; /* Ensure the image is cropped to fit the container */
+    padding: 9% 0 1% 4%;
+}
+
+.milestone .frame img{
+    width: 90%;
+    height: 100%;
+    object-fit: cover; /* Crop the image to fit the container */
+}
+
+p.caption, h3{
+    width: 90%;
+    padding-left: 4%;
+}
+
+p.caption{
+    line-height: 1.3em;
+}
+
+p.caption +p{
+    padding-bottom: 0;
+}
+
+
+/* tablet POV */
+@media screen and (max-width: 1000px) and (min-width: 600px){
+    .milestone{
+        width: 50vw;
+        height: 50vh;
+        padding: 0;
+    }
+
+    .milestone .frame{
+        padding: 5% 0 0 5%;
+    }
+}
+
+/* mobile POV */
+@media  screen and (max-width: 600px){
+    #cv{
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #timeline{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory; /* Enable snap scrolling */
+        -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+        transition: all 0.3s ease;
+        margin-top: 0%;
+    }
+
+    .milestone{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 90vh;
+        transition: all 0.3s ease;
+        scroll-snap-align: start; /* Snap each milestone to the start */
+    }
+
+    .milestone:hover{
+        transform:translateY(0%);
+    }
+
+    .milestone .frame{
+        height: 55vh;
+        overflow: hidden; /* Ensure the image is cropped to fit the container */
+    }
+
+    .caption{
+        padding:0;
+    }
+
+    
+}
