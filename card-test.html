@@ -31,13 +31,16 @@
     
         <section id="timeline">
             <div class="milestone">
-                <div class="frame">
-                    <img class="milestone-photo" src="assets/imgs/gor.jpg" frameborder="0">
-                    </div>
-
+                <div class="frame"><img class="milestone-photo" src="assets/imgs/gor.jpg" frameborder="0"></div>
                 <div class="description">
                     <h3>moving to melbourne</h3>
-                    <p class="caption">In February 2022, I moved to Melbourne to start my studies at the University of Melbourne. Moving across the world was both scary and exciting, but it’s a decision I’m incredibly grateful for. It’s given me the chance to travel, see stunning parts of this side of the world, and immerse myself in cultures so different from my own.</p>                </div>
+                    <p class="caption">In February 2022, I moved to Melbourne to start my studies at the University of Melbourne. Moving across the world was both scary and exciting, but it’s a decision I’m incredibly grateful for. It’s given me the chance to travel, see stunning parts of this side of the world, and immerse myself in cultures so different from my own.</p>                
+                </div>
+                <div class="annotation">
+                    <p class="arrow left-arrow" style="color: rgba(240, 248, 255, 0);">←</p>
+                    <p>2022</p>
+                    <p class="arrow right-arrow">→</p>
+                </div>
             </div>
             <div class="milestone">
                 <div class="frame"><img class="milestone-photo" src="assets/imgs/auspost.jpg" frameborder="0"></div>
@@ -45,15 +48,25 @@
                     <h3>working w/ australia post</h3>
                     <p class="caption">I was contacted by the Business Systems Manager (SAP Development) of Australia post November 2023, and asked to present a talk on UI and UX principles to his team of 20 developers. As part of the session, I also conducted a detailed review of one of their applications, offering insights to improve functionality and user experience.</p>
                 </div>
+                <div class="annotation">
+                    <p class="arrow left-arrow">←</p>
+                    <p>2023</p>
+                    <p class="arrow right-arrow">→</p>
+                </div>
             </div>
             <div class="milestone">
                 <div class="frame">
                     <img class="milestone-photo" src="assets/imgs/eyePos.jpg" frameborder="0">
-                    <img class="milestone-photo" src="assets/imgs/eyeTfwc02.jpg" frameborder="0"></div>
+                    </div>
                 <div class="description">
                     <h3>exhibitions</h3>
                     <p class="caption">In 2024, five of my works got exhibited at two different exhibitions: the Victoria College of Art's End of Year Exhibition, and at University of Melbourne's designX 2024.</p> 
                         <p class="caption">In addition to this, one of my posters designs were picked to be hung up permanently at the Elizabeth Murdoch Building on the University of Melbourne’s Southbank campus.</p> 
+                </div>
+                <div class="annotation">
+                    <p class="arrow left-arrow">←</p>
+                    <p>2024</p>
+                    <p class="arrow right-arrow">→</p>
                 </div>
             </div>
             <div class="milestone">
@@ -62,13 +75,12 @@
                     <h3>graduating</h3>
                     <p class="caption">I graduated from the University of Melbourne December 2024 with a bachelor of Design, double majoring in User Experience Design and Graphic Design, with a Weighted Average Mark of 79.7 —Graduating in Second Class Honours Division A.</p>
                 </div>
+                <div class="annotation">
+                    <p class="arrow left-arrow">←</p>
+                    <p>2024</p>
+                    <p class="arrow right-arrow" style="color: rgba(240, 248, 255, 0);">→</p>
+                </div>
             </div>
-
-            <div class="arrows" style="hidden">
-                <div id="left-arrow"></div>
-                <div id="right-arrow"></div>
-            </div>
-            <div id="milestone-indicator" style="hidden"></div>
         </section>
 
     </section>     
@@ -76,6 +88,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const timeline = document.getElementById('timeline');
+            const leftArrows = document.querySelectorAll('.left-arrow');
+            const rightArrows = document.querySelectorAll('.right-arrow');
             let isDown = false;
             let startX;
             let scrollLeft;
@@ -103,6 +117,18 @@
                 const x = e.pageX - timeline.offsetLeft;
                 const walk = (x - startX) * 3; // Scroll-fast
                 timeline.scrollLeft = scrollLeft - walk;
+            });
+
+            rightArrows.forEach(arrow => {
+                arrow.addEventListener('click', () => {
+                    timeline.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+                });
+            });
+
+            leftArrows.forEach(arrow => {
+                arrow.addEventListener('click', () => {
+                    timeline.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+                });
             });
         });
     </script>

@@ -105,6 +105,15 @@ p.caption +p{
     padding-bottom: 0;
 }
 
+.annotation{
+    display: none; /* Hide by default */
+}
+
+.annotation p{
+    padding: 0 0 0 2%;
+}
+
+
 
 /* tablet POV */
 @media screen and (max-width: 1000px) and (min-width: 600px){
@@ -128,6 +137,7 @@ p.caption +p{
     }
 
     #timeline{
+        margin: 0;
         max-height: 90vh;
         display: flex;
         flex-wrap: wrap;
@@ -136,7 +146,11 @@ p.caption +p{
         scroll-snap-type: x mandatory; /* Enable snap scrolling */
         -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
         transition: all 0.3s ease;
-        margin-top: 0%;
+        scrollbar-width: none; /* Hide scrollbar in Firefox */
+    }
+
+    #timeline::-webkit-scrollbar {
+        display: none; /* Hide scrollbar in WebKit browsers */
     }
 
     .milestone{
@@ -159,6 +173,18 @@ p.caption +p{
 
     .caption{
         padding:0;
+    }
+
+    .annotation{
+        width: 96%;
+        display: flex; /* Show on mobile */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 1.2em;
+        line-height: 1%;
+        font-weight: 900; 
     }
 
     

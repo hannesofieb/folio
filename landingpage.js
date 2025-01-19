@@ -24,18 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.classList.remove('show');
     });
 
-    // Show custom cursor on hover over .milestone
+    // Show custom cursor on hover over .milestone if screen width is larger than 600px
     const milestones = document.querySelectorAll('.milestone');
     milestones.forEach(milestone => {
         milestone.addEventListener('mouseenter', () => {
-            cursor.classList.add('show');
-            cursor.style.color = colors[4];
-            cursor.textContent = 'expand \u2197'; // Add the glyph U+2197 at the end of 'expand'
-            console.log(`Font used for cursor: ${window.getComputedStyle(cursor).fontFamily}`);
+            if (window.innerWidth > 600) {
+                cursor.classList.add('show');
+                cursor.style.color = colors[4];
+                cursor.textContent = 'expand \u2197'; // Add the glyph U+2197 at the end of 'expand'
+                console.log(`Font used for cursor: ${window.getComputedStyle(cursor).fontFamily}`);
+            } else {
+                milestone.style.cursor = 'pointer';
+            }
         });
 
         milestone.addEventListener('mouseleave', () => {
-            cursor.classList.remove('show');
+            if (window.innerWidth > 600) {
+                cursor.classList.remove('show');
+            }
         });
     });
 
@@ -43,8 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mouseleave', () => {
         cursor.classList.remove('show');
     });
-
-    
 
     // ------------------------------------ Make the #cover img draggable
     const frame = document.querySelector('#cover .frame');
@@ -82,5 +86,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    
+    const timeline = document.getElementById('timeline');
+    const leftArrows = document.querySelectorAll('.left-arrow');
+    const rightArrows = document.querySelectorAll('.right-arrow');
+    let isDown = false;
+    let startXMilestone;
+    let scrollLeft;
+
+    timeline.addEventListener('mousedown', (e) => {
+        isDown = true;
+        timeline.classList.add('active');
+        startX = e.pageX - timeline.offsetLeft;
+        scrollLeft = timeline.scrollLeft;
+    });
+
+    timeline.addEventListener('mouseleave', () => {
+        isDown = false;
+        timeline.classList.remove('active');
+    });
+
+    timeline.addEventListener('mouseup', () => {
+        isDown = false;
+        timeline.classList.remove('active');
+    });
+
+    timeline.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - timeline.offsetLeft;
+        const walk = (x - startXMilestone) * 3; // Scroll-fast
+        timeline.scrollLeft = scrollLeft - walk;
+    });
+
+    rightArrows.forEach(arrow => {
+        arrow.addEventListener('click', () => {
+            timeline.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+        });
+    });
+
+    leftArrows.forEach(arrow => {
+        arrow.addEventListener('click', () => {
+            timeline.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+        });
+    });
+
+    // Ensure the cursor is normal in the #timeline section on mobile POV
+    if (window.innerWidth <= 600) {
+        timeline.style.cursor = 'pointer';
+    }
 });

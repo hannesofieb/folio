@@ -337,6 +337,7 @@ th#proj-tags{
 }
 
 #timeline{
+    max-height: 75vh;
     margin-top: 3%;
     display: flex;
     flex-direction: row;
@@ -401,6 +402,15 @@ p.caption +p{
     padding-bottom: 0;
 }
 
+.annotation{
+    display: none; /* Hide by default */
+}
+
+.annotation p{
+    padding: 0 0 0 2%;
+}
+
+
 
 /* tablet POV */
 @media screen and (max-width: 1000px) and (min-width: 600px){
@@ -408,6 +418,7 @@ p.caption +p{
         width: 50vw;
         height: 50vh;
         padding: 0;
+        cursor: default !important;
     }
 
     .milestone .frame{
@@ -418,44 +429,65 @@ p.caption +p{
 /* mobile POV */
 @media  screen and (max-width: 600px){
     #cv{
-        width: 96vw;
         height: auto;
         display: flex;
         flex-direction: column;
+        cursor: pointer; /* Ensure the cursor is visible when hovering over .milestone */
+
     }
 
     #timeline{
-        overflow-x: scroll;
+        margin: 0;
+        max-height: 90vh;
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
+        flex-direction: column;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory; /* Enable snap scrolling */
+        -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
         transition: all 0.3s ease;
+        scrollbar-width: none; /* Hide scrollbar in Firefox */
+    }
+
+    #timeline::-webkit-scrollbar {
+        display: none; /* Hide scrollbar in WebKit browsers */
     }
 
     .milestone{
         display: flex;
         flex-direction: column;
-        margin-right: 0.5vw;
-        width: 96vw;
-        height: 100vh;
+        width: 100%;
+        height: 90vh;
         transition: all 0.3s ease;
+        scroll-snap-align: start; /* Snap each milestone to the start */
+        cursor: pointer; /* Ensure the cursor is visible when hovering over .milestone */
+    }
+
+    .milestone:hover{
+        transform:translateY(0%);
     }
 
     .milestone .frame{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
         height: 55vh;
-        padding: 1%;
+        overflow: hidden; /* Ensure the image is cropped to fit the container */
     }
 
-    .milestone .frame img{
-        width: 100%;
-
+    .caption{
+        padding:0;
     }
 
-    p.caption{
-        width: 100%;
+    .annotation{
+        width: 96%;
+        display: flex; /* Show on mobile */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 1.2em;
+        line-height: 1%;
+        font-weight: 900; 
     }
+
     
 }
 
