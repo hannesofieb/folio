@@ -9,22 +9,6 @@
     <title>test</title>
 </head>
 <body>
-
-
-
-
-    <!-- <nav>
-        <ul>
-            <li><a href="#call-me">stay in touch</a></li>
-            <li></li>
-            <li></li>
-            <li><a href="#cover"><div class="square"></div></a></li> 
-            <li><a href="#work-archive">project archive</a></li>
-            <li><a href="#cv">milestones</a></li>
-        </ul>
-    </nav> -->
-
-
     <section id="cv">
         <h2 class="intro">milestones</h2>
         <p class="intro" style="margin-top: 1%;">some snapshots of what I’ve been up to —exhibitions, installations, and lots of creative problem solving. Each step’s been a chance to learn, grow, and make something I’m proud of.</p>
@@ -84,53 +68,155 @@
         </section>
 
     </section>     
+    
+    
+    
+    
+
+    <section class="scroll-container">
+        <h2>what other people are saying about me and my work</h2>
+    <section id="references">
+        <div class="scroll-section-container">
+            <section id="recommendations">
+                <div class="quote">
+                    <section class="quote-info">
+                        <p class="who">Business Systems Manager <br>—SAP Development</p>
+                        <p class="org">@ Australia Post</p>
+                        <p class="date">22.11.2023</p>
+                    </section>
+                    <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
+                </div>
+    
+                <div class="quote">
+                    <section class="quote-info">
+                        <p class="who">Graphic Design Lecturer</p>
+                        <p class="org">@University of Melbourne</p>
+                        <p class="date">22.11.2023</p>
+                    </section>
+                    <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
+                </div>
+    
+            </section>
+
+        </div>
+        
+    </section>  
+
+    </section>
+    
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const timeline = document.getElementById('timeline');
-            const leftArrows = document.querySelectorAll('.left-arrow');
-            const rightArrows = document.querySelectorAll('.right-arrow');
-            let isDown = false;
-            let startX;
-            let scrollLeft;
+    document.addEventListener('DOMContentLoaded', () => {
+    const recommendations = document.getElementById('recommendations');
+    const quotes = recommendations.querySelectorAll('.quote');
+    let currentQuoteIndex = 0;
 
-            timeline.addEventListener('mousedown', (e) => {
-                isDown = true;
-                timeline.classList.add('active');
-                startX = e.pageX - timeline.offsetLeft;
-                scrollLeft = timeline.scrollLeft;
+    const cursorCustom = document.createElement('div');
+    cursorCustom.classList.add('cursor-custom');
+    cursorCustom.textContent = '→';  // Default text
+    document.body.appendChild(cursorCustom);
+
+    function updateCursorDisplay(e) {
+        cursorCustom.style.left = `${e.clientX}px`;
+        cursorCustom.style.top = `${e.clientY}px`;
+        cursorCustom.style.display = 'block'; // Always show on movement within recommendations
+    }
+
+    recommendations.addEventListener('mousemove', updateCursorDisplay);
+
+    recommendations.addEventListener('mouseenter', () => {
+        document.addEventListener('mousemove', updateCursorDisplay);
+    });
+
+    recommendations.addEventListener('mouseleave', () => {
+        cursorCustom.style.display = 'none';  // Hide when not hovering over recommendations
+    });
+
+    document.addEventListener('mousedown', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        if (x < window.innerWidth / 2 && currentQuoteIndex > 0) {
+            currentQuoteIndex--;
+        } else if (x >= window.innerWidth / 2 && currentQuoteIndex < quotes.length - 1) {
+            currentQuoteIndex++;
+        }
+        recommendations.scrollTo({
+            left: quotes[currentQuoteIndex].offsetLeft,
+            behavior: 'smooth'
+        });
+    });
+});
+            const recommendations = document.getElementById('recommendations');
+            const quotes = recommendations.querySelectorAll('.quote');
+            let currentQuoteIndex = 0;
+        
+            const cursorLeft = document.createElement('div');
+            cursorLeft.classList.add('cursor-left');
+            cursorLeft.textContent = '←';
+            document.body.appendChild(cursorLeft);
+        
+            const cursorRight = document.createElement('div');
+            cursorRight.classList.add('cursor-right');
+            cursorRight.textContent = '→';
+            document.body.appendChild(cursorRight);
+        
+            // Hide cursors initially
+            cursorLeft.style.display = 'none';
+            cursorRight.style.display = 'none';
+        
+            // Show cursors only when hovering over recommendations
+            recommendations.addEventListener('mouseenter', (e) => {
+                updateCursorDisplay(e);
             });
-
-            timeline.addEventListener('mouseleave', () => {
-                isDown = false;
-                timeline.classList.remove('active');
+        
+            recommendations.addEventListener('mousemove', (e) => {
+                updateCursorDisplay(e);
             });
-
-            timeline.addEventListener('mouseup', () => {
-                isDown = false;
-                timeline.classList.remove('active');
+        
+            recommendations.addEventListener('mouseleave', () => {
+                cursorLeft.style.display = 'none';
+                cursorRight.style.display = 'none';
             });
-
-            timeline.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - timeline.offsetLeft;
-                const walk = (x - startX) * 3; // Scroll-fast
-                timeline.scrollLeft = scrollLeft - walk;
-            });
-
-            rightArrows.forEach(arrow => {
-                arrow.addEventListener('click', () => {
-                    timeline.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
-                });
-            });
-
-            leftArrows.forEach(arrow => {
-                arrow.addEventListener('click', () => {
-                    timeline.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+        
+            function updateCursorDisplay(e) {
+                const x = e.clientX;
+                const y = e.clientY;
+                const viewportWidth = window.innerWidth;
+        
+                cursorLeft.style.top = `${y}px`;
+                cursorRight.style.top = `${y}px`;
+        
+                if (x < viewportWidth / 2 && currentQuoteIndex > 0) {
+                    cursorLeft.style.left = `${x}px`;
+                    cursorLeft.style.display = 'block';
+                    cursorRight.style.display = 'none';
+                } else if (x >= viewportWidth / 2 && currentQuoteIndex < quotes.length - 1) {
+                    cursorRight.style.left = `${x}px`;
+                    cursorRight.style.display = 'block';
+                    cursorLeft.style.display = 'none';
+                } else {
+                    cursorLeft.style.display = 'none';
+                    cursorRight.style.display = 'none';
+                }
+            }
+        
+            document.addEventListener('mousedown', (e) => {
+                const x = e.clientX;
+                const viewportWidth = window.innerWidth;
+        
+                if (x < viewportWidth / 2 && currentQuoteIndex > 0) {
+                    currentQuoteIndex--;
+                } else if (x >= viewportWidth / 2 && currentQuoteIndex < quotes.length - 1) {
+                    currentQuoteIndex++;
+                }
+                recommendations.scrollTo({
+                    left: quotes[currentQuoteIndex].offsetLeft,
+                    behavior: 'smooth'
                 });
             });
         });
-    </script>
+        </script>
+        
 </body>
 </html>

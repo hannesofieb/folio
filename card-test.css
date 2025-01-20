@@ -1,32 +1,16 @@
-/* --------- OLD ----------- OLD -------------- OLD ----------nav bar layout */
-/* nav{
-    width:96vw;
-    padding-right: 2vw;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
+body{
+    margin: 0;
     background-color: var(--white);
-    z-index: 10;
+    overflow-x: hidden;
 }
 
-ul{
-    padding: 0 5px; 
-    display: flex;
-    justify-content: space-between;
+nav, #cover, #work-archive, #references, .scroll-container h2, footer{
+    padding-left: 2vw;
 }
 
-li{
-    list-style: none;
+#work-archive, #cv{
+    margin-top: 20vh;
 }
-
-.square {
-    width: 25px;
-    height: 25px;
-    background-color: var(--black);
-} */
-
-/* ---------------------------------------------nav bar layout */
 
 /* ---------------------------------------------cv-milestones section layout */
 #cv{
@@ -113,8 +97,6 @@ p.caption +p{
     padding: 0 0 0 2%;
 }
 
-
-
 /* tablet POV */
 @media screen and (max-width: 1000px) and (min-width: 600px){
     .milestone{
@@ -127,7 +109,6 @@ p.caption +p{
         padding: 5% 0 0 5%;
     }
 }
-
 /* mobile POV */
 @media  screen and (max-width: 600px){
     #cv{
@@ -189,3 +170,78 @@ p.caption +p{
 
     
 }
+
+
+
+/* ---------------------------------------------references section layout */
+.scroll-container{
+    margin: 25vh 0;
+}
+
+#references{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory; /* Enable snap scrolling */
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    transition: all 0.3s ease;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+#recommendations{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    scroll-snap-type: x mandatory; /* Enable snap scrolling */
+}
+
+.quote{
+    margin: 0 2vw 0 2vw;
+    padding: 2vw;
+    width: 96vw;
+    display: flex;
+    flex-direction: row;
+    scroll-snap-align: start; /* Snap each quote to the start */
+}
+
+.quote-info{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.who, .org, .date{
+    font-size: 1em;
+}
+
+/* Adjust the q element for large and dispatched quotation marks */
+q {
+    position: relative;
+    display: block;
+
+}
+
+#timeline::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers */
+}
+
+.cursor-left, .cursor-right {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
+    display: none; /* Initially hidden */
+}
+
+.cursor-left {
+    background-image: url('path/to/left-arrow.png'); /* Replace with the path to your left arrow image */
+}
+
+.cursor-right {
+    background-image: url('path/to/right-arrow.png'); /* Replace with the path to your right arrow image */
+}
+

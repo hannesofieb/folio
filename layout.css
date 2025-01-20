@@ -90,6 +90,13 @@ li.right {
     background-color: var(--black);
 }
 
+.square-mobile {
+    display: none;
+    width: 25px;
+    height: 25px;
+    background-color: var(--black);
+}
+
 @media screen and (max-width: 600px) {
     ul{
         padding: 0 5px; /* Add this line to remove default padding */
@@ -104,13 +111,21 @@ li.right {
         padding-bottom: 2px;
     }
 
-    .square {
-        width: 70px;
-        height: 70px;
+    li.left{
+        align-self: baseline;
         position: absolute;
+    }
+
+    .square {
+        display: none;
+    }
+
+    .square-mobile {
+        display: block;
+        width: 60px;
+        height: 60px;
         top: 0;
         left: 0;
-        margin: 15px;
     }
     
 }
@@ -494,9 +509,8 @@ p.caption +p{
 
 /* ---------------------------------------------references section layout */
 #references{
-    width:100%;
     height: auto;
-    margin: 35vh 0;
+    margin: 25vh 0;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;

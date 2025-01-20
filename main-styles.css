@@ -89,7 +89,8 @@ q{
 
 b{
     font-weight: 900;
-    color: var(--green);
+    text-decoration: underline;
+    /* color: var(--green); */
 }
 
 @media screen and (max-width: 600px) {
