@@ -204,6 +204,17 @@ p.caption +p{
     scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
 
+#recommendations h2{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+}
+
+div#on{
+    width: auto;
+    display: inline;
+}
+
 
 .quote:nth-child(1){
     margin: 0 8vw 0 0;

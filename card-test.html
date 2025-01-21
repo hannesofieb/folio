@@ -76,10 +76,10 @@
     <div class="custom-cursor cursor-right" id="cursorRight">→</div>
 
     <section class="scroll-container">
-        <h2>what other people are saying about me and my work</h2>
+        <h2>what other people are saying about me and my  <div id="on" style="text-decoration: underline;"></div></h2>
         <section id="references">
                 <section id="recommendations">
-                    <div class="quote">
+                    <div class="quote" id="ausPost" title=" work in consulting developers on UX and UI">
                         <ul class="quote-info">
                             <li class="who">Business Systems Manager <br>—SAP Development</li>
                             <li class="org"><p class="context">from</p>Australia Post</li>
@@ -88,7 +88,7 @@
                         <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
                     </div>
         
-                    <div class="quote">
+                    <div class="quote" id="studentBehav" title=" contribution to the work environment">
                         <ul class="quote-info">
                             <li class="who">Graphic Design Lecturer</li>
                             <li class="org"> <p class="context">from</p> University of Melbourne</li>
@@ -97,18 +97,17 @@
                         <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
                     </div>
         </section>
-
-        
-        
     </section>  
 
-    </section>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
     const cursorLeft = document.getElementById('cursorLeft');
     const cursorRight = document.getElementById('cursorRight');
     const recommendations = document.getElementById('recommendations');
+    const quotes = Array.from(recommendations.querySelectorAll('.quote'));
+    const onLabel = document.getElementById('on');
+    let isLooping = false; // State flag for overriding default cursor logic
 
     // Update cursor positions
     document.addEventListener('mousemove', (event) => {
@@ -119,8 +118,10 @@
         cursorRight.style.top = `${pageY}px`;
     });
 
-    // Show the correct cursor
+    // Show the correct cursor, unless overriding due to looping
     recommendations.addEventListener('mousemove', (event) => {
+        if (isLooping) return; // Skip this logic during looping
+
         const halfPoint = window.innerWidth / 2;
         const x = event.clientX;
 
@@ -135,32 +136,105 @@
 
     // Hide cursors when leaving recommendations
     recommendations.addEventListener('mouseleave', () => {
+        if (isLooping) return; // Skip this logic during looping
+
         cursorLeft.classList.remove('show');
         cursorRight.classList.remove('show');
     });
 
-    // Interactive scrolling
+    // Function to scroll to a specific quote
+    const scrollToQuote = (index) => {
+        const targetQuote = quotes[index];
+        if (targetQuote) {
+            recommendations.scrollTo({
+                left: targetQuote.offsetLeft,
+                behavior: 'smooth',
+            });
+            console.log(`Scrolled to Index: ${index}, OffsetLeft: ${targetQuote.offsetLeft}`);
+            // Update the label in div#on
+            onLabel.textContent = targetQuote.title || targetQuote.id;
+        } else {
+            console.log('No target quote found for index:', index);
+        }
+    };
+
+    // Interactive scrolling with looping
     recommendations.addEventListener('mousedown', (event) => {
         const halfPoint = window.innerWidth / 2;
         const x = event.clientX;
+        const currentScrollPosition = recommendations.scrollLeft;
+        const maxScrollPosition = recommendations.scrollWidth - recommendations.clientWidth;
 
-        console.log('Mousedown detected');
+        isLooping = true; // Enable override for cursor logic
+
         if (x >= halfPoint) {
-            console.log('Scrolling right');
-            recommendations.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+            if (currentScrollPosition >= maxScrollPosition) {
+                // If at the end, scroll to the beginning and set cursor to Right
+                recommendations.scrollTo({ left: 0, behavior: 'smooth' });
+                cursorRight.classList.add('show');
+                cursorLeft.classList.remove('show');
+                console.log('Looping back to first quote (right)');
+            } else {
+                // Scroll right
+                recommendations.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+                cursorRight.classList.add('show');
+                cursorLeft.classList.remove('show');
+                console.log('Scrolling right');
+            }
         } else {
-            console.log('Scrolling left');
-            recommendations.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+            if (currentScrollPosition <= 0) {
+                // If at the beginning, scroll to the end and set cursor to Left
+                recommendations.scrollTo({ left: maxScrollPosition, behavior: 'smooth' });
+                cursorLeft.classList.add('show');
+                cursorRight.classList.remove('show');
+                console.log('Looping to last quote (left)');
+            } else {
+                // Scroll left
+                recommendations.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+                cursorLeft.classList.add('show');
+                cursorRight.classList.remove('show');
+                console.log('Scrolling left');
+            }
         }
+
+        // Re-enable default cursor logic after scroll finishes
+        setTimeout(() => {
+            isLooping = false;
+        }, 500); // Adjust timeout duration to match the scroll animation
     });
 
-    // Debug scroll position
-    recommendations.addEventListener('scroll', () => {
-        console.log('Current scroll position:', recommendations.scrollLeft);
-    });
+    // Function to update the title in div#on based on the visible quote
+    const updateTitleInView = () => {
+        // Get the current scroll position of recommendations
+        const containerLeft = recommendations.scrollLeft;
+        const containerWidth = recommendations.clientWidth;
+
+        // Find the currently visible quote
+        let visibleQuote = null;
+        quotes.forEach((quote) => {
+            const quoteLeft = quote.offsetLeft;
+            const quoteRight = quoteLeft + quote.offsetWidth;
+
+            // Check if the quote is visible in the container
+            if (quoteLeft >= containerLeft && quoteRight <= containerLeft + containerWidth) {
+                visibleQuote = quote;
+            }
+        });
+
+        // Update the div#on with the visible quote's title
+        if (visibleQuote) {
+            onLabel.textContent = visibleQuote.title || 'No Title Available';
+        } else {
+            onLabel.textContent = '';
+        }
+    };
+
+    // Call updateTitleInView on load and whenever the recommendations are scrolled
+    updateTitleInView();
+    recommendations.addEventListener('scroll', updateTitleInView);
 });
 
-        </script>
+    </script>
         
 </body>
 </html>
