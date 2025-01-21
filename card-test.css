@@ -292,3 +292,6 @@ q {
     color: var(--black); /* Adjust color as needed */
 }
 
+@media screen and (max-width:700){
+    
+}

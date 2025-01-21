@@ -169,6 +169,14 @@ img{
     animation: blink 0.7s steps(1, start) infinite;
 }
 
+#cover p.caption{
+    padding: 0;
+    margin-top: 0;
+    /* position: absolute;
+    bottom: 210px;
+    left: 2em; */
+}
+
 @keyframes blink {
     50% {
         opacity: 0;
@@ -641,7 +649,7 @@ footer{
 }
 
 #farewell{
-    margin:1vh 0 15vh 0;
+    margin:2vh 0 10vh 0;
 }
 
 footer h1{
@@ -652,6 +660,7 @@ footer h1{
 }
 
 footer ul {
+
     display: flex;
     align-items: center;
     list-style: none;
