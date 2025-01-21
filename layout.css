@@ -511,6 +511,7 @@ p.caption +p{
 /* ---------------------------------------------references section layout */
 .scroll-container{
     margin: 25vh 0;
+    position: relative;
 }
 
 #references{
@@ -632,14 +633,22 @@ q {
 /* ---------------------------------------------footer layout */
 footer{
     width:96vw;
+    height: 30vh;
+    margin-top: 25vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+#farewell{
+    margin:1vh 0 15vh 0;
 }
 
 footer h1{
     width: 96vw;
-    font-size: 10em;
-    margin: 0;
+    font-size: 15em;
+    margin: 10vh 0 0 0;
+    font-family: var(--type-italic);
 }
 
 footer ul {
@@ -651,7 +660,11 @@ footer ul {
 }
 
 footer li{
-    font-size: 2em;
+    /* font-size: 2em; */
     position: relative;
 }
 
+footer p.caption{
+    padding: 0;
+    margin: 0 0 2vh 0;
+}
