@@ -239,7 +239,7 @@ ul.quote-info{
     flex-direction: column;
     align-items: flex-start;
 }
-.who, .org, .date{
+.who, .org, .date, .hero-img{
     width: 100%;
     font-size: 1em;
     line-height: 1em;

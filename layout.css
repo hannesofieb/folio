@@ -5,7 +5,7 @@ body{
     /* Remove cursor: none; */
 }
 
-nav, #cover, #work-archive, #references, footer{
+nav, #cover, #work-archive, .scroll-container h2, footer{
     padding-left: 2vw;
 }
 
@@ -507,26 +507,127 @@ p.caption +p{
 }
 
 
+
 /* ---------------------------------------------references section layout */
-#references{
-    height: auto;
+.scroll-container{
     margin: 25vh 0;
+}
+
+#references{
+    width: 100vw;
+    cursor: none; /* Remove the default browser cursor */
+    height: auto;
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     overflow-x: scroll;
+    scroll-snap-type: x mandatory; /* Enable snap scrolling */
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    transition: all 0.3s ease;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 #recommendations{
+    width: 100vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Snap scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+    transition: all 0.3s ease; /* Smooth transitions (optional) */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
 
-.quote{
-    margin-right: 2vw;
-    width: 45vw;
+#recommendations h2{
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
 }
+
+div#on{
+    width: auto;
+    display: inline;
+}
+
+
+.quote:nth-child(1){
+    margin: 0 8vw 0 0;
+
+}
+.quote{
+    margin: 0 0 0 8vw;
+    padding: 2vw;
+    width: 96vw;
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto; /* Prevent shrinking and ensure quotes maintain their width */
+
+    scroll-snap-align: start; /* Snap each quote to the start */
+}
+
+ul.quote-info{
+    width: 20%;
+    margin-right: 4vw;
+    padding-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.who, .org, .date, .hero-img{
+    width: 100%;
+    font-size: 1em;
+    line-height: 1em;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+
+.org{
+    margin: 10% 0 -10% 0;
+}
+
+
+.context{
+    font-size: 1em;
+    padding-right: 2%;
+    color: grey;
+}
+
+q{
+    width: 75%;
+}
+
+/* Adjust the q element for large and dispatched quotation marks */
+q {
+    position: relative;
+    display: block;
+
+}
+
+#recommendations::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers */
+}
+
+.cursor-left, .cursor-right {
+    position: absolute;
+    font-size: 5em;
+    pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
+    display: none; /* Initially hidden */
+    color: var(--black); /* Adjust color as needed */
+}
+
+.cursor-left.show, .cursor-right.show {
+    display: block;
+    position: absolute;
+    font-family: var(--type-body);
+    font-size: 5em;
+    pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
+    color: var(--black); /* Adjust color as needed */
+}
+
+
 
 /* ---------------------------------------------footer layout */
 footer{

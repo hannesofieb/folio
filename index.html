@@ -16,6 +16,8 @@
 </head>
 <body>
 <div class="custom-cursor" id="cursor"></div>
+<div class="custom-cursor cursor-left" id="cursorLeft">←</div>
+<div class="custom-cursor cursor-right" id="cursorRight">→</div>
 <!-- <div id="loading"></div> -->
 
 <nav>
@@ -129,21 +131,38 @@
 
     </section>   
 
-    <section id="references">
-        <h2>what other people are saying about me and my work</h2>
-        <section id="recommendations">
-            <div class="quote">
-                <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
-                <p class="caption"> — Email from the Business Systems Manager (SAP Development) of Australia Post, sent to me and my professors at the university</p>
-            </div>
+    <section class="scroll-container">
+        <h2>what other people are saying about me and my  <div id="on" style="text-decoration: underline;"></div></h2>
+        <section id="references">
+                <section id="recommendations">
+                    <div class="quote" id="ausPost" title=" work in consulting developers on UX and UI">
+                        <ul class="quote-info">
+                            <li class="who">Business Systems Manager <br>—SAP Development</li>
+                            <li class="org"><p class="context">from</p>Australia Post</li>
+                            <li class="date"><p class="context">said this on</p> 22.11.2023</li>
+                        </ul>
+                        <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers. She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
+                    </div>
+        
+                    <div class="quote" id="studentBehav" title=" positive contribution to the work environment">
+                        <ul class="quote-info">
+                            <li class="who">Graphic Design Lecturer</li>
+                            <li class="org"> <p class="context">from</p> University of Melbourne</li>
+                            <li class="date"><p class="context">said this on</p> 27.11.2024</li>
+                        </ul>
+                        <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
+                    </div>
 
-            <div class="quote">
-                <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
-                <p class="caption"> — Feedback on my final Capstone Project and contribution to class from Graphic Design Tutor</p>
-            </div>
-
+                    <div class="quote" id="studentBehav" title=" ability in balancing creativity with clarity">
+                        <ul class="quote-info">
+                            <li class="who">Graphic Design Lecturer</li>
+                            <li class="org"> <p class="context">from</p> University of Melbourne</li>
+                            <li class="date"><p class="context">said this on</p> 10.05.2024</li>
+                        </ul>
+                        <q>a playful website with a clearly communicated design style throughout. The secondary pop-ups and information are incorporated in each page without feeling overwhelming.[…] a cohesive and well thought-out presentation of work, with a solid amount of research and reflection regarding browser based ephemera. </q>
+                    </div>
         </section>
-    </section>  
+    </section>   
 
     <footer id="call-me">
         <h1>stay in touch!</h1>
