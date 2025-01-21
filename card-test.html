@@ -71,7 +71,9 @@
     
     
     
-    
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor cursor-left" id="cursorLeft">←</div>
+    <div class="custom-cursor cursor-right" id="cursorRight">→</div>
 
     <section class="scroll-container">
         <h2>what other people are saying about me and my work</h2>
@@ -79,20 +81,20 @@
         <div class="scroll-section-container">
             <section id="recommendations">
                 <div class="quote">
-                    <section class="quote-info">
-                        <p class="who">Business Systems Manager <br>—SAP Development</p>
-                        <p class="org">@ Australia Post</p>
-                        <p class="date">22.11.2023</p>
-                    </section>
+                    <ul class="quote-info">
+                        <li class="who">Business Systems Manager <br>—SAP Development</li>
+                        <li class="org"><p class="context">from</p>Australia Post</li>
+                        <li class="date"><p class="context">said this on</p> 22.11.2023</li>
+                    </ul>
                     <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
                 </div>
     
                 <div class="quote">
-                    <section class="quote-info">
-                        <p class="who">Graphic Design Lecturer</p>
-                        <p class="org">@University of Melbourne</p>
-                        <p class="date">22.11.2023</p>
-                    </section>
+                    <ul class="quote-info">
+                        <li class="who">Graphic Design Lecturer</li>
+                        <li class="org"> <p class="context">from</p> University of Melbourne</li>
+                        <li class="date"><p class="context">said this on</p> 22.11.2023</li>
+                    </ul>
                     <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
                 </div>
     
@@ -104,119 +106,74 @@
 
     </section>
     
-
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const recommendations = document.getElementById('recommendations');
-    const quotes = recommendations.querySelectorAll('.quote');
-    let currentQuoteIndex = 0;
-
-    const cursorCustom = document.createElement('div');
-    cursorCustom.classList.add('cursor-custom');
-    cursorCustom.textContent = '→';  // Default text
-    document.body.appendChild(cursorCustom);
-
-    function updateCursorDisplay(e) {
-        cursorCustom.style.left = `${e.clientX}px`;
-        cursorCustom.style.top = `${e.clientY}px`;
-        cursorCustom.style.display = 'block'; // Always show on movement within recommendations
-    }
-
-    recommendations.addEventListener('mousemove', updateCursorDisplay);
-
-    recommendations.addEventListener('mouseenter', () => {
-        document.addEventListener('mousemove', updateCursorDisplay);
-    });
-
-    recommendations.addEventListener('mouseleave', () => {
-        cursorCustom.style.display = 'none';  // Hide when not hovering over recommendations
-    });
-
-    document.addEventListener('mousedown', (e) => {
-        const x = e.clientX;
-        const y = e.clientY;
-
-        if (x < window.innerWidth / 2 && currentQuoteIndex > 0) {
-            currentQuoteIndex--;
-        } else if (x >= window.innerWidth / 2 && currentQuoteIndex < quotes.length - 1) {
-            currentQuoteIndex++;
-        }
-        recommendations.scrollTo({
-            left: quotes[currentQuoteIndex].offsetLeft,
-            behavior: 'smooth'
-        });
-    });
-});
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursorLeft = document.getElementById('cursorLeft');
+            const cursorRight = document.getElementById('cursorRight');
             const recommendations = document.getElementById('recommendations');
-            const quotes = recommendations.querySelectorAll('.quote');
-            let currentQuoteIndex = 0;
-        
-            const cursorLeft = document.createElement('div');
-            cursorLeft.classList.add('cursor-left');
-            cursorLeft.textContent = '←';
-            document.body.appendChild(cursorLeft);
-        
-            const cursorRight = document.createElement('div');
-            cursorRight.classList.add('cursor-right');
-            cursorRight.textContent = '→';
-            document.body.appendChild(cursorRight);
-        
-            // Hide cursors initially
-            cursorLeft.style.display = 'none';
-            cursorRight.style.display = 'none';
-        
-            // Show cursors only when hovering over recommendations
-            recommendations.addEventListener('mouseenter', (e) => {
-                updateCursorDisplay(e);
+            const quotes = document.querySelectorAll('.quote');
+            let currentIndex = 0;
+
+            // Update cursor positions and behavior
+            document.addEventListener('mousemove', (event) => {
+                cursorLeft.style.left = `${event.pageX}px`;
+                cursorLeft.style.top = `${event.pageY}px`;
+                cursorRight.style.left = `${event.pageX}px`;
+                cursorRight.style.top = `${event.pageY}px`;
             });
-        
-            recommendations.addEventListener('mousemove', (e) => {
-                updateCursorDisplay(e);
-            });
-        
-            recommendations.addEventListener('mouseleave', () => {
-                cursorLeft.style.display = 'none';
-                cursorRight.style.display = 'none';
-            });
-        
-            function updateCursorDisplay(e) {
-                const x = e.clientX;
-                const y = e.clientY;
-                const viewportWidth = window.innerWidth;
-        
-                cursorLeft.style.top = `${y}px`;
-                cursorRight.style.top = `${y}px`;
-        
-                if (x < viewportWidth / 2 && currentQuoteIndex > 0) {
-                    cursorLeft.style.left = `${x}px`;
-                    cursorLeft.style.display = 'block';
-                    cursorRight.style.display = 'none';
-                } else if (x >= viewportWidth / 2 && currentQuoteIndex < quotes.length - 1) {
-                    cursorRight.style.left = `${x}px`;
-                    cursorRight.style.display = 'block';
-                    cursorLeft.style.display = 'none';
+
+            recommendations.addEventListener('mousemove', (event) => {
+                const fullWidth = window.innerWidth;
+                const halfPoint = fullWidth / 2;
+                const x = event.clientX;
+
+                if (x >= halfPoint) {
+                    cursorRight.classList.add('show');
+                    cursorLeft.classList.remove('show');
                 } else {
-                    cursorLeft.style.display = 'none';
-                    cursorRight.style.display = 'none';
+                    cursorLeft.classList.add('show');
+                    cursorRight.classList.remove('show');
                 }
-            }
-        
-            document.addEventListener('mousedown', (e) => {
-                const x = e.clientX;
-                const viewportWidth = window.innerWidth;
-        
-                if (x < viewportWidth / 2 && currentQuoteIndex > 0) {
-                    currentQuoteIndex--;
-                } else if (x >= viewportWidth / 2 && currentQuoteIndex < quotes.length - 1) {
-                    currentQuoteIndex++;
-                }
-                recommendations.scrollTo({
-                    left: quotes[currentQuoteIndex].offsetLeft,
-                    behavior: 'smooth'
-                });
             });
+
+            // Hide cursors when leaving recommendations
+            recommendations.addEventListener('mouseleave', () => {
+                cursorLeft.classList.remove('show');
+                cursorRight.classList.remove('show');
+            });
+
+            // croll between quotes
+            // recommendations.addEventListener('mousedown', (event) => {
+            //     const fullWidth = window.innerWidth;
+            //     const halfPoint = fullWidth / 2;
+            //     const x = event.clientX;
+
+            //     if (x < halfPoint && currentIndex > 0) {
+            //         currentIndex--;
+            //     } else if (x >= halfPoint && currentIndex < quotes.length - 1) {
+            //         currentIndex++;
+            //     }
+
+            //     // Ensure quotes align properly
+            //     recommendations.scrollTo({
+            //         left: quotes[currentIndex].offsetLeft,
+            //         behavior: 'smooth'
+            //     });
+
+            //     console.log(`Current Index: ${currentIndex}`);
+            //     console.log(`Scroll to OffsetLeft: ${quotes[currentIndex].offsetLeft}`);
+            // });
+
+            // Automatic scrolling every 5 seconds
+            // setInterval(() => {
+            //     currentIndex = (currentIndex + 1) % quotes.length;
+            //     recommendations.scrollTo({
+            //         left: quotes[currentIndex].offsetLeft,
+            //         behavior: 'smooth'
+            //     });
+            //     console.log(`Auto-Scrolling to Index: ${currentIndex}`);
+            // }, 5000);
         });
-        </script>
-        
+    </script>
 </body>
 </html>

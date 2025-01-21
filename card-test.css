@@ -4,7 +4,7 @@ body{
     overflow-x: hidden;
 }
 
-nav, #cover, #work-archive, #references, .scroll-container h2, footer{
+nav, #cover, #work-archive, .scroll-container h2, footer{
     padding-left: 2vw;
 }
 
@@ -179,6 +179,8 @@ p.caption +p{
 }
 
 #references{
+    width: 100vw;
+    cursor: none; /* Remove the default browser cursor */
     height: auto;
     display: flex;
     flex-direction: column;
@@ -195,10 +197,15 @@ p.caption +p{
     flex-direction: row;
     justify-content: space-between;
     scroll-snap-type: x mandatory; /* Enable snap scrolling */
+    overflow-x: auto; /* Allow horizontal scrolling */
 }
 
+.quote:nth-child(1){
+    margin: 0 8vw 0 0;
+
+}
 .quote{
-    margin: 0 2vw 0 2vw;
+    margin: 0 0 0 8vw;
     padding: 2vw;
     width: 96vw;
     display: flex;
@@ -206,14 +213,37 @@ p.caption +p{
     scroll-snap-align: start; /* Snap each quote to the start */
 }
 
-.quote-info{
-    width: 90%;
+ul.quote-info{
+    width: 20%;
+    margin-right: 4vw;
+    padding-inline-start: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 .who, .org, .date{
+    width: 100%;
     font-size: 1em;
+    line-height: 1em;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+
+.org{
+    margin: 10% 0 -10% 0;
+}
+
+
+.context{
+    font-size: 1em;
+    padding-right: 2%;
+    color: grey;
+}
+
+q{
+    width: 75%;
 }
 
 /* Adjust the q element for large and dispatched quotation marks */
@@ -229,19 +259,18 @@ q {
 
 .cursor-left, .cursor-right {
     position: absolute;
-    width: 32px;
-    height: 32px;
-    background-size: contain;
-    background-repeat: no-repeat;
+    font-size: 5em;
     pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
     display: none; /* Initially hidden */
+    color: var(--black); /* Adjust color as needed */
 }
 
-.cursor-left {
-    background-image: url('path/to/left-arrow.png'); /* Replace with the path to your left arrow image */
-}
-
-.cursor-right {
-    background-image: url('path/to/right-arrow.png'); /* Replace with the path to your right arrow image */
+.cursor-left.show, .cursor-right.show {
+    display: block;
+    position: absolute;
+    font-family: var(--font-body);
+    font-size: 4em;
+    pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
+    color: var(--black); /* Adjust color as needed */
 }
 
