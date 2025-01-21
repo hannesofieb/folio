@@ -193,12 +193,17 @@ p.caption +p{
 }
 
 #recommendations{
+    width: 100vw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    scroll-snap-type: x mandatory; /* Enable snap scrolling */
-    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Snap scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+    transition: all 0.3s ease; /* Smooth transitions (optional) */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
+
 
 .quote:nth-child(1){
     margin: 0 8vw 0 0;
@@ -210,6 +215,8 @@ p.caption +p{
     width: 96vw;
     display: flex;
     flex-direction: row;
+    flex: 0 0 auto; /* Prevent shrinking and ensure quotes maintain their width */
+
     scroll-snap-align: start; /* Snap each quote to the start */
 }
 
@@ -253,7 +260,7 @@ q {
 
 }
 
-#timeline::-webkit-scrollbar {
+#recommendations::-webkit-scrollbar {
     display: none; /* Hide scrollbar in WebKit browsers */
 }
 
@@ -268,8 +275,8 @@ q {
 .cursor-left.show, .cursor-right.show {
     display: block;
     position: absolute;
-    font-family: var(--font-body);
-    font-size: 4em;
+    font-family: var(--type-body);
+    font-size: 5em;
     pointer-events: none; /* Ensure the custom cursor does not interfere with other elements */
     color: var(--black); /* Adjust color as needed */
 }

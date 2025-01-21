@@ -77,30 +77,28 @@
 
     <section class="scroll-container">
         <h2>what other people are saying about me and my work</h2>
-    <section id="references">
-        <div class="scroll-section-container">
-            <section id="recommendations">
-                <div class="quote">
-                    <ul class="quote-info">
-                        <li class="who">Business Systems Manager <br>—SAP Development</li>
-                        <li class="org"><p class="context">from</p>Australia Post</li>
-                        <li class="date"><p class="context">said this on</p> 22.11.2023</li>
-                    </ul>
-                    <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
-                </div>
-    
-                <div class="quote">
-                    <ul class="quote-info">
-                        <li class="who">Graphic Design Lecturer</li>
-                        <li class="org"> <p class="context">from</p> University of Melbourne</li>
-                        <li class="date"><p class="context">said this on</p> 22.11.2023</li>
-                    </ul>
-                    <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
-                </div>
-    
-            </section>
+        <section id="references">
+                <section id="recommendations">
+                    <div class="quote">
+                        <ul class="quote-info">
+                            <li class="who">Business Systems Manager <br>—SAP Development</li>
+                            <li class="org"><p class="context">from</p>Australia Post</li>
+                            <li class="date"><p class="context">said this on</p> 22.11.2023</li>
+                        </ul>
+                        <q>A big shoutout to Hanne Sofie for bringing her A-game to our knowledge session! <b>Her expertise and enthusiasm were a breath of fresh air in a room full of seasoned developers.</b> She had even the toughest veterans nodding in agreement and asking questions. These insights from a real UI and UX prof has certainly sparked our interest in further work with Hanne Sofie and other keen students.</q>
+                    </div>
+        
+                    <div class="quote">
+                        <ul class="quote-info">
+                            <li class="who">Graphic Design Lecturer</li>
+                            <li class="org"> <p class="context">from</p> University of Melbourne</li>
+                            <li class="date"><p class="context">said this on</p> 22.11.2023</li>
+                        </ul>
+                        <q>Thank you for your enthusiasm and participation in class this semester, and congratulations on a great semester. […] Your contributions in class were invaluable, and your generous peer feedback added greatly to the collaborative environment. </q>
+                    </div>
+        </section>
 
-        </div>
+        
         
     </section>  
 
@@ -108,72 +106,61 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const cursorLeft = document.getElementById('cursorLeft');
-            const cursorRight = document.getElementById('cursorRight');
-            const recommendations = document.getElementById('recommendations');
-            const quotes = document.querySelectorAll('.quote');
-            let currentIndex = 0;
+    const cursorLeft = document.getElementById('cursorLeft');
+    const cursorRight = document.getElementById('cursorRight');
+    const recommendations = document.getElementById('recommendations');
 
-            // Update cursor positions and behavior
-            document.addEventListener('mousemove', (event) => {
-                cursorLeft.style.left = `${event.pageX}px`;
-                cursorLeft.style.top = `${event.pageY}px`;
-                cursorRight.style.left = `${event.pageX}px`;
-                cursorRight.style.top = `${event.pageY}px`;
-            });
+    // Update cursor positions
+    document.addEventListener('mousemove', (event) => {
+        const { pageX, pageY } = event;
+        cursorLeft.style.left = `${pageX}px`;
+        cursorLeft.style.top = `${pageY}px`;
+        cursorRight.style.left = `${pageX}px`;
+        cursorRight.style.top = `${pageY}px`;
+    });
 
-            recommendations.addEventListener('mousemove', (event) => {
-                const fullWidth = window.innerWidth;
-                const halfPoint = fullWidth / 2;
-                const x = event.clientX;
+    // Show the correct cursor
+    recommendations.addEventListener('mousemove', (event) => {
+        const halfPoint = window.innerWidth / 2;
+        const x = event.clientX;
 
-                if (x >= halfPoint) {
-                    cursorRight.classList.add('show');
-                    cursorLeft.classList.remove('show');
-                } else {
-                    cursorLeft.classList.add('show');
-                    cursorRight.classList.remove('show');
-                }
-            });
+        if (x >= halfPoint) {
+            cursorRight.classList.add('show');
+            cursorLeft.classList.remove('show');
+        } else {
+            cursorLeft.classList.add('show');
+            cursorRight.classList.remove('show');
+        }
+    });
 
-            // Hide cursors when leaving recommendations
-            recommendations.addEventListener('mouseleave', () => {
-                cursorLeft.classList.remove('show');
-                cursorRight.classList.remove('show');
-            });
+    // Hide cursors when leaving recommendations
+    recommendations.addEventListener('mouseleave', () => {
+        cursorLeft.classList.remove('show');
+        cursorRight.classList.remove('show');
+    });
 
-            // croll between quotes
-            // recommendations.addEventListener('mousedown', (event) => {
-            //     const fullWidth = window.innerWidth;
-            //     const halfPoint = fullWidth / 2;
-            //     const x = event.clientX;
+    // Interactive scrolling
+    recommendations.addEventListener('mousedown', (event) => {
+        const halfPoint = window.innerWidth / 2;
+        const x = event.clientX;
 
-            //     if (x < halfPoint && currentIndex > 0) {
-            //         currentIndex--;
-            //     } else if (x >= halfPoint && currentIndex < quotes.length - 1) {
-            //         currentIndex++;
-            //     }
+        console.log('Mousedown detected');
+        if (x >= halfPoint) {
+            console.log('Scrolling right');
+            recommendations.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+        } else {
+            console.log('Scrolling left');
+            recommendations.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+        }
+    });
 
-            //     // Ensure quotes align properly
-            //     recommendations.scrollTo({
-            //         left: quotes[currentIndex].offsetLeft,
-            //         behavior: 'smooth'
-            //     });
+    // Debug scroll position
+    recommendations.addEventListener('scroll', () => {
+        console.log('Current scroll position:', recommendations.scrollLeft);
+    });
+});
 
-            //     console.log(`Current Index: ${currentIndex}`);
-            //     console.log(`Scroll to OffsetLeft: ${quotes[currentIndex].offsetLeft}`);
-            // });
-
-            // Automatic scrolling every 5 seconds
-            // setInterval(() => {
-            //     currentIndex = (currentIndex + 1) % quotes.length;
-            //     recommendations.scrollTo({
-            //         left: quotes[currentIndex].offsetLeft,
-            //         behavior: 'smooth'
-            //     });
-            //     console.log(`Auto-Scrolling to Index: ${currentIndex}`);
-            // }, 5000);
-        });
-    </script>
+        </script>
+        
 </body>
 </html>
