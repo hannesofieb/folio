@@ -239,7 +239,7 @@ ul.quote-info{
     flex-direction: column;
     align-items: flex-start;
 }
-.who, .org, .date, .hero-img{
+.who, .org, .date{
     width: 100%;
     font-size: 1em;
     line-height: 1em;
@@ -292,6 +292,60 @@ q {
     color: var(--black); /* Adjust color as needed */
 }
 
-@media screen and (max-width:700){
+@media screen and (max-width:700px){
+    .scroll-container h2{
+        margin-bottom: 2vh;
+    }
     
+    .quote:nth-child(1){
+        margin: 0;
+    
+    }
+
+    footer ul{
+        align
+    }
+    .quote{
+        width: 96vw;
+        height: fit-content;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    ul.quote-info{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .who, .org, .date{
+        width:100%;
+        margin: 0;
+        height: auto;
+        width: auto;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .context{
+        display: inline-block;
+        margin: 0 2vw 0 0;
+        padding: 0;
+    }
+    
+    q{
+        width: 100%;
+    }
+
+    #recommendations {
+        animation: autoScroll 5s linear infinite;
+    }
+
+    @keyframes autoScroll {
+        0% { scroll-snap-align: start; }
+        100% { scroll-snap-align: end; }
+    }
 }

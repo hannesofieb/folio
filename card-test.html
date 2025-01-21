@@ -76,12 +76,12 @@
     <div class="custom-cursor cursor-right" id="cursorRight">→</div>
 
     <section class="scroll-container">
-        <h2>what other people are saying about me and my  <div id="on" style="text-decoration: underline;"></div></h2>
+        <h2>what people are saying about me and my  <div id="on" style="text-decoration: underline;"></div></h2>
         <section id="references">
                 <section id="recommendations">
                     <div class="quote" id="ausPost" title=" work in consulting developers on UX and UI">
                         <ul class="quote-info">
-                            <li class="who">Business Systems Manager <br>—SAP Development</li>
+                            <li class="who">Business Systems Manager —SAP Development</li>
                             <li class="org"><p class="context">from</p>Australia Post</li>
                             <li class="date"><p class="context">said this on</p> 22.11.2023</li>
                         </ul>
@@ -106,7 +106,7 @@
                         <q>a playful website with a clearly communicated design style throughout. The secondary pop-ups and information are incorporated in each page without feeling overwhelming.[…] a cohesive and well thought-out presentation of work, with a solid amount of research and reflection regarding browser based ephemera. </q>
                     </div>
         </section>
-    </section>  
+    </section>   
 
     
     <script>
@@ -241,6 +241,19 @@ recommendations.addEventListener('mousemove', (event) => {
             isLooping = false;
         }, 500);
     });
+
+    // Auto-scrolling for small screens
+    if (window.innerWidth <= 700) {
+        let currentIndex = 0;
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % quotes.length;
+            recommendations.scrollTo({
+                left: quotes[currentIndex].offsetLeft,
+                behavior: 'smooth'
+            });
+        }, 5000);
+    }
 });
 
     </script>

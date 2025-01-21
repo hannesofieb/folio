@@ -135,27 +135,24 @@ document.addEventListener('DOMContentLoaded', () => {
         timeline.style.cursor = 'pointer';
     }
 
-
-
-
-        // ------------------------------------ Recommendations interaction
+    // ------------------------------------ Recommendations interaction
     const cursorLeft = document.getElementById('cursorLeft');
-        const cursorRight = document.getElementById('cursorRight');
-        const recommendations = document.getElementById('recommendations');
-        const quotes = Array.from(recommendations.querySelectorAll('.quote'));
-        const onLabel = document.getElementById('on');
-        let isLooping = false; // State flag for overriding default cursor logic
+    const cursorRight = document.getElementById('cursorRight');
+    const recommendations = document.getElementById('recommendations');
+    const quotes = Array.from(recommendations.querySelectorAll('.quote'));
+    const onLabel = document.getElementById('on');
+    let isLooping = false; // State flag for overriding default cursor logic
 
-        // Update cursor positions globally
-        document.addEventListener('mousemove', (event) => {
-            const { pageX, pageY } = event;
-            cursorLeft.style.left = `${pageX}px`;
-            cursorLeft.style.top = `${pageY}px`;
-            cursorRight.style.left = `${pageX}px`;
-            cursorRight.style.top = `${pageY}px`;
-        });
+    // Update cursor positions globally
+    document.addEventListener('mousemove', (event) => {
+        const { pageX, pageY } = event;
+        cursorLeft.style.left = `${pageX}px`;
+        cursorLeft.style.top = `${pageY}px`;
+        cursorRight.style.left = `${pageX}px`;
+        cursorRight.style.top = `${pageY}px`;
+    });
 
-        // Show the correct cursor dynamically
+    // Show the correct cursor dynamically
     recommendations.addEventListener('mousemove', (event) => {
         if (isLooping) return; // Skip cursor logic during looping
 
@@ -198,74 +195,114 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Hide cursors when leaving recommendations
+    recommendations.addEventListener('mouseleave', () => {
+        if (isLooping) return; // Skip this logic during looping
+        cursorLeft.classList.remove('show');
+        cursorRight.classList.remove('show');
+    });
 
-        // Hide cursors when leaving recommendations
-        recommendations.addEventListener('mouseleave', () => {
-            if (isLooping) return; // Skip this logic during looping
-            cursorLeft.classList.remove('show');
-            cursorRight.classList.remove('show');
-        });
+    // Update title in div#on based on visible quote
+    const updateTitleInView = () => {
+        const containerLeft = recommendations.scrollLeft;
+        const containerWidth = recommendations.clientWidth;
 
-        // Update title in div#on based on visible quote
-        const updateTitleInView = () => {
-            const containerLeft = recommendations.scrollLeft;
-            const containerWidth = recommendations.clientWidth;
+        let visibleQuote = null;
+        quotes.forEach((quote) => {
+            const quoteLeft = quote.offsetLeft;
+            const quoteRight = quoteLeft + quote.offsetWidth;
 
-            let visibleQuote = null;
-            quotes.forEach((quote) => {
-                const quoteLeft = quote.offsetLeft;
-                const quoteRight = quoteLeft + quote.offsetWidth;
-
-                // Check if the quote is fully visible
-                if (quoteLeft >= containerLeft && quoteRight <= containerLeft + containerWidth) {
-                    visibleQuote = quote;
-                }
-            });
-
-            // Update the title in div#on
-            onLabel.textContent = visibleQuote ? visibleQuote.title || 'No Title Available' : '';
-        };
-
-        // Ensure title updates on scroll and initial load
-        updateTitleInView();
-        recommendations.addEventListener('scroll', updateTitleInView);
-
-        // Interactive scrolling with looping
-        recommendations.addEventListener('mousedown', (event) => {
-            const halfPoint = window.innerWidth / 2;
-            const x = event.clientX;
-            const currentScrollPosition = recommendations.scrollLeft;
-            const maxScrollPosition = recommendations.scrollWidth - recommendations.clientWidth;
-
-            isLooping = true; // Enable override for cursor logic
-
-            if (x >= halfPoint) {
-                if (currentScrollPosition >= maxScrollPosition) {
-                    // Scroll to the beginning and set right cursor
-                    recommendations.scrollTo({ left: 0, behavior: 'smooth' });
-                    cursorRight.classList.add('show');
-                    cursorLeft.classList.remove('show');
-                } else {
-                    recommendations.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
-                    cursorRight.classList.add('show');
-                    cursorLeft.classList.remove('show');
-                }
-            } else {
-                if (currentScrollPosition <= 0) {
-                    // Scroll to the end and set left cursor
-                    recommendations.scrollTo({ left: maxScrollPosition, behavior: 'smooth' });
-                    cursorLeft.classList.add('show');
-                    cursorRight.classList.remove('show');
-                } else {
-                    recommendations.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
-                    cursorLeft.classList.add('show');
-                    cursorRight.classList.remove('show');
-                }
+            // Check if the quote is fully visible
+            if (quoteLeft >= containerLeft && quoteRight <= containerLeft + containerWidth) {
+                visibleQuote = quote;
             }
-
-            // Re-enable cursor logic after scroll finishes
-            setTimeout(() => {
-                isLooping = false;
-            }, 500);
         });
+
+        // Update the title in div#on
+        onLabel.textContent = visibleQuote ? visibleQuote.title || 'No Title Available' : '';
+    };
+
+    // Ensure title updates on scroll and initial load
+    updateTitleInView();
+    recommendations.addEventListener('scroll', updateTitleInView);
+
+    // Interactive scrolling with looping
+    recommendations.addEventListener('mousedown', (event) => {
+        const halfPoint = window.innerWidth / 2;
+        const x = event.clientX;
+        const currentScrollPosition = recommendations.scrollLeft;
+        const maxScrollPosition = recommendations.scrollWidth - recommendations.clientWidth;
+
+        isLooping = true; // Enable override for cursor logic
+
+        if (x >= halfPoint) {
+            if (currentScrollPosition >= maxScrollPosition) {
+                // Scroll to the beginning and set right cursor
+                recommendations.scrollTo({ left: 0, behavior: 'smooth' });
+                cursorRight.classList.add('show');
+                cursorLeft.classList.remove('show');
+            } else {
+                recommendations.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+                cursorRight.classList.add('show');
+                cursorLeft.classList.remove('show');
+            }
+        } else {
+            if (currentScrollPosition <= 0) {
+                // Scroll to the end and set left cursor
+                recommendations.scrollTo({ left: maxScrollPosition, behavior: 'smooth' });
+                cursorLeft.classList.add('show');
+                cursorRight.classList.remove('show');
+            } else {
+                recommendations.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+                cursorLeft.classList.add('show');
+                cursorRight.classList.remove('show');
+            }
+        }
+
+        // Re-enable cursor logic after scroll finishes
+        setTimeout(() => {
+            isLooping = false;
+        }, 500);
+    });
+
+    // Auto-scrolling for small screens
+    if (window.innerWidth <= 700) {
+        let currentIndex = 0;
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % quotes.length;
+            recommendations.scrollTo({
+                left: quotes[currentIndex].offsetLeft,
+                behavior: 'smooth'
+            });
+        }, 5000);
+    }
+
+    // ------------------------------------ Fade-in animation on scroll
+    const fadeInElements = document.querySelectorAll('#work-archive, #cv, footer');
+
+    // Add the 'hidden' class to all sections initially
+    fadeInElements.forEach(element => {
+        element.classList.add('hidden');
+    });
+
+    // Use IntersectionObserver to apply the fadeInUp animation
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fadeInUp-animation');
+                entry.target.classList.remove('hidden');
+                observer.unobserve(entry.target); // Stop observing once animation is applied
+                console.log('Animation applied');
+            }
+        });
+    }, {
+        threshold: 0.05 // Trigger when 5% of the section is visible
+    });
+
+    // Observe each section
+    fadeInElements.forEach(element => {
+        observer.observe(element);
+    });
+
 });

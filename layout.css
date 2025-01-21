@@ -13,6 +13,26 @@ nav, #cover, #work-archive, .scroll-container h2, footer{
     margin-top: 20vh;
 }
 
+@keyframes fadeInUp {
+    0% {
+        transform: translateY(10%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+.fadeInUp-animation {
+    animation: fadeInUp 1.5s ease-out forwards; /* Use forwards to retain the final state */
+}
+
+.hidden {
+    opacity: 0; /* Ensure elements are initially hidden */
+    transform: translateY(10%); /* Set their starting position below */
+}
+
 /* ---------------------------------------------loading pagelayout */
 #loading {
     position: fixed;
@@ -213,6 +233,12 @@ img{
         height: 100%; /* Ensure the image fills the height */
         object-fit: cover; /* Crop the image to fit the container */
         z-index: 1; /* Ensure the image is above the h1 */
+    }
+
+    #cover p.caption{
+        position: absolute;
+        bottom: 210px;
+        left: 2%;
     }
     
 }
@@ -495,6 +521,10 @@ p.caption +p{
         overflow: hidden; /* Ensure the image is cropped to fit the container */
     }
 
+    .milestone p.intro{
+        padding: 0 2vw 0 2vw;
+    }
+
     .caption{
         padding:0;
     }
@@ -583,7 +613,7 @@ ul.quote-info{
     flex-direction: column;
     align-items: flex-start;
 }
-.who, .org, .date, .hero-img{
+.who, .org, .date{
     width: 100%;
     font-size: 1em;
     line-height: 1em;
@@ -636,7 +666,51 @@ q {
     color: var(--black); /* Adjust color as needed */
 }
 
+@media screen and (max-width:700px){
+    .scroll-container h2{
+        margin-bottom: 2vh;
+    }
+    
+    .quote:nth-child(1){
+        margin: 0;
+    
+    }
+    .quote{
+        width: 96vw;
+        height: fit-content;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    ul.quote-info{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .who, .org, .date{
+        width:100%;
+        margin: 0;
+        height: auto;
+        width: auto;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .context{
+        display: inline-block;
+        margin: 0 2vw 0 0;
+        padding: 0;
+    }
+    
+    q{
+        width: 100%;
+    }
 
+}
 
 /* ---------------------------------------------footer layout */
 footer{
@@ -660,7 +734,6 @@ footer h1{
 }
 
 footer ul {
-
     display: flex;
     align-items: center;
     list-style: none;
@@ -675,5 +748,47 @@ footer li{
 
 footer p.caption{
     padding: 0;
-    margin: 0 0 2vh 0;
+    margin: 2vh 0;
+}
+
+
+@media screen and (max-width:600px){
+
+
+    footer h1{
+        width: 96vw;
+        font-size: 4em;
+        margin: 10vh 0 0 1vw;
+        font-family: var(--type-italic);
+    }
+
+    p#farewell{
+        margin: 0 0 10vh 0;
+        padding: 2vh 0 0 1vw;
+    }
+
+    footer ul {
+        margin: 0 5vh 0 1vw;
+        align-items: flex-start;
+    }
+
+    footer li{
+        /* font-size: 2em; */
+        position: relative;
+    }
+
+    footer p.caption{
+        padding: 0;
+        margin: 5vh 0 0 0;
+    }
+
+    #recommendations {
+        animation: autoScroll 5s linear infinite;
+    }
+
+    @keyframes autoScroll {
+        0% { scroll-snap-align: start; }
+        100% { scroll-snap-align: end; }
+    }
+    
 }
