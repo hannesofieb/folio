@@ -210,6 +210,10 @@ img{
         top: 0;
     }
 
+    #intro-bio{
+        margin-bottom: 0;
+    }
+
     #cover .frame{
         position: absolute; /* Position the image absolutely within #cover */
         top: 150px;
@@ -237,8 +241,8 @@ img{
 
     #cover p.caption{
         position: absolute;
-        bottom: 210px;
-        left: 2%;
+        top: 750px;
+        left: 2vw;
     }
     
 }
@@ -667,6 +671,9 @@ q {
 }
 
 @media screen and (max-width:700px){
+    .scroll-container{
+        min-height: max-content;
+    }
     .scroll-container h2{
         margin-bottom: 2vh;
     }

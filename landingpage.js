@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 left: quotes[currentIndex].offsetLeft,
                 behavior: 'smooth'
             });
-        }, 5000);
+        }, 25000);
     }
 
     // ------------------------------------ Fade-in animation on scroll
