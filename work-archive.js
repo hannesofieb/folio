@@ -5,18 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageNumbers = document.querySelector('#page-numbers');
     const prevButton = document.querySelector('#prev');
     const nextButton = document.querySelector('#next');
+    const nav = document.querySelector('nav');
 
-    const data = [
-        // Example data, replace with actual data
-        { date: '2023-01-01', title: 'Project 1', about: 'Description 1: this is a little test to see how it deals with more than one line of text and how that will reflect on the look of everything. Will it ever start and use multiple "rows" underneath? Hmm seems like i need to give each column a set width', tags: 'Tag1, Tag2', link: '#' },
-        { date: '2023-02-01', title: 'Project 2', about: 'Description 2', tags: 'Tag3, Tag4', link: '#' },
-        { date: '2023-03-01', title: 'Project 3', about: 'Description 3', tags: 'Tag5, Tag6', link: '#' },
-        { date: '2023-04-01', title: 'Project 4', about: 'Description 4', tags: 'Tag7, Tag8', link: '#' },
-        { date: '2023-05-01', title: 'Project 5', about: 'Description 5', tags: 'Tag9, Tag10', link: '#' },
-        { date: '2023-06-01', title: 'Project 6', about: 'Description 6', tags: 'Tag11, Tag12', link: '#' },
-        { date: '2023-07-01', title: 'Project 7', about: 'Description 7', tags: 'Tag13, Tag14', link: '#' },
-        { date: '2023-08-01', title: 'Project 8', about: 'Description 8', tags: 'Tag15, Tag16', link: '#' },
-    ];
+    let data = [];
+
+    function fetchData() {
+        Papa.parse('/work-archive.csv', {
+            download: true,
+            header: true,
+            complete: function(results) {
+                data = results.data;
+                renderTable(currentPage);
+            }
+        });
+    }
 
     function renderTable(page) {
         tableBody.innerHTML = '';
@@ -26,12 +28,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
         paginatedData.forEach(row => {
             const tr = document.createElement('tr');
+            const skillset = row.skillset.split(';').map(skill => skill.trim()).join(', ');
             tr.innerHTML = `
-                <td>${row.date}</td>
-                <td>${row.title}</td>
-                <td>${row.about}</td>
-                <td>${row.tags}</td>
+                <td>${row['end-date']}</td>
+                <td class="proj-title">
+                    ${row.title}
+                    <img src="${row['hero-img']}" class="hero-img" alt="${row.title}">
+                </td>
+                <td>${row.description}</td>
+                <td>${skillset}</td>
             `;
+            tr.addEventListener('mouseover', () => {
+                console.log('Row filter value:', row.filter); // Debug the filter value
+                if (row.filter.startsWith('UX')) {
+                    document.body.style.transition = 'background-color 0.5s';
+                    nav.style.transition = 'background-color 0.5s';
+                    document.body.style.backgroundColor = 'var(--red)';
+                    nav.style.backgroundColor = 'var(--red)';
+                } else if (row.filter.startsWith('branding')) {
+                    document.body.style.transition = 'background-color 0.5s';
+                    nav.style.transition = 'background-color 0.5s';
+                    document.body.style.backgroundColor = 'var(--yellow-buttermilk)';
+                    nav.style.backgroundColor = 'var(--yellow-buttermilk)';
+                } else if (row.filter.startsWith('service-design')) {
+                    document.body.style.transition = 'background-color 0.5s';
+                    nav.style.transition = 'background-color 0.5s';
+                    document.body.style.backgroundColor = 'var(--green)';
+                    nav.style.backgroundColor = 'var(--green)';
+                } else if (row.filter.startsWith('game-design')) {
+                    document.body.style.transition = 'background-color 0.5s';
+                    nav.style.transition = 'background-color 0.5s';
+                    document.body.style.backgroundColor = 'var(--pink)';
+                    nav.style.backgroundColor = 'var(--pink)';
+                } else if (row.filter.startsWith('creative-coding')) {
+                    document.body.style.transition = 'background-color 0.5s';
+                    nav.style.transition = 'background-color 0.5s';
+                    document.body.style.backgroundColor = 'var(--blue-light)';
+                    nav.style.backgroundColor = 'var(--blue-light)';
+                }
+            });
+            
+            tr.addEventListener('mouseout', () => {
+                document.body.style.transition = 'background-color 0.5s';
+                nav.style.transition = 'background-color 0.5s';
+                document.body.style.backgroundColor = 'var(--white)';
+                nav.style.backgroundColor = 'var(--white)';
+            });
             tableBody.appendChild(tr);
         });
 
@@ -75,6 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    renderTable(currentPage);
+    fetchData();
 });
 
