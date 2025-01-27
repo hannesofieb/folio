@@ -5,16 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageNumbers = document.querySelector('#page-numbers');
     const prevButton = document.querySelector('#prev');
     const nextButton = document.querySelector('#next');
+    const filterButtons = document.querySelectorAll('#work-archive button');
     const nav = document.querySelector('nav');
 
     let data = [];
+    let filteredData = []; // To store the filtered rows
 
+    // Fetch CSV data
     function fetchData() {
         Papa.parse('/work-archive.csv', {
             download: true,
             header: true,
             complete: function(results) {
                 data = results.data;
+                filteredData = data; // Initialize filteredData with all data
                 renderTable(currentPage);
             }
         });
@@ -24,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        const paginatedData = data.slice(start, end);
+        const paginatedData = filteredData.slice(start, end); // Use filteredData
 
         paginatedData.forEach(row => {
             const tr = document.createElement('tr');
@@ -80,9 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPagination();
     }
 
+    // Render pagination
     function renderPagination() {
         pageNumbers.innerHTML = '';
-        const totalPages = Math.ceil(data.length / rowsPerPage);
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
         for (let i = 1; i <= totalPages; i++) {
             const span = document.createElement('span');
@@ -102,6 +107,29 @@ document.addEventListener('DOMContentLoaded', () => {
         nextButton.disabled = currentPage === totalPages;
     }
 
+    // Filter data based on the button clicked
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.id.toLowerCase(); // Button ID corresponds to filter value
+            if (filter === 'all-work') {
+                filteredData = [...data]; // Show all rows
+            } else if (filter === 'favourite') {
+                filteredData = data.filter(row => row.remarked.toLowerCase() === 'yes');
+                console.log('favs');
+            } else {
+                filteredData = data.filter(row =>
+                    row.filter && row.filter.toLowerCase().includes(filter)
+                );
+            }
+
+            // Reset to the first page and re-render the table
+            currentPage = 1;
+            renderTable(currentPage);
+        });
+    });
+
+    // Pagination buttons
+
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
@@ -110,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     nextButton.addEventListener('click', () => {
-        const totalPages = Math.ceil(data.length / rowsPerPage);
+        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
         if (currentPage < totalPages) {
             currentPage++;
             renderTable(currentPage);

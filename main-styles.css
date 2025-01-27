@@ -72,7 +72,7 @@ li a:hover{
 }
 
 button{
-    background-color: rgba(255, 255, 255, 0);
+    background-color: var(--white);
     border: 1px solid var(--black);
     font-size: 1em;
     line-height: 1.2em;
@@ -81,6 +81,36 @@ button{
 button:hover, button:focus{
     color: var(--white);
     background-color: var(--black);
+}
+
+#UX:hover, #UX:focus{
+    background-color: var(--red);
+    border-color: var(--red);
+    color: var(--black);
+}
+
+#UI:hover, #UI:focus{
+    background-color: var(--pink);
+    border-color: var(--pink);
+    color: var(--black);
+}
+
+#service-design:hover, #service-design:focus{
+    background-color: var(--green);
+    border-color: var(--green);
+    color: var(--black);
+}
+
+#creative-coding:hover, #creative-coding:focus{
+    background-color: var(--blue-light);
+    border-color: var(--blue-light);
+    color: var(--black);
+}
+
+#branding:hover, #branding:focus{
+    background-color: var(--yellow-buttermilk);
+    border-color: var(--yellow-buttermilk);
+    color: var(--black);
 }
 
 q{
