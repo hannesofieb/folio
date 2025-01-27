@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
     <title>Hanne Sofie Berg</title>
+    <link rel="icon" type="image/x-icon" href="/assets/logo-bw.png">
 
 </head>
 <body>
@@ -24,7 +25,7 @@
     <ul> 
         <li class="left"><a href="#cover"><div class="square-mobile"></div></a></li> <!-- mobile LOGO GOES HERE -->
         <li><a href="#call-me">stay in touch</a></li>
-        <li class="center"><a href="#cover"><div class="square"></div></a></li> <!-- LOGO GOES HERE -->
+        <li class="center"><a href="#cover"><div class="square"><img src="/assets/logo-bw.png" alt=""></div></a></li> <!-- LOGO GOES HERE -->
         <ul class="right">
             <li><a href="#work-archive">project archive</a></li>
             <li><a href="#cv">milestones</a></li>
@@ -44,21 +45,21 @@
         <p>Generally, the best ux design leaves no strain nor impression on the user — it's about creating a seamless user experience. However, I also believe that great UX design can truly captivate the user; creating something intuitive and visually compelling is often what makes people want to use (and keep using) a product. </p> 
         <p>With my background in UX and graphic design, I love to to blend conceptual and creative elements with practical and accessible design frameworks. This balance allows me to craft projects where functionality meets excitement—delivering intuitive and visually engaging experiences that feel both fresh and familiar.</p> 
         <p>Have a look at what i've done in 
-            <button>UX design</button>
-            <button>UI design</button>
-            <button>Service Design</button>
-            <button>Branding</button>
-            <button>(Creative) Coding</button>
-            or have a look at <button>it all</button> or see <button>my favourites</button> .
+            <button id="UX">UX design</button>
+            <button id="UI">UI design</button>
+            <button id="service-design">Service Design</button>
+            <button id="branding">Branding</button>
+            <button id="creative-coding">(Creative) Coding</button>
+            or have a look at <button id="all-work">it all</button> or see <button id="favourite">my favourites</button> .
         </p>
         <div class="filter-sort"></div> <!-- NEED TO ADD IN FILTER SORT THINGO -- MAYBE DO THE SORT IN THE TH (LIKE ON DELPHI) -->
         <table id="archive-table">
             <thead>
                 <tr>
                     <th id="proj-date">Date</th>
-                    <th id="proj-title">Project Title</th>
+                    <th id="proj-title">Project</th>
                     <th id="proj-desc">About</th>
-                    <th id="proj-tags">Tags</th>
+                    <th id="proj-tags">Skillsets</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,9 +67,9 @@
             </tbody>
         </table>
         <div id="pagination">
-            <button id="prev">back</button>
+            <button id="prev">←</button>
             <span id="page-numbers"></span>
-            <button id="next">more</button>
+            <button id="next">→</button>
         </div>
     </section> 
 
@@ -186,5 +187,7 @@
  <script src="work-archive.js"></script>
 <script src="typewriter.js"></script>
 <script src="landingpage.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
 </body>
 </html>

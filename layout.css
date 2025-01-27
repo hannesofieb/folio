@@ -2,6 +2,7 @@ body{
     margin: 0;
     background-color: var(--white);
     overflow-x: hidden;
+    transition: background-color 0.5s ease; /* Add transition for background color */
     /* Remove cursor: none; */
 }
 
@@ -73,6 +74,7 @@ nav {
     left: 0;
     background-color: var(--white);
     z-index: 10;
+    transition: background-color 0.5s ease; /* Add transition for background color */
 }
 
 ul {
@@ -250,7 +252,7 @@ img{
 /* ---------------------------------------------work archive section layout */
 #work-archive{
     width:96vw;
-    height: auto;
+    height: max-content;
     overflow: hidden; /* Ensure the section does not overflow */
     /* margin: 2% 50% 0 0; */
 }
@@ -266,11 +268,13 @@ img{
 /* table layout */
 #archive-table {
     width: 96vw;
+    height: 50vh;
     border-collapse: collapse;
     margin-top: 5%;
 }
 
 #archive-table tr{
+    min-height: fit-content;
     border-bottom: 0.5px solid var(--black);
 }
 
@@ -297,11 +301,37 @@ th#proj-tags{
     /* margin-left: 5%; */
 }
 
+
+
+
+/* Add styles to display the hero-img on hover */
+.proj-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+}
+
+.hero-img {
+    visibility: hidden;
+    display: block;
+    position: relative;
+    width: 40%;
+    height: auto;
+    margin-right: 10%;
+    z-index: 10;
+}
+
+#archive-table tr:hover .hero-img {
+    visibility: visible;
+}
+
 /* click to see more projects section */
 #pagination {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 20px;
+    font-size: 2em;
 }
 
 #pagination button {
@@ -316,6 +346,17 @@ th#proj-tags{
     background-color: #f0f0f000;
     color: #f0f0f000;
     cursor: not-allowed;
+}
+
+#page-numbers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 10%;
+}
+
+#pagination .page-number.active {
+    text-decoration: underline;
 }
 
 @media screen and (max-width:600px){
@@ -377,6 +418,7 @@ th#proj-tags{
     }
 
 }
+
 
 /* ---------------------------------------------cv-milestones section layout */
 #cv{
@@ -756,6 +798,7 @@ footer li{
 footer p.caption{
     padding: 0;
     margin: 2vh 0;
+    color: rgb(201, 197, 197);
 }
 
 
