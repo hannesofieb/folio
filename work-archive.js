@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch CSV data
     function fetchData() {
-        Papa.parse('/work-archive.csv', {
+        Papa.parse('work-archive.csv', {
             download: true,
             header: true,
             complete: function(results) {
