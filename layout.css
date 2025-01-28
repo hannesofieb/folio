@@ -250,7 +250,7 @@ img{
 
     #cover p.caption{
         position: absolute;
-        top: 750px;
+        top: 870px;
         left: 2vw;
     }
     
@@ -685,6 +685,8 @@ ul.quote-info{
 }
 
 
+
+
 .context{
     font-size: 1em;
     padding-right: 2%;
@@ -770,6 +772,13 @@ q {
         width: 100%;
     }
 
+}
+
+@media screen and (min-width:2300px) {
+    .date{
+        margin-top: 3%;
+    }
+    
 }
 
 /* ---------------------------------------------footer layout */

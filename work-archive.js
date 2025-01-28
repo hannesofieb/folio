@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header: true,
             complete: function(results) {
                 data = results.data;
-                filteredData = data; // Initialize filteredData with all data
+                filteredData = data;
                 renderTable(currentPage);
             }
         });
@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     row.filter && row.filter.toLowerCase().includes(filter)
                 );
             }
+
 
             // Reset to the first page and re-render the table
             currentPage = 1;
