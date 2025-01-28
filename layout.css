@@ -366,6 +366,10 @@ th#proj-tags{
     text-decoration: underline;
 }
 
+#pagination .page-number:hover{
+    cursor: pointer;
+}
+
 @media screen and (max-width:600px){
     #work-archive{
         width: 96vw;

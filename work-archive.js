@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Pagination buttons
-
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
