@@ -128,7 +128,7 @@ li.right {
 
 @media screen and (max-width: 600px) {
     ul{
-        padding: 0 5px; /* Add this line to remove default padding */
+        padding: 0 0 0 5px; /* Add this line to remove default padding */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -278,6 +278,7 @@ img{
     height: 50vh;
     border-collapse: collapse;
     margin-top: 5%;
+    cursor: none; 
 }
 
 #archive-table tr{
@@ -307,9 +308,6 @@ th#proj-tags{
     width: 20%;
     /* margin-left: 5%; */
 }
-
-
-
 
 /* Add styles to display the hero-img on hover */
 .proj-title {

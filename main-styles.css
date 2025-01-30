@@ -15,7 +15,7 @@ body{
     display: none; /* Initially hidden */
 }
 
-nav,p, h1, h2, h3, button, q, table, #pagination, #scroll-container, footer ul li,{
+nav,p, h1, h2, h3, button, q, li, table{
     font-family: var(--type-body);
 }
 

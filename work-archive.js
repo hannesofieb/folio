@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const allWorkButton = document.querySelector('#all-work'); // Select the #all-work button
     const nav = document.querySelector('nav');
     const yPosMouseValue = window.innerHeight / 2;
-
+    const cursor = document.getElementById('cursor'); // Custom cursor element
 
     let data = [];
     let filteredData = [];
@@ -62,12 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Select the image AFTER tr is created
             const img = tr.querySelector('.hero-img');
     
-            // Mouseover: Show image
+            // Mouseover: Show image and custom cursor
             tr.addEventListener('mouseover', () => {
                 console.log('Row filter value:', row.filter); // Debug the filter value
                 if (img) {
                     img.style.visibility = 'visible'; // ✅ Image is now visible on hover
                 }
+    
+                cursor.classList.add('show');
+                cursor.textContent = 'open \u2197'; // Add the glyph U+2197 at the end of 'open'
     
                 if (row.filter.startsWith('UX')) {
                     document.body.style.transition = 'background-color 0.5s';
@@ -89,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     
-            // Mouseout: Hide image
+            // Mouseout: Hide image and custom cursor
             tr.addEventListener('mouseout', () => {
                 document.body.style.transition = 'background-color 0.5s';
                 nav.style.transition = 'background-color 0.5s';
@@ -98,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (img) {
                     img.style.visibility = 'hidden'; // ✅ Image is now hidden when mouse leaves row
                 }
+                cursor.classList.remove('show');
             });
     
             tableBody.appendChild(tr);
@@ -242,6 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.style.visibility = 'visible';
         }
 
+        cursor.classList.add('show');
+        cursor.textContent = 'open \u2197'; // Add the glyph U+2197 at the end of 'open'
+
         if (row.filter.startsWith('UX')) {
             document.body.style.backgroundColor = 'var(--red)';
             nav.style.backgroundColor = 'var(--red)';
@@ -281,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         document.body.style.backgroundColor = 'var(--white)';
         nav.style.backgroundColor = 'var(--white)';
+        cursor.classList.remove('show');
     }
     
 
