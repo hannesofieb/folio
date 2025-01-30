@@ -71,43 +71,47 @@ li a:hover{
     font-size: 2em;
 }
 
-button{
+button {
     background-color: var(--white);
     border: 1px solid var(--black);
     font-size: 1em;
     line-height: 1.2em;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-button:hover, button:focus{
+/* Hover state */
+button:hover, #all-work.active, #favourite.active {
     color: var(--white);
     background-color: var(--black);
 }
 
-#UX:hover, #UX:focus{
+
+/* Specific filter colors */
+#UX:hover, #UX.active {
     background-color: var(--red);
     border-color: var(--red);
     color: var(--black);
 }
 
-#UI:hover, #UI:focus{
+#UI:hover, #UI.active {
     background-color: var(--pink);
     border-color: var(--pink);
     color: var(--black);
 }
 
-#service-design:hover, #service-design:focus{
+#service-design:hover, #service-design.active {
     background-color: var(--green);
     border-color: var(--green);
     color: var(--black);
 }
 
-#creative-coding:hover, #creative-coding:focus{
+#creative-coding:hover, #creative-coding.active {
     background-color: var(--blue-light);
     border-color: var(--blue-light);
     color: var(--black);
 }
 
-#branding:hover, #branding:focus{
+#branding:hover, #branding.active {
     background-color: var(--yellow-buttermilk);
     border-color: var(--yellow-buttermilk);
     color: var(--black);

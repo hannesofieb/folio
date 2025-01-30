@@ -1,3 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="brandtoolkit.css">
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="stylesheet" href="test.css">
+    <title>test</title>
+</head>
+<style>
+    button {
+    background-color: var(--white);
+    border: 1px solid var(--black);
+    font-size: 1em;
+    line-height: 1.2em;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Hover state */
+button:hover, #all-work.active, #favourite.active {
+    color: var(--white);
+    background-color: var(--black);
+}
+
+
+/* Specific filter colors */
+#UX:hover, #UX.active {
+    background-color: var(--red);
+    border-color: var(--red);
+    color: var(--black);
+}
+
+#UI:hover, #UI.active {
+    background-color: var(--pink);
+    border-color: var(--pink);
+    color: var(--black);
+}
+
+#service-design:hover, #service-design.active {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: var(--black);
+}
+
+#creative-coding:hover, #creative-coding.active {
+    background-color: var(--blue-light);
+    border-color: var(--blue-light);
+    color: var(--black);
+}
+
+#branding:hover, #branding.active {
+    background-color: var(--yellow-buttermilk);
+    border-color: var(--yellow-buttermilk);
+    color: var(--black);
+}
+</style>
+<body>
+    <section id="work-archive">
+        <h2>work archive</h2>
+        <p>Generally, the best ux design leaves no strain nor impression on the user — it's about creating a seamless user experience. However, I also believe that great UX design can truly captivate the user; creating something intuitive and visually compelling is often what makes people want to use (and keep using) a product. </p> 
+        <p>With my background in UX and graphic design, I love to to blend conceptual and creative elements with practical and accessible design frameworks. This balance allows me to craft projects where functionality meets excitement—delivering intuitive and visually engaging experiences that feel both fresh and familiar.</p> 
+        <p>Have a look at what i've done in 
+            <button id="UX">UX design</button>
+            <button id="UI">UI design</button>
+            <button id="service-design">Service Design</button>
+            <button id="branding">Branding</button>
+            <button id="creative-coding">(Creative) Coding</button>
+            or have a look at <button id="all-work">it all</button> or see <button id="favourite">my favourites</button> .
+        </p>
+        <div class="filter-sort"></div> <!-- NEED TO ADD IN FILTER SORT THINGO -- MAYBE DO THE SORT IN THE TH (LIKE ON DELPHI) -->
+        <table id="archive-table">
+            <thead>
+                <tr>
+                    <th id="proj-date">Date</th>
+                    <th id="proj-title">Project</th>
+                    <th id="proj-desc">About</th>
+                    <th id="proj-tags">Skillsets</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <div id="pagination">
+            <button id="prev">←</button>
+            <span id="page-numbers"></span>
+            <button id="next">→</button>
+        </div>
+    </section> 
+
+
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     const rowsPerPage = 4;
     let currentPage = 1;
@@ -7,8 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('#next');
     const filterButtons = document.querySelectorAll('#work-archive button');
     const allWorkButton = document.querySelector('#all-work'); // Select the #all-work button
-    const nav = document.querySelector('nav');
-
     let data = [];
     let filteredData = [];
     let activeFilters = new Set();
@@ -54,45 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${row.description}</td>
                 <td>${skillset}</td>
             `;
-            tr.addEventListener('mouseover', () => {
-                console.log('Row filter value:', row.filter); // Debug the filter value
-                if (row.filter.startsWith('UX')) {
-                    document.body.style.transition = 'background-color 0.5s';
-                    nav.style.transition = 'background-color 0.5s';
-                    document.body.style.backgroundColor = 'var(--red)';
-                    nav.style.backgroundColor = 'var(--red)';
-                } else if (row.filter.startsWith('branding')) {
-                    document.body.style.transition = 'background-color 0.5s';
-                    nav.style.transition = 'background-color 0.5s';
-                    document.body.style.backgroundColor = 'var(--yellow-buttermilk)';
-                    nav.style.backgroundColor = 'var(--yellow-buttermilk)';
-                } else if (row.filter.startsWith('service-design')) {
-                    document.body.style.transition = 'background-color 0.5s';
-                    nav.style.transition = 'background-color 0.5s';
-                    document.body.style.backgroundColor = 'var(--green)';
-                    nav.style.backgroundColor = 'var(--green)';
-                } else if (row.filter.startsWith('game-design')) {
-                    document.body.style.transition = 'background-color 0.5s';
-                    nav.style.transition = 'background-color 0.5s';
-                    document.body.style.backgroundColor = 'var(--pink)';
-                    nav.style.backgroundColor = 'var(--pink)';
-                } else if (row.filter.startsWith('creative-coding')) {
-                    document.body.style.transition = 'background-color 0.5s';
-                    nav.style.transition = 'background-color 0.5s';
-                    document.body.style.backgroundColor = 'var(--blue-light)';
-                    nav.style.backgroundColor = 'var(--blue-light)';
-                }
-            });
-            
-            tr.addEventListener('mouseout', () => {
-                document.body.style.transition = 'background-color 0.5s';
-                nav.style.transition = 'background-color 0.5s';
-                document.body.style.backgroundColor = 'var(--white)';
-                nav.style.backgroundColor = 'var(--white)';
-            });
             tableBody.appendChild(tr);
         });
-
 
         renderPagination();
     }
@@ -181,4 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchData();
 });
+</script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
+</body>
+</html>
