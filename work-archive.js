@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageNumbers = document.querySelector('#page-numbers');
     const prevButton = document.querySelector('#prev');
     const nextButton = document.querySelector('#next');
-    const filterButtons = document.querySelectorAll('#work-archive button');
+    const filterButtons = document.querySelectorAll('#work-archive button:not(#pagination button)');
     const allWorkButton = document.querySelector('#all-work'); // Select the #all-work button
     const nav = document.querySelector('nav');
     const yPosMouseValue = window.innerHeight / 2;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Ensure the 'filter' field exists and append 'all' if not already present
                     if (!row.filter) {
                         row.filter = "all";
-                    } else if (!row.filter.toLowerCase().includes('all')) {
+                    } else if (!row.filter.toLowerCase().startsWith('all')) {
                         row.filter += ";all"; // Append 'all' if it's not there
                     }
                     return row;
@@ -42,19 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        const paginatedData = filteredData.slice(start, end); // Use filteredData
+        const paginatedData = filteredData.slice(start, end);
 
         paginatedData.forEach(row => {
+            let fullDate = row['end-date']; // Example: "23.07.2024"
+            let yearOnly = fullDate.split('.')[2]; // Extracts "2024"
+
             const tr = document.createElement('tr');
-            const skillset = row.skillset.split(';').map(skill => skill.trim()).join(', ');
             tr.innerHTML = `
-                <td>${row['end-date']}</td>
+                <td data-year="${yearOnly}">${fullDate}</td>
                 <td class="proj-title">
                     ${row.title}
                     <img src="${row['hero-img']}" class="hero-img" alt="${row.title}">
                 </td>
-                <td>${row.description}</td>
-                <td>${skillset}</td>
+                <td>${row.description || ''}</td>
+                <td>${row.skillset ? row.skillset.split(';').map(skill => skill.trim()).join(', ') : ''}</td>
             `;
             tr.addEventListener('mouseover', () => {
                 console.log('Row filter value:', row.filter); // Debug the filter value
@@ -103,7 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPagination() {
         pageNumbers.innerHTML = '';
         const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
+        
+        console.log(`📌 Current Page: ${currentPage}, Total Pages: ${totalPages}, Total Items: ${filteredData.length}`);
+    
+        if (totalPages === 0) return; // Prevents pagination from rendering if there's no data.
+    
         for (let i = 1; i <= totalPages; i++) {
             const span = document.createElement('span');
             span.textContent = i;
@@ -117,15 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             pageNumbers.appendChild(span);
         }
-
+    
         prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === totalPages;
+        nextButton.disabled = currentPage >= totalPages;
     }
+
 
     // Filter data based on the button clicked
     function applyFilters() {
         if (activeFilters.size === 0) {
-            filteredData = [...data]; // Show all rows
+            console.log("🔍 No filters selected. Showing all projects.");
+            filteredData = data.filter(row => row.filter && row.filter.toLowerCase().includes("all"));
         } else {
             filteredData = data.filter(row =>
                 Array.from(activeFilters).some(filter =>
@@ -133,8 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 )
             );
         }
-
+    
         currentPage = 1;
+        console.log(`🎯 Filters Applied: ${Array.from(activeFilters).join(", ")} | Items Now: ${filteredData.length}`);
         renderTable(currentPage);
     }
 
@@ -183,8 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Listen to scroll events to check row hover state
     window.addEventListener("scroll", checkRowHoverOnScroll);
-    
-
     let lastHoveredRow = null;
 
     function simulateHover(tr) {
@@ -196,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
         );
 
         if (!row) return;
+
+        // Apply hover effect manually
+        tr.classList.add('hovered');
 
         if (row.filter.startsWith('UX')) {
             document.body.style.backgroundColor = 'var(--red)';
@@ -217,11 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function removeHover(tr) {
-        if (lastHoveredRow === tr) {
-            lastHoveredRow = null;
-            document.body.style.backgroundColor = 'var(--white)';
-            nav.style.backgroundColor = 'var(--white)';
-        }
+        tr.classList.remove('hovered');
+        document.body.style.backgroundColor = 'var(--white)';
+        nav.style.backgroundColor = 'var(--white)';
     }
 
 
@@ -229,17 +237,31 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
+            console.log(`⬅ Prev Clicked: Now on Page ${currentPage}`);
             renderTable(currentPage);
         }
     });
-
+    
     nextButton.addEventListener('click', () => {
         const totalPages = Math.ceil(filteredData.length / rowsPerPage);
         if (currentPage < totalPages) {
             currentPage++;
+            console.log(`➡ Next Clicked: Now on Page ${currentPage}`);
             renderTable(currentPage);
         }
     });
+    
+    
+    // ✅ New function to ensure data is correctly loaded
+    function ensureDataLoaded() {
+        if (filteredData.length === 0) {
+            console.log("🔄 Reloading data...");
+            filteredData = [...data]; // Ensure filteredData is populated
+        }
+        console.log(`📌 Current Page: ${currentPage}, Total Items: ${filteredData.length}`);
+        renderTable(currentPage);
+    }
+
 
     fetchData();
 });
