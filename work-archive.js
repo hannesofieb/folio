@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('#work-archive button');
     const allWorkButton = document.querySelector('#all-work'); // Select the #all-work button
     const nav = document.querySelector('nav');
+    const yPosMouseValue = window.innerHeight / 2;
+
 
     let data = [];
     let filteredData = [];
@@ -162,6 +164,66 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilters();
         });
     });
+
+    // Mobile: Use IntersectionObserver to simulate hover on scroll
+    function checkRowHoverOnScroll() {
+        const yPosMouseValue = window.innerHeight / 2;
+        const rows = document.querySelectorAll("#archive-table tbody tr");
+    
+        rows.forEach(tr => {
+            const rect = tr.getBoundingClientRect(); // Get current row position
+    
+            if (rect.top <= yPosMouseValue && rect.bottom >= yPosMouseValue) { 
+                simulateHover(tr);
+            } else {
+                removeHover(tr);
+            }
+        });
+    }
+    
+    // Listen to scroll events to check row hover state
+    window.addEventListener("scroll", checkRowHoverOnScroll);
+    
+
+    let lastHoveredRow = null;
+
+    function simulateHover(tr) {
+        if (lastHoveredRow === tr) return; // Prevent unnecessary updates
+        lastHoveredRow = tr;
+        
+        const row = filteredData.find(row => 
+            row.title.trim().toLowerCase() === tr.querySelector('.proj-title').textContent.trim().toLowerCase()
+        );
+
+        if (!row) return;
+
+        if (row.filter.startsWith('UX')) {
+            document.body.style.backgroundColor = 'var(--red)';
+            nav.style.backgroundColor = 'var(--red)';
+        } else if (row.filter.startsWith('branding')) {
+            document.body.style.backgroundColor = 'var(--yellow-buttermilk)';
+            nav.style.backgroundColor = 'var(--yellow-buttermilk)';
+        } else if (row.filter.startsWith('service-design')) {
+            document.body.style.backgroundColor = 'var(--green)';
+            nav.style.backgroundColor = 'var(--green)';
+        } else if (row.filter.startsWith('game-design')) {
+            document.body.style.backgroundColor = 'var(--pink)';
+            nav.style.backgroundColor = 'var(--pink)';
+        } else if (row.filter.startsWith('creative-coding')) {
+            document.body.style.backgroundColor = 'var(--blue-light)';
+            nav.style.backgroundColor = 'var(--blue-light)';
+        }
+    }
+
+
+    function removeHover(tr) {
+        if (lastHoveredRow === tr) {
+            lastHoveredRow = null;
+            document.body.style.backgroundColor = 'var(--white)';
+            nav.style.backgroundColor = 'var(--white)';
+        }
+    }
+
 
     // Pagination buttons
     prevButton.addEventListener('click', () => {
