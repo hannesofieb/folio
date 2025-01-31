@@ -1,3 +1,4 @@
+
 body{
     margin: 0;
     background-color: var(--white);
@@ -10,6 +11,11 @@ body{
     body{
         cursor: none;
     }
+
+    #cursor, #cursorLeft, #cursorRight {
+        display: none;
+    }
+
 }
 
 
@@ -374,7 +380,7 @@ th#proj-tags{
         width: 96vw;
         height: auto;
         overflow: hidden; /* Ensure the section does not overflow */
-        margin: 0;
+        5% 0 0 0 
     }
 
     #archive-table {
@@ -563,6 +569,10 @@ p.caption +p{
 
     #timeline::-webkit-scrollbar {
         display: none; /* Hide scrollbar in WebKit browsers */
+    }
+
+    .intro{
+        width: 87%;
     }
 
     .milestone{
