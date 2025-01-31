@@ -380,7 +380,7 @@ th#proj-tags{
         width: 96vw;
         height: auto;
         overflow: hidden; /* Ensure the section does not overflow */
-        5% 0 0 0 
+        margin:5% 0 0 0 
     }
 
     #archive-table {
