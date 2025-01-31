@@ -1,11 +1,11 @@
-project-id,start-date,remarked,tools,
-001,01.11.2024,University of Melbourne's designX,AdobeXD;Miro,
-002,28.20.2024,Victoria College of Art End of Year Exhibition,Visual Studio Code;Adobe Photoshop;Adobe InDesign;Adobe Premiere Pro,
-003,01.04.2024,,Figma;Voiceflow;Miro,
-004,05.08.2024,,Visual Studio Code;Adobe InDesign,
-005,04.03.2024,,Wave Evaluation Tool;Canva,
-006,01.04.2024,,Adobe Illustrator;Adobe InDesign,
-007,15.05.2024,Victoria College of Art End of Year Exhibition,Visual Studio Code;Adobe InDesign;Adobe Premiere Pro,
-008,07.10.2024,Victoria College of Art End of Year Exhibition;University of Melbourne designX;Permanent display at the Elisabeth Murdoch Bulding,Figma;Adobe Photoshop;Adobe InDesign,
-009,18.09.2023,,Adobe Illustrator;Adobe Photoshop,
+project-id,start-date,remarked,roles,tools,overview,introduction, para2, para3, para4, para5, para6, para7, prototype-carousel,reflection
+001,23.07.2024,University of Melbourne's designX,,AdobeXD;Miro,"Final Capstone Project for my Bachelor degree in User Experience Design;This project had us form groups of five, where we were supposed to create an application that would be useful in a specific situation of use of our choosing. Over 13 weeks, we would undergo various steps in a preliminary and main design cycle...","This is just a test to see whether the styling and everything are working. Something about what I learnt, and maybe like an executive summary of everything? And then i might just copy paste something from the overview:Final Capstone Project for my Bachelor degree in User Experience Design;This project had us form groups of five, where we were supposed to create an application that would be useful in a specific situation of use of our choosing. Over 13 weeks, we would undergo various steps in a preliminary and main design cycle...","{Step 1: Seting up the team}$timeline$~a little paragraph here.~$team expectations$~what do we want to achieve, what are our strengths and weaknesses and how do we all prefer to work...~$meetings and minutes$~We also figured out [*what times we would be available *locations to meet up];And we made notes and took minutes of everything so that people who couldn't show were able to catch up, and for documentation and later convenience for the report.~","{Establishing a situation of use}~Addressing the paradox of consumer waste and unmet donation needs, the 'Drop it Off' platform efficiently connects consumers with various organisations in need of specific donations. The platform will help streamline the donation process to maximise the impact of surplus goods and therefore minimise consumer waste.$Rich Pictures$Throughout the design process, our rich picture expanded [assets/proj/dropitoff/methods/STEP0a-stakeholders-main.jpg,assets/proj/dropitoff/methods/STEP0b-rich-picture.jpg,assets/proj/dropitoff/methods/STEP0c-stakeholders.jpg]~"
+002,31.07.2024,Victoria College of Art End of Year Exhibition,,Visual Studio Code;Adobe Photoshop;Adobe InDesign;Adobe Premiere Pro,"Final capstone project in Graphic Design in ___ of a padssion project, focusing on..."
+003,01.04.2024,,,Figma;Voiceflow;Miro,
+004,05.08.2024,,,Visual Studio Code;Adobe InDesign,
+005,04.03.2024,,,Wave Evaluation Tool;Canva,
+006,01.04.2024,,,Adobe Illustrator;Adobe InDesign,
+007,15.05.2024,Victoria College of Art End of Year Exhibition,,Visual Studio Code;Adobe InDesign;Adobe Premiere Pro,
+008,07.10.2024,Victoria College of Art End of Year Exhibition;University of Melbourne designX;Permanent display at the Elisabeth Murdoch Bulding,,Figma;Adobe Photoshop;Adobe InDesign,
+009,18.09.2023,,,Adobe Illustrator;Adobe Photoshop,
 010,19.08.2024,Victoria College of Art End of Year Exhibition;University of Melbourne designX,Adobe InDesign;Adobe Photoshop;Adobe Illustrator,

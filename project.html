@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="brandtoolkit.css">
+    <link rel="stylesheet" href="main-styles.css">
+    <!-- <link rel="stylesheet" href="layout.css"> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <title>WORK by Hanne Sofie Berg</title>
+    <link rel="icon" type="image/x-icon" href="/assets/logo-bw.png">
+</head>
+<body>
+    <section id="project-context">
+        <h2 id="project-title"></h2> <!-- title.work-archive -->
+        <p class="caption" id="period">Timeline</p> <!-- calculate weeks of work using end-date.work-archive AND start-date.project-->
+        <p id="brief-info"></p> <!-- overview.projects -->
+        <div class="list"> <!-- .list = display flex, flex-direction row -->
+            <h3 id="roles">My roles</h3> 
+            <ul></ul> <!-- roles.projects -->
+        </div>
+        <div class="list">
+            <h3 id="tools">Tools</h3> <!-- title.work-archive -->
+            <ul></ul> <!-- tools.projects -->
+        </div>
+        <div class="list" id="remarks"> <!-- if remarked.projects = empty, #remarks display = none; -->
+            <h3>Project remarks:</h3>
+            <ul></ul> <!-- remarked.projects -->
+        </div>
+
+        <section id="proj-nav">
+            <div id="prev-proj">←Previous</div>
+            <div id="next-proj">Next➡</div>
+        </section>
+    </section>
+
+    <section id="project-content">
+        <div id="hero"></div> <!-- hero-img here -->
+    </section>
+
+    <script src="project.js"></script>
+</body>
+</html>
