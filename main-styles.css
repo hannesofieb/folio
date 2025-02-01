@@ -185,9 +185,9 @@ b{
     button{
         background-color: rgba(255, 255, 255, 0);
         border: 1px solid var(--black);
-        font-size: 1em;
+        font-size: 0.9em;
         line-height: 1.2em;
-        margin: 7px 7px 0 0;
+        margin: 7px 3px 0 0;
     }
     
     button:hover, button:focus{
