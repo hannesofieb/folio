@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cursor = document.getElementById('cursor');
+    const workArchive = document.getElementById('work-archive');
     const coverImage = document.querySelector('#cover img');
     const introBio = document.getElementById('intro-bio');
     const colors = ['var(--black)', 'var(--red)', 'var(--pink)', 'var(--green)','var(--white)', 'var(--yellow)', 'var(--blue)', 'var(--yellow-buttermilk)', 'var(----green-olive)', 'var(--blue-light)'];
@@ -22,6 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hide custom cursor when not hovering
     coverImage.addEventListener('mouseleave', () => {
         cursor.classList.remove('show');
+    });
+
+
+    // Change cursor color when hovering over #work-archive
+    workArchive.addEventListener('mouseenter', () => {
+        cursor.classList.add('table-show');  // Add class
+        cursor.style.color = 'var(--black)'; // Force cursor color to black
+    });
+
+    workArchive.addEventListener('mouseleave', () => {
+        cursor.classList.remove('table-show'); // Remove class
     });
 
     // Show custom cursor on hover over .milestone if screen width is larger than 600px

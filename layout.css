@@ -77,6 +77,10 @@ nav, #cover, #work-archive, .scroll-container h2, footer{
     display: block;
 }
 
+.custom-cursor.table-show {
+    color: var(--black) !important;
+}
+
 /* ---------------------------------------------nav bar layout */
 nav {
     width: 96vw;
@@ -122,6 +126,9 @@ li.right {
 .square {
     width: 25px;
     height: 25px;
+}
+
+nav .square{
     background-color: var(--black);
 }
 
