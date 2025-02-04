@@ -1,0 +1,11 @@
+body{
+    font-family: var(--type-body);
+}
+
+#project-context h2, #proj-nav{
+    font-size: 2em;
+}
+
+#project-context p{
+    font-size: 1em;
+}
