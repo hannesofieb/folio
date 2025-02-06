@@ -270,61 +270,145 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ✅ Step 6: Parsing logic for para: fields
-    function parseTagContent(content) {
-        let elements = [];
-        let i = 0;
-      
-        while (i < content.length) {
-          // Skip any extra commas or whitespace between tags
-          if (content[i] === ',' || content[i].trim() === '') {
-            i++;
-            continue;
-          }
-      
-          // Find the tag name: read until the first '['
-          let tagNameEnd = content.indexOf('[', i);
-          if (tagNameEnd === -1) break; // No valid tag found
-      
-          let tagName = content.substring(i, tagNameEnd).trim();
-      
-          // Now find the matching closing ']' for this tag.
-          // We'll track the depth so that any inner '[' don't end the match early.
-          let bracketDepth = 1;
-          let j = tagNameEnd + 1;
-          while (j < content.length && bracketDepth > 0) {
-            if (content[j] === '[') {
-              bracketDepth++;
-            } else if (content[j] === ']') {
-              bracketDepth--;
-            }
-            j++;
-          }
-          // j now is positioned right after the matching ']'
-          let innerContent = content.substring(tagNameEnd + 1, j - 1);
-      
-          // Create the parent element
-          let parentEl = document.createElement(tagName);
-          if (tagName.toLowerCase() === 'div') {
-          parentEl.classList.add('same-topic');
-          }
-          // Process the inner content (this function will handle any nested tags)
-          let childFragments = parseNestedContent(innerContent);
-          childFragments.forEach(child => parentEl.appendChild(child));
-      
-          elements.push(parentEl);
-      
-          i = j; // Continue parsing after the closing bracket
+    // Splits a top-level content string on commas that are NOT nested inside brackets.
+    function splitTopLevel(content) {
+        let parts = [];
+        let current = "";
+        let depth = 0;
+        for (let i = 0; i < content.length; i++) {
+        let char = content[i];
+        if (char === '[') {
+            depth++;
+            current += char;
+        } else if (char === ']') {
+            depth--;
+            current += char;
+        } else if (char === ',' && depth === 0) {
+            // Top-level comma: push the current chunk.
+            parts.push(current.trim());
+            current = "";
+        } else {
+            current += char;
         }
+        }
+        if (current.trim()) {
+        parts.push(current.trim());
+        }
+        return parts;
+    }
+  
+    // Process a single tag definition (one chunk that should look like "tagName[innerContent]")
+    // This function also handles extra classes and id if the tag name contains '.' or '#'.
+    // (It also includes your special handling for img tags.)
+    function parseSingleTag(content) {
+        // Find the first '['
+        let tagNameEnd = content.indexOf('[');
+        if (tagNameEnd === -1) return null; // no valid tag found
+    
+        let rawTagName = content.substring(0, tagNameEnd).trim();
+    
+        // Use a regular expression to capture the base tag and any extra class or id parts.
+        // Example rawTagName: "div.multi-carousel#unique"
+        let tagMatch = rawTagName.match(/^([a-zA-Z0-9]+)(([.#][^.#]+)*)$/);
+        let tagName = "";
+        let idName = "";
+        let extraClasses = [];
+        if (tagMatch) {
+        tagName = tagMatch[1];
+        if (tagMatch[2]) {
+            let groups = tagMatch[2].match(/([.#])([^.#]+)/g);
+            if (groups) {
+            groups.forEach(g => {
+                if (g.startsWith('.')) {
+                extraClasses.push(g.substring(1).trim());
+                } else if (g.startsWith('#')) {
+                idName = g.substring(1).trim();
+                }
+            });
+            }
+        }
+        } else {
+        tagName = rawTagName;
+        }
+    
+        // Find the matching closing ']' for this tag.
+        let bracketDepth = 1;
+        let j = tagNameEnd + 1;
+        while (j < content.length && bracketDepth > 0) {
+        if (content[j] === '[') {
+            bracketDepth++;
+        } else if (content[j] === ']') {
+            bracketDepth--;
+        }
+        j++;
+        }
+        // The inner content is the substring between the first '[' and its matching ']'
+        let innerContent = content.substring(tagNameEnd + 1, j - 1);
+    
+        // Special handling for img tags.
+        if (tagName.toLowerCase() === 'img') {
+        let imgEl = document.createElement('img');
+        let altText = '';
+        let captionText = '';
+        let srcText = innerContent;
+        let altStart = innerContent.indexOf('{');
+        if (altStart !== -1) {
+            // Everything before '{' is the source.
+            srcText = innerContent.substring(0, altStart).trim();
+            let altEnd = innerContent.lastIndexOf('}');
+            if (altEnd !== -1 && altEnd > altStart) {
+            let altCaption = innerContent.substring(altStart + 1, altEnd).trim();
+            let parts = altCaption.split(';');
+            if (parts.length >= 1) {
+                altText = parts[0].trim();
+            }
+            if (parts.length >= 2) {
+                captionText = parts[1].trim();
+            }
+            }
+        }
+        imgEl.src = srcText;
+        imgEl.alt = altText;
+        if (captionText) {
+            imgEl.setAttribute('data-caption', captionText);
+        }
+        return imgEl;
+        } else {
+        // For other tags, create the element normally.
+        let parentEl = document.createElement(tagName);
+        // For div tags, always add the default class "same-topic"
+        if (tagName.toLowerCase() === 'div') {
+            parentEl.classList.add('same-topic');
+        }
+        extraClasses.forEach(cls => parentEl.classList.add(cls));
+        if (idName) {
+            parentEl.id = idName;
+        }
+        // Process inner content using your nested parser.
+        let childFragments = parseNestedContent(innerContent);
+        childFragments.forEach(child => parentEl.appendChild(child));
+        return parentEl;
+        }
+    }
+    
+    // New parseTagContent uses splitTopLevel() and then processes each chunk.
+    function parseTagContent(content) {
+        const chunks = splitTopLevel(content);
+        let elements = [];
+        chunks.forEach(chunk => {
+        let el = parseSingleTag(chunk);
+        if (el) elements.push(el);
+        });
         return elements;
     }
-      
+  
     function parseNestedContent(text) {
         let fragments = [];
         let i = 0;
       
         while (i < text.length) {
           if (text[i] === '{') {
-            // Found a nested tag; find its matching '}'
+            // Found a nested block; find its matching '}'
             let curlyDepth = 1;
             let j = i + 1;
             while (j < text.length && curlyDepth > 0) {
@@ -335,33 +419,54 @@ document.addEventListener('DOMContentLoaded', function () {
               }
               j++;
             }
-            // Extract the nested tag content (without the curly braces)
+            // Extract the nested block content without the outer braces.
             let nestedString = text.substring(i + 1, j - 1);
-        
+      
             // Expect nestedString to be like: nestedTag[child content]
             let bracketIdx = nestedString.indexOf('[');
             if (bracketIdx !== -1) {
               let nestedTag = nestedString.substring(0, bracketIdx).trim();
-              // Get the inner content (up to the final closing bracket)
+              let nestedClassName = '';
+              let nestedIdName = '';
+      
+              // Handle class and ID for nested elements
+              if (nestedTag.includes('.')) {
+                [nestedTag, nestedClassName] = nestedTag.split('.');
+              }
+              if (nestedTag.includes('#')) {
+                  [nestedTag, nestedIdName] = nestedTag.split('#');
+              }
+      
+              // Get the inner content (everything after the '[' up to the last character before the closing bracket)
               let nestedChildContent = nestedString.substring(bracketIdx + 1, nestedString.length - 1);
               let nestedEl;
-        
-              // Check if the nested tag contains a dash (like "p-em")
-              if (nestedTag.indexOf('-') !== -1) {
-                // Split into parent and child tag names
-                let parts = nestedTag.split('-');
-                let parentTag = parts[0].trim();
-                let childTag = parts[1].trim();
-        
-                // Create the parent element and then the child element
-                nestedEl = document.createElement(parentTag);
-                let childEl = document.createElement(childTag);
-                childEl.textContent = nestedChildContent;
-                nestedEl.appendChild(childEl);
+      
+              // Special handling for an img tag in nested context:
+              if (nestedTag.toLowerCase() === 'img') {
+                nestedEl = document.createElement('img');
+                let altText = '';
+                let srcText = nestedChildContent; // by default, the whole inner content is the source
+                let altStart = srcText.indexOf('{');
+                if (altStart !== -1) {
+                  // Everything before the '{' is the source.
+                  srcText = srcText.substring(0, altStart).trim();
+                  // Look for the last '}' in the child content.
+                  let altEnd = nestedChildContent.lastIndexOf('}');
+                  if (altEnd !== -1 && altEnd > altStart) {
+                    altText = nestedChildContent.substring(altStart + 1, altEnd).trim();
+                  }
+                }
+                nestedEl.src = srcText;
+                nestedEl.alt = altText;
+                // (Optionally add class or id if provided)
+                if (nestedClassName) nestedEl.classList.add(nestedClassName);
+                if (nestedIdName) nestedEl.id = nestedIdName;
               }
-              // Special handling for "ul": split the inner content by semicolons and create <li> items.
+              // Special handling for "ul": split on semicolons into <li> elements.
               else if (nestedTag.toLowerCase() === 'ul') {
                 nestedEl = document.createElement('ul');
+                if (nestedClassName) nestedEl.classList.add(nestedClassName);
+                if (nestedIdName) nestedEl.id = nestedIdName;
                 nestedChildContent.split(';')
                   .map(item => item.trim())
                   .filter(item => item !== '')
@@ -371,14 +476,27 @@ document.addEventListener('DOMContentLoaded', function () {
                     nestedEl.appendChild(li);
                   });
               }
-              // For all other tags, simply create the element and set its text.
+              // Handling for dash-separated nested tags (e.g. "p-em")
+              else if (nestedTag.indexOf('-') !== -1) {
+                let parts = nestedTag.split('-');
+                let parentTag = parts[0].trim();
+                let childTag = parts[1].trim();
+      
+                nestedEl = document.createElement(parentTag);
+                let childEl = document.createElement(childTag);
+                childEl.textContent = nestedChildContent;
+                nestedEl.appendChild(childEl);
+              }
+              // For all other nested tags, create the element and set its text content.
               else {
                 nestedEl = document.createElement(nestedTag);
+                if (nestedClassName) nestedEl.classList.add(nestedClassName);
+                if (nestedIdName) nestedEl.id = nestedIdName;
                 nestedEl.textContent = nestedChildContent;
               }
               fragments.push(nestedEl);
             }
-            i = j; // Move past the nested tag block
+            i = j; // Move past the nested block.
           } else {
             // Gather plain text until the next '{'
             let nextCurly = text.indexOf('{', i);
@@ -398,10 +516,195 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
         return fragments;
-      }
+    }
       
-  
-    
     // ✅ Start Data Fetch
     fetchData();
+
+
+    // --------------------------------------------------lightbox image feature
+    // Create the lightbox modal and append it inside #project-content
+    function createLightboxModal() {
+        const projectContent = document.getElementById('project-content');
+
+        // Create the modal container (with id "myModal")
+        const modal = document.createElement('div');
+        modal.id = 'myModal';
+        modal.classList.add('modal');
+
+        // Create the close button and add it to modal
+        const closeBtn = document.createElement('span');
+        closeBtn.classList.add('close');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.onclick = closeModal;
+        modal.appendChild(closeBtn);
+
+        // Create the modal-content container
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('modal-content');
+        modal.appendChild(modalContent);
+
+        // Create a container for the slides; this is what you'll update.
+        const slidesContainer = document.createElement('div');
+        slidesContainer.id = 'slidesContainer';
+        modalContent.appendChild(slidesContainer);
+
+        // Create a caption container.
+        const captionContainer = document.createElement('div');
+        captionContainer.classList.add('caption-container');
+        const captionPara = document.createElement('p');
+        captionPara.id = 'caption';
+        captionContainer.appendChild(captionPara);
+        modalContent.appendChild(captionContainer);
+
+        // Create a previous arrow (if needed)
+        const prevSlide = document.createElement('a');
+        prevSlide.classList.add('prevNext-slide');
+        prevSlide.id = 'prev-slide';
+        prevSlide.textContent = '←';
+        // Set previous arrow click handler.
+        prevSlide.onclick = function() { plusSlides(-1); };
+        modal.appendChild(prevSlide);
+
+        // Create a next arrow.
+        const nextSlide = document.createElement('a');
+        nextSlide.classList.add('prevNext-slide');
+        nextSlide.id = 'next-slide';
+        nextSlide.textContent = '→';
+        // Corrected: assign an anonymous function that calls plusSlides(1)
+        nextSlide.onclick = function() { plusSlides(1); };
+        modal.appendChild(nextSlide);
+
+        // Create the thumbnail-container
+        const thumbnailContainer = document.createElement('div');
+        thumbnailContainer.id = 'thumbnail-container';
+        modal.appendChild(thumbnailContainer);
+
+        // Append the modal to #project-content
+        projectContent.appendChild(modal);
+    }
+
+
+    createLightboxModal();
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+    
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    // If you have multiple slides (gallery mode), you can use plusSlides and currentSlide.
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+    showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+    showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let slides = document.getElementsByClassName("mySlides");
+        let captionText = document.getElementById("caption");
+        
+        // If there are no slides, exit early.
+        if (slides.length === 0) {
+            console.warn("No slides found.");
+            return;
+        }
+        
+        // Adjust slideIndex if out-of-range.
+        if (n > slides.length) { 
+            slideIndex = 1; 
+        }    
+        if (n < 1) { 
+            slideIndex = slides.length; 
+        }
+        
+        // Hide all slides.
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+        }
+        
+        // Show the current slide.
+        if (slides[slideIndex - 1]) {  // Defensive check
+            slides[slideIndex - 1].style.display = "block";  
+            // Update the caption text from the data attribute of the image inside the slide.
+            let slideImg = slides[slideIndex - 1].querySelector('img');
+            captionText.textContent = slideImg ? slideImg.getAttribute("data-caption") || "" : "";
+        } else {
+            console.error("Slide index out of range: ", slideIndex);
+        }
+    }
+    
+
+
+      
+
+    // Attach click event listeners to all images inside #project-content
+    document.getElementById('project-content').addEventListener('click', function(e) {
+        if (e.target.tagName.toLowerCase() === 'img') {
+        openModal();  // Open the modal
+        
+        const slidesContainer = document.getElementById('slidesContainer');
+        slidesContainer.innerHTML = "";  // Clear any existing slides
+    
+        // Try to see if the clicked image is inside a multi-carousel container.
+        // Using closest() ensures that if the image is nested, we get the ancestor with class "multi-carousel".
+        let multiCarouselContainer = e.target.closest('div.multi-carousel');
+        let imgs, clickedIndex = 0;
+        
+        if (multiCarouselContainer) {
+            // Get all images inside that multi-carousel container.
+            imgs = multiCarouselContainer.querySelectorAll('img');
+            imgs.forEach((img, idx) => {
+            // Create a slide for each image.
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('mySlides');
+            const cloneImg = img.cloneNode(true);
+            cloneImg.style.width = "100%";
+
+            // If the image has a data-caption attribute, carry it over.
+            if (img.getAttribute('data-caption')) {
+                cloneImg.setAttribute('data-caption', img.getAttribute('data-caption'));
+            }
+            slideDiv.appendChild(cloneImg);
+            slidesContainer.appendChild(slideDiv);
+            // If this is the clicked image, record its index.
+            if (img === e.target) {
+                clickedIndex = idx;
+            }
+            });
+        } else {
+            // Otherwise, only the clicked image becomes a slide.
+            imgs = [e.target];
+            const slideDiv = document.createElement('div');
+            slideDiv.classList.add('mySlides');
+            const cloneImg = e.target.cloneNode(true);
+            cloneImg.style.width = "100%";
+            if (e.target.getAttribute('data-caption')) {
+            cloneImg.setAttribute('data-caption', e.target.getAttribute('data-caption'));
+            }
+            slideDiv.appendChild(cloneImg);
+            slidesContainer.appendChild(slideDiv);
+            clickedIndex = 0;
+        }
+
+            // Set slideIndex based on the clicked image (slides are 1-indexed).
+    slideIndex = clickedIndex + 1;
+    showSlides(slideIndex);
+    
+    // Optionally update the caption immediately from the clicked image.
+    let currentSlideImg = slidesContainer.querySelector('.mySlides:nth-child(' + slideIndex + ') img');
+    let caption = currentSlideImg ? currentSlideImg.getAttribute('data-caption') || "" : "";
+    document.getElementById('caption').textContent = caption;
+    }
+        
+    });
+  
+    
 });
