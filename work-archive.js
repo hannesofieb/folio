@@ -146,9 +146,15 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredData = data.filter(row => row.filter && row.filter.toLowerCase().includes("all"));
         } else {
             filteredData = data.filter(row =>
-                Array.from(activeFilters).some(filter =>
-                    row.filter && row.filter.toLowerCase().startsWith(filter)
-                )
+                Array.from(activeFilters).some(filter => {
+                    if (filter === "ui") {
+                        // Special case: If 'UI' filter is selected, use includes()
+                        return row.filter && row.filter.toLowerCase().includes(filter);
+                    } else {
+                        // Default behavior: check if filter startsWith()
+                        return row.filter && row.filter.toLowerCase().startsWith(filter);
+                    }
+                })
             );
         }
     
@@ -156,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`🎯 Filters Applied: ${Array.from(activeFilters).join(", ")} | Items Now: ${filteredData.length}`);
         renderTable(currentPage);
     }
-
+    
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             const filter = button.id.toLowerCase();

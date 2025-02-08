@@ -314,21 +314,21 @@ document.addEventListener('DOMContentLoaded', function () {
         let idName = "";
         let extraClasses = [];
         if (tagMatch) {
-        tagName = tagMatch[1];
-        if (tagMatch[2]) {
-            let groups = tagMatch[2].match(/([.#])([^.#]+)/g);
-            if (groups) {
-            groups.forEach(g => {
-                if (g.startsWith('.')) {
-                extraClasses.push(g.substring(1).trim());
-                } else if (g.startsWith('#')) {
-                idName = g.substring(1).trim();
+            tagName = tagMatch[1];
+            if (tagMatch[2]) {
+                let groups = tagMatch[2].match(/([.#])([^.#]+)/g);
+                if (groups) {
+                groups.forEach(g => {
+                    if (g.startsWith('.')) {
+                    extraClasses.push(g.substring(1).trim());
+                    } else if (g.startsWith('#')) {
+                    idName = g.substring(1).trim();
+                    }
+                });
                 }
-            });
             }
-        }
-        } else {
-        tagName = rawTagName;
+            } else {
+                tagName = rawTagName;
         }
     
         // Find the matching closing ']' for this tag.
@@ -346,48 +346,64 @@ document.addEventListener('DOMContentLoaded', function () {
         let innerContent = content.substring(tagNameEnd + 1, j - 1);
     
         // Special handling for img tags.
-        if (tagName.toLowerCase() === 'img') {
-        let imgEl = document.createElement('img');
-        let altText = '';
-        let captionText = '';
-        let srcText = innerContent;
-        let altStart = innerContent.indexOf('{');
-        if (altStart !== -1) {
-            // Everything before '{' is the source.
-            srcText = innerContent.substring(0, altStart).trim();
-            let altEnd = innerContent.lastIndexOf('}');
-            if (altEnd !== -1 && altEnd > altStart) {
+// Special handling for img tags.
+if (tagName.toLowerCase() === 'img') {
+    let imgEl = document.createElement('img');
+    let srcText = innerContent;  // default: the whole inner content
+    let altText = '';
+    let captionText = '';
+
+    // Log to verify what innerContent is.
+    console.log("Processing img innerContent:", innerContent);
+
+    // Look for the first '{'
+    let altStart = innerContent.indexOf('{');
+    if (altStart !== -1) {
+        // Everything before '{' is used as the src.
+        srcText = innerContent.substring(0, altStart).trim();
+
+        // Use indexOf() (not lastIndexOf) to find the first closing '}' after the '{'
+        let altEnd = innerContent.indexOf('}', altStart + 1);
+        if (altEnd !== -1 && altEnd > altStart) {
+            // Extract the string inside the curly braces.
             let altCaption = innerContent.substring(altStart + 1, altEnd).trim();
-            let parts = altCaption.split(';');
-            if (parts.length >= 1) {
-                altText = parts[0].trim();
-            }
-            if (parts.length >= 2) {
+            console.log("altCaption:", altCaption);
+            // Split on the first semicolon only. Using split with a limit of 2 ensures we get at most two parts.
+            let parts = altCaption.split(";", 2);
+            console.log("Parts from altCaption:", parts);
+            altText = parts[0].trim();
+            if (parts.length > 1) {
                 captionText = parts[1].trim();
             }
-            }
         }
-        imgEl.src = srcText;
-        imgEl.alt = altText;
-        if (captionText) {
-            imgEl.setAttribute('data-caption', captionText);
-        }
-        return imgEl;
+    }
+    imgEl.src = srcText;
+    imgEl.alt = altText;
+    // Set the data-caption attribute if a caption was provided.
+    if (captionText) {
+        imgEl.setAttribute('data-caption', captionText);
+    }
+
+    console.log(`🖼️ Processed Image: src="${imgEl.src}", alt="${imgEl.alt}", caption="${captionText}"`);
+    return imgEl;
+
+
+
         } else {
-        // For other tags, create the element normally.
-        let parentEl = document.createElement(tagName);
-        // For div tags, always add the default class "same-topic"
-        if (tagName.toLowerCase() === 'div') {
-            parentEl.classList.add('same-topic');
-        }
-        extraClasses.forEach(cls => parentEl.classList.add(cls));
-        if (idName) {
-            parentEl.id = idName;
-        }
-        // Process inner content using your nested parser.
-        let childFragments = parseNestedContent(innerContent);
-        childFragments.forEach(child => parentEl.appendChild(child));
-        return parentEl;
+            // For other tags, create the element normally.
+            let parentEl = document.createElement(tagName);
+            // For div tags, always add the default class "same-topic"
+            if (tagName.toLowerCase() === 'div') {
+                parentEl.classList.add('same-topic');
+            }
+            extraClasses.forEach(cls => parentEl.classList.add(cls));
+            if (idName) {
+                parentEl.id = idName;
+            }
+            // Process inner content using your nested parser.
+            let childFragments = parseNestedContent(innerContent);
+            childFragments.forEach(child => parentEl.appendChild(child));
+            return parentEl;
         }
     }
     
@@ -442,26 +458,41 @@ document.addEventListener('DOMContentLoaded', function () {
               let nestedEl;
       
               // Special handling for an img tag in nested context:
+              // Inside parseNestedContent()
               if (nestedTag.toLowerCase() === 'img') {
                 nestedEl = document.createElement('img');
                 let altText = '';
-                let srcText = nestedChildContent; // by default, the whole inner content is the source
-                let altStart = srcText.indexOf('{');
+                let captionText = '';
+                let srcText = nestedChildContent; // by default, the entire content
+                // Use indexOf to find the first '{'
+                let altStart = nestedChildContent.indexOf('{');
                 if (altStart !== -1) {
-                  // Everything before the '{' is the source.
-                  srcText = srcText.substring(0, altStart).trim();
-                  // Look for the last '}' in the child content.
-                  let altEnd = nestedChildContent.lastIndexOf('}');
-                  if (altEnd !== -1 && altEnd > altStart) {
-                    altText = nestedChildContent.substring(altStart + 1, altEnd).trim();
-                  }
+                    // Everything before '{' is used as the src.
+                    srcText = nestedChildContent.substring(0, altStart).trim();
+                    // Use indexOf (not lastIndexOf) to find the first '}' after altStart.
+                    let altEnd = nestedChildContent.indexOf('}', altStart + 1);
+                    if (altEnd !== -1 && altEnd > altStart) {
+                        // Extract the string inside the curly braces.
+                        let altCaption = nestedChildContent.substring(altStart + 1, altEnd).trim();
+                        // Split on the first semicolon only.
+                        let parts = altCaption.split(";", 2);
+                        if (parts.length >= 1) {
+                            altText = parts[0].trim();
+                        }
+                        if (parts.length >= 2) {
+                            captionText = parts[1].trim();
+                        }
+                    }
                 }
                 nestedEl.src = srcText;
                 nestedEl.alt = altText;
-                // (Optionally add class or id if provided)
+                if (captionText) {
+                    nestedEl.setAttribute("data-caption", captionText);
+                }
                 if (nestedClassName) nestedEl.classList.add(nestedClassName);
                 if (nestedIdName) nestedEl.id = nestedIdName;
-              }
+            }
+
               // Special handling for "ul": split on semicolons into <li> elements.
               else if (nestedTag.toLowerCase() === 'ul') {
                 nestedEl = document.createElement('ul');
@@ -523,33 +554,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // --------------------------------------------------lightbox image feature
-    // Create the lightbox modal and append it inside #project-content
+    // ✅ Create Lightbox Modal
     function createLightboxModal() {
         const projectContent = document.getElementById('project-content');
 
-        // Create the modal container (with id "myModal")
+        // Create modal container
         const modal = document.createElement('div');
         modal.id = 'myModal';
         modal.classList.add('modal');
 
-        // Create the close button and add it to modal
+        // Close button
         const closeBtn = document.createElement('span');
         closeBtn.classList.add('close');
         closeBtn.innerHTML = '&times;';
         closeBtn.onclick = closeModal;
         modal.appendChild(closeBtn);
 
-        // Create the modal-content container
+        // Modal content
         const modalContent = document.createElement('div');
         modalContent.classList.add('modal-content');
         modal.appendChild(modalContent);
 
-        // Create a container for the slides; this is what you'll update.
+        // Slide container
         const slidesContainer = document.createElement('div');
         slidesContainer.id = 'slidesContainer';
         modalContent.appendChild(slidesContainer);
 
-        // Create a caption container.
+        // Caption container
         const captionContainer = document.createElement('div');
         captionContainer.classList.add('caption-container');
         const captionPara = document.createElement('p');
@@ -557,154 +588,146 @@ document.addEventListener('DOMContentLoaded', function () {
         captionContainer.appendChild(captionPara);
         modalContent.appendChild(captionContainer);
 
-        // Create a previous arrow (if needed)
+        // Previous and Next buttons
         const prevSlide = document.createElement('a');
         prevSlide.classList.add('prevNext-slide');
         prevSlide.id = 'prev-slide';
         prevSlide.textContent = '←';
-        // Set previous arrow click handler.
         prevSlide.onclick = function() { plusSlides(-1); };
         modal.appendChild(prevSlide);
 
-        // Create a next arrow.
         const nextSlide = document.createElement('a');
         nextSlide.classList.add('prevNext-slide');
         nextSlide.id = 'next-slide';
         nextSlide.textContent = '→';
-        // Corrected: assign an anonymous function that calls plusSlides(1)
         nextSlide.onclick = function() { plusSlides(1); };
         modal.appendChild(nextSlide);
 
-        // Create the thumbnail-container
-        const thumbnailContainer = document.createElement('div');
-        thumbnailContainer.id = 'thumbnail-container';
-        modal.appendChild(thumbnailContainer);
-
-        // Append the modal to #project-content
+        // Append modal to project content
         projectContent.appendChild(modal);
     }
 
+    createLightboxModal(); // Call this function once to set up modal structure
 
-    createLightboxModal();
+    // ✅ Open Modal
     function openModal() {
         document.getElementById("myModal").style.display = "block";
+        document.addEventListener("keydown", handleKeyPress);
+        console.log("🟢 Modal Opened");
     }
-    
+
+    // ✅ Close Modal
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
+        document.removeEventListener("keydown", handleKeyPress);
+        console.log("🔴 Modal Closed");
     }
 
-    // If you have multiple slides (gallery mode), you can use plusSlides and currentSlide.
+    // ✅ Key Press Handlers for Arrow Navigation
+    function handleKeyPress(event) {
+        if (event.key === "ArrowLeft") {
+            plusSlides(-1);
+        } else if (event.key === "ArrowRight") {
+            plusSlides(1);
+        }
+    }
+
+    // ✅ Slide Management
     let slideIndex = 1;
-    showSlides(slideIndex);
 
     function plusSlides(n) {
-    showSlides(slideIndex += n);
+        showSlides(slideIndex += n);
     }
 
-    // Thumbnail image controls
+    // ✅ Direct Navigation to Specific Slide
     function currentSlide(n) {
-    showSlides(slideIndex = n);
+        showSlides(slideIndex = n);
     }
 
+    // ✅ Show Slides Function
     function showSlides(n) {
         let slides = document.getElementsByClassName("mySlides");
         let captionText = document.getElementById("caption");
+
+        // Debugging
+        console.log(`📸 Total slides found: ${slides.length}`);
         
-        // If there are no slides, exit early.
         if (slides.length === 0) {
-            console.warn("No slides found.");
+            console.warn("⚠️ No slides found!");
             return;
         }
-        
-        // Adjust slideIndex if out-of-range.
-        if (n > slides.length) { 
-            slideIndex = 1; 
-        }    
-        if (n < 1) { 
-            slideIndex = slides.length; 
-        }
-        
-        // Hide all slides.
+
+        if (n > slides.length) { slideIndex = 1; }    
+        if (n < 1) { slideIndex = slides.length; }
+
+        // Hide all slides
         for (let i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";  
         }
-        
-        // Show the current slide.
-        if (slides[slideIndex - 1]) {  // Defensive check
+
+        // Show active slide
+        if (slides[slideIndex - 1]) {
             slides[slideIndex - 1].style.display = "block";  
-            // Update the caption text from the data attribute of the image inside the slide.
             let slideImg = slides[slideIndex - 1].querySelector('img');
             captionText.textContent = slideImg ? slideImg.getAttribute("data-caption") || "" : "";
         } else {
-            console.error("Slide index out of range: ", slideIndex);
+            console.error(`❌ Slide index out of range: ${slideIndex}`);
         }
     }
-    
 
-
-      
-
-    // Attach click event listeners to all images inside #project-content
+    // ✅ Image Click Event for Opening Lightbox
     document.getElementById('project-content').addEventListener('click', function(e) {
         if (e.target.tagName.toLowerCase() === 'img') {
-        openModal();  // Open the modal
-        
-        const slidesContainer = document.getElementById('slidesContainer');
-        slidesContainer.innerHTML = "";  // Clear any existing slides
-    
-        // Try to see if the clicked image is inside a multi-carousel container.
-        // Using closest() ensures that if the image is nested, we get the ancestor with class "multi-carousel".
-        let multiCarouselContainer = e.target.closest('div.multi-carousel');
-        let imgs, clickedIndex = 0;
-        
-        if (multiCarouselContainer) {
-            // Get all images inside that multi-carousel container.
-            imgs = multiCarouselContainer.querySelectorAll('img');
-            imgs.forEach((img, idx) => {
-            // Create a slide for each image.
-            const slideDiv = document.createElement('div');
-            slideDiv.classList.add('mySlides');
-            const cloneImg = img.cloneNode(true);
-            cloneImg.style.width = "100%";
+            console.log("🖼️ Image clicked, opening modal...");
+            openModal();
 
-            // If the image has a data-caption attribute, carry it over.
-            if (img.getAttribute('data-caption')) {
-                cloneImg.setAttribute('data-caption', img.getAttribute('data-caption'));
+            const slidesContainer = document.getElementById('slidesContainer');
+            slidesContainer.innerHTML = ""; // Clear slides
+
+            let multiCarouselContainer = e.target.closest('div.multi-carousel');
+            let imgs, clickedIndex = 0;
+
+            if (multiCarouselContainer) {
+                imgs = multiCarouselContainer.querySelectorAll('img');
+                imgs.forEach((img, idx) => {
+                    const slideDiv = document.createElement('div');
+                    slideDiv.classList.add('mySlides');
+
+                    const cloneImg = img.cloneNode(true);
+                    cloneImg.style.width = "100%";
+
+                    if (img.getAttribute('data-caption')) {
+                        cloneImg.setAttribute('data-caption', img.getAttribute('data-caption'));
+                    }
+
+                    slideDiv.appendChild(cloneImg);
+                    slidesContainer.appendChild(slideDiv);
+
+                    if (img === e.target) {
+                        clickedIndex = idx;
+                    }
+                });
+            } else {
+                imgs = [e.target];
+                const slideDiv = document.createElement('div');
+                slideDiv.classList.add('mySlides');
+
+                const cloneImg = e.target.cloneNode(true);
+                cloneImg.style.width = "100%";
+                if (e.target.getAttribute('data-caption')) {
+                    cloneImg.setAttribute('data-caption', e.target.getAttribute('data-caption'));
+                }
+
+                slideDiv.appendChild(cloneImg);
+                slidesContainer.appendChild(slideDiv);
+                clickedIndex = 0;
             }
-            slideDiv.appendChild(cloneImg);
-            slidesContainer.appendChild(slideDiv);
-            // If this is the clicked image, record its index.
-            if (img === e.target) {
-                clickedIndex = idx;
-            }
-            });
-        } else {
-            // Otherwise, only the clicked image becomes a slide.
-            imgs = [e.target];
-            const slideDiv = document.createElement('div');
-            slideDiv.classList.add('mySlides');
-            const cloneImg = e.target.cloneNode(true);
-            cloneImg.style.width = "100%";
-            if (e.target.getAttribute('data-caption')) {
-            cloneImg.setAttribute('data-caption', e.target.getAttribute('data-caption'));
-            }
-            slideDiv.appendChild(cloneImg);
-            slidesContainer.appendChild(slideDiv);
-            clickedIndex = 0;
+
+            console.log(`🔢 Clicked Image Index: ${clickedIndex}`);
+            slideIndex = clickedIndex + 1;
+            showSlides(slideIndex);
         }
-
-            // Set slideIndex based on the clicked image (slides are 1-indexed).
-    slideIndex = clickedIndex + 1;
-    showSlides(slideIndex);
-    
-    // Optionally update the caption immediately from the clicked image.
-    let currentSlideImg = slidesContainer.querySelector('.mySlides:nth-child(' + slideIndex + ') img');
-    let caption = currentSlideImg ? currentSlideImg.getAttribute('data-caption') || "" : "";
-    document.getElementById('caption').textContent = caption;
-    }
-        
     });
-  
+
     
 });

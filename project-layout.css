@@ -113,7 +113,7 @@
     margin: 0;
 }
 
-#project-content ul{
+.col{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -121,9 +121,19 @@
     padding-inline-start: 40px;
 }
 
-#project-content li{
+.row{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.col li{
     padding-bottom: 0;
     list-style: square;
+}
+
+.row li{
+    margin: 0 5%;
 }
 
 div.same-content ul{
@@ -142,12 +152,13 @@ div.same-content ul{
     width: 25%;
     height:100%;
     padding: 0 5px;
+    z-index: 0;
 }
 
 .multi-carousel img:hover{
     cursor: zoom-in;
     scale: 1.1;
-    z-index: 10;
+    z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
