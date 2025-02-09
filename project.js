@@ -553,181 +553,185 @@ if (tagName.toLowerCase() === 'img') {
     fetchData();
 
 
-    // --------------------------------------------------lightbox image feature
-    // ✅ Create Lightbox Modal
-    function createLightboxModal() {
-        const projectContent = document.getElementById('project-content');
-
-        // Create modal container
-        const modal = document.createElement('div');
-        modal.id = 'myModal';
-        modal.classList.add('modal');
-
-        // Close button
-        const closeBtn = document.createElement('span');
-        closeBtn.classList.add('close');
-        closeBtn.innerHTML = '&times;';
-        closeBtn.onclick = closeModal;
-        modal.appendChild(closeBtn);
-
-        // Modal content
-        const modalContent = document.createElement('div');
-        modalContent.classList.add('modal-content');
-        modal.appendChild(modalContent);
-
-        // Slide container
-        const slidesContainer = document.createElement('div');
-        slidesContainer.id = 'slidesContainer';
-        modalContent.appendChild(slidesContainer);
-
-        // Caption container
-        const captionContainer = document.createElement('div');
-        captionContainer.classList.add('caption-container');
-        const captionPara = document.createElement('p');
-        captionPara.id = 'caption';
-        captionContainer.appendChild(captionPara);
-        modalContent.appendChild(captionContainer);
-
-        // Previous and Next buttons
-        const prevSlide = document.createElement('a');
-        prevSlide.classList.add('prevNext-slide');
-        prevSlide.id = 'prev-slide';
-        prevSlide.textContent = '←';
-        prevSlide.onclick = function() { plusSlides(-1); };
-        modal.appendChild(prevSlide);
-
-        const nextSlide = document.createElement('a');
-        nextSlide.classList.add('prevNext-slide');
-        nextSlide.id = 'next-slide';
-        nextSlide.textContent = '→';
-        nextSlide.onclick = function() { plusSlides(1); };
-        modal.appendChild(nextSlide);
-
-        // Append modal to project content
-        projectContent.appendChild(modal);
-    }
-
-    createLightboxModal(); // Call this function once to set up modal structure
-
-    // ✅ Open Modal
-    function openModal() {
-        document.getElementById("myModal").style.display = "block";
-        document.addEventListener("keydown", handleKeyPress);
-        console.log("🟢 Modal Opened");
-    }
-
-    // ✅ Close Modal
-    function closeModal() {
-        document.getElementById("myModal").style.display = "none";
-        document.removeEventListener("keydown", handleKeyPress);
-        console.log("🔴 Modal Closed");
-    }
-
-    // ✅ Key Press Handlers for Arrow Navigation
-    function handleKeyPress(event) {
-        if (event.key === "ArrowLeft") {
-            plusSlides(-1);
-        } else if (event.key === "ArrowRight") {
-            plusSlides(1);
-        }
-    }
-
-    // ✅ Slide Management
-    let slideIndex = 1;
-
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    // ✅ Direct Navigation to Specific Slide
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    // ✅ Show Slides Function
-    function showSlides(n) {
-        let slides = document.getElementsByClassName("mySlides");
-        let captionText = document.getElementById("caption");
-
-        // Debugging
-        console.log(`📸 Total slides found: ${slides.length}`);
-        
-        if (slides.length === 0) {
-            console.warn("⚠️ No slides found!");
+  // --------------------------------------------------display-window image feature
+    function ensureMultiCarouselExists(callback) {
+        const multiCarousel = document.querySelector('.multi-carousel');
+        if (!multiCarousel) {
+            console.warn("⏳ Waiting for .multi-carousel to load...");
+            setTimeout(() => ensureMultiCarouselExists(callback), 500);
             return;
         }
 
-        if (n > slides.length) { slideIndex = 1; }    
-        if (n < 1) { slideIndex = slides.length; }
+        // Wrap each image inside `.thumbnail-container`
+        const images = Array.from(multiCarousel.querySelectorAll("img"));
 
-        // Hide all slides
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";  
-        }
+        images.forEach(img => {
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("thumbnail-container");
 
-        // Show active slide
-        if (slides[slideIndex - 1]) {
-            slides[slideIndex - 1].style.display = "block";  
-            let slideImg = slides[slideIndex - 1].querySelector('img');
-            captionText.textContent = slideImg ? slideImg.getAttribute("data-caption") || "" : "";
-        } else {
-            console.error(`❌ Slide index out of range: ${slideIndex}`);
-        }
+            // Create an underline element inside the wrapper
+            const underline = document.createElement("div");
+            underline.classList.add("underline");
+
+            // Move the image inside the wrapper
+            img.parentNode.insertBefore(wrapper, img);
+            wrapper.appendChild(img);
+            wrapper.appendChild(underline); // Append underline below the image
+        });
+
+        console.log("✅ Wrapped all images in .thumbnail-container");
+
+        callback(); // Ensure callback runs after wrapping images
     }
 
-    // ✅ Image Click Event for Opening Lightbox
-    document.getElementById('project-content').addEventListener('click', function(e) {
-        if (e.target.tagName.toLowerCase() === 'img') {
-            console.log("🖼️ Image clicked, opening modal...");
-            openModal();
+    let slideIndex = 0;
 
-            const slidesContainer = document.getElementById('slidesContainer');
-            slidesContainer.innerHTML = ""; // Clear slides
-
-            let multiCarouselContainer = e.target.closest('div.multi-carousel');
-            let imgs, clickedIndex = 0;
-
-            if (multiCarouselContainer) {
-                imgs = multiCarouselContainer.querySelectorAll('img');
-                imgs.forEach((img, idx) => {
-                    const slideDiv = document.createElement('div');
-                    slideDiv.classList.add('mySlides');
-
-                    const cloneImg = img.cloneNode(true);
-                    cloneImg.style.width = "100%";
-
-                    if (img.getAttribute('data-caption')) {
-                        cloneImg.setAttribute('data-caption', img.getAttribute('data-caption'));
-                    }
-
-                    slideDiv.appendChild(cloneImg);
-                    slidesContainer.appendChild(slideDiv);
-
-                    if (img === e.target) {
-                        clickedIndex = idx;
-                    }
-                });
-            } else {
-                imgs = [e.target];
-                const slideDiv = document.createElement('div');
-                slideDiv.classList.add('mySlides');
-
-                const cloneImg = e.target.cloneNode(true);
-                cloneImg.style.width = "100%";
-                if (e.target.getAttribute('data-caption')) {
-                    cloneImg.setAttribute('data-caption', e.target.getAttribute('data-caption'));
-                }
-
-                slideDiv.appendChild(cloneImg);
-                slidesContainer.appendChild(slideDiv);
-                clickedIndex = 0;
-            }
-
-            console.log(`🔢 Clicked Image Index: ${clickedIndex}`);
-            slideIndex = clickedIndex + 1;
-            showSlides(slideIndex);
+    function createDisplayWindow() {
+        const multiCarousel = document.querySelector('.multi-carousel');
+        if (!multiCarousel) {
+            console.error("❌ No .multi-carousel found. Aborting display window creation.");
+            return;
         }
+
+        // Create display container
+        const displayContainer = document.createElement('div');
+        displayContainer.id = 'display-window';
+        displayContainer.classList.add('hidden');
+
+        // Create image display area
+        const displayedImage = document.createElement('img');
+        displayedImage.id = 'displayed-img';
+        displayContainer.appendChild(displayedImage);
+
+        // Create the caption
+        const caption = document.createElement('p');
+        caption.id = 'display-caption';
+        displayContainer.appendChild(caption);
+
+        // Insert display window after multi-carousel
+        multiCarousel.insertAdjacentElement('afterend', displayContainer);
+
+        // Close display when clicking the displayed image
+        displayedImage.addEventListener('click', function () {
+            displayContainer.classList.add('hidden');
+            console.log("🚪 Hiding display window");
+        });
+
+        console.log("✅ Display window created.");
+    }
+
+    // ✅ Show Image, Move Underline, & Handle Scrolling
+    function showImage(index, images) {
+        // Update global slideIndex
+        slideIndex = index;
+        
+        // Get elements
+        const displayWindow = document.getElementById('display-window');
+        const displayedImage = document.getElementById('displayed-img');
+        const caption = document.getElementById('display-caption');
+        const multiCarousel = document.querySelector('.multi-carousel');
+    
+        // Update image display
+        displayedImage.src = images[index].src;
+        displayedImage.setAttribute('data-index', index);
+        caption.textContent = images[index].getAttribute('data-caption') || "";
+    
+        // Get all thumbnail containers
+        const thumbnails = document.querySelectorAll('.thumbnail-container'); // Updated selector
+        const selectedThumbnail = thumbnails[index];
+    
+        if (!selectedThumbnail) return;
+    
+        // ✅ Remove all "selected" classes
+        thumbnails.forEach(container => {
+            container.classList.remove('selected'); // Remove selected from all
+            const underline = container.querySelector('.underline');
+            if (underline) underline.style.display = 'none'; // Hide underline
+        });
+    
+        // ✅ Apply "selected" class to the active image container
+        selectedThumbnail.classList.add('selected');
+    
+        // ✅ Show the underline for the selected thumbnail
+        const underline = selectedThumbnail.querySelector('.underline');
+        if (underline) underline.style.display = 'block';
+    
+        // Ensure display window is visible
+        displayWindow.classList.remove('hidden');
+        displayWindow.classList.add('visible');
+    }
+    
+    
+    
+
+    // ✅ Handles Arrow Key Navigation & Scrolling Behavior
+    function handleKeyPress(event) {
+        const images = Array.from(document.querySelectorAll('.multi-carousel img'));
+        if (images.length === 0) return;
+    
+        let newIndex = slideIndex;
+    
+        if (event.key === "ArrowLeft" && slideIndex > 0) {
+            newIndex = slideIndex - 1;
+        } else if (event.key === "ArrowRight" && slideIndex < images.length - 1) {
+            newIndex = slideIndex + 1;
+        } else {
+            // Prevent further movement beyond edges
+            console.log("🚫 Can't move further in this direction.");
+            return;
+        }
+    
+        showImage(newIndex, images);
+    }
+    
+    
+    // ✅ Handles Manual Clicks & Scrolls to Selected Image
+    function handleImageClick(event) {
+        if (event.target.tagName.toLowerCase() !== 'img') return;
+
+        const images = Array.from(document.querySelectorAll('.multi-carousel img'));
+        const clickedIndex = images.indexOf(event.target);
+        if (clickedIndex === -1) return;
+
+        const displayWindow = document.getElementById('display-window');
+        const displayedImage = document.getElementById('displayed-img');
+
+        if (displayedImage.src === event.target.src) {
+            displayWindow.classList.add('hidden');
+            return;
+        }
+
+        displayWindow.classList.remove('hidden');
+        showImage(clickedIndex, images);
+
+        event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    // ✅ Function to Apply Background Color to Underlines
+    function applyUnderlineBackgroundColor() {
+        const returnToHome = document.getElementById('return-to-home');
+        const projectContext = document.getElementById('project-context');
+        const underlines = document.querySelectorAll('.underline');
+
+        // Get computed background color (fallback to projectContext if returnToHome is missing)
+        const computedColor = window.getComputedStyle(returnToHome || projectContext).backgroundColor;
+
+        // Apply color to all underlines
+        underlines.forEach(underline => {
+            underline.style.backgroundColor = computedColor;
+        });
+
+        console.log("🎨 Underline background color set to:", computedColor);
+    }
+
+    // ✅ Ensure colors are applied once images are wrapped properly
+    ensureMultiCarouselExists(() => {
+        createDisplayWindow();
+        document.querySelector('.multi-carousel').addEventListener('click', handleImageClick);
+        document.addEventListener('keydown', handleKeyPress);
+        applyUnderlineBackgroundColor(); // Call function after DOM loads
     });
 
-    
+
+        
 });

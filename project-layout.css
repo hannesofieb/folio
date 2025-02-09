@@ -140,131 +140,117 @@ div.same-content ul{
     margin: 0;
 }
 
-.multi-carousel{
+/* ----------------img styling */
+
+/* ----------------img styling */
+
+.multi-carousel {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-direction: column;
+    flex-wrap: wrap;
     height: 160px;
     margin-top: 2%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Ensure snapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    gap: 5px; /* Ensure proper spacing */
 }
 
-.multi-carousel img{
-    width: 25%;
-    height:100%;
-    padding: 0 5px;
-    z-index: 0;
+/* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
+.thumbnail-container {
+    width: 24%;
+    margin-right: 0.5%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the image & underline */
+    position: relative;
+    scroll-snap-align: start;
 }
 
-.multi-carousel img:hover{
-    cursor: zoom-in;
+/* ✅ Force uniform size and cropping */
+.thumbnail-container img {
+    width: 100%;
+    height: 98%;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+/* ✅ Make sure images zoom slightly when hovered */
+.thumbnail-container img:hover {
     scale: 1.1;
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
+/* ✅ Underline is inside each thumbnail-container */
+.underline {
+    width: 100%;
+    height: 3px;
+    margin-top: 5%;
+    background-color: var(--red);
+    display: none; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
 
-/* ---------------- image lightbox styling */
-/* Ensure #project-content is relatively positioned */
-#project-content {
-    position: relative;
-  }
-  
-  /* The Modal (background) */
-  .modal {
+/* ✅ Underline appears only when a thumbnail is selected */
+.thumbnail-container.selected .underline {
+    display: block;
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* ✅ Ensure selected images are fully visible */
+.multi-carousel img:not(.selected) {
+    opacity: 0.7;
+}
+
+.multi-carousel img.selected {
+    opacity: 1;
+}
+
+/* ✅ Ensure smooth horizontal scrolling & hide scrollbar */
+.multi-carousel::-webkit-scrollbar {
     display: none;
-    position: fixed; /* fixed so it covers the viewport */
-    z-index: 2;
-    margin-left: 26vw;
-    left: 0;
-    top: 0;
-    width: 75vw;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.3);
-  }
-  
-  /* Modal Content */
-  .modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    /* width: 90%; */
-    /* height: 50%; */
-    max-width: 1200px;
-  }
-  
-  /* The Close Button */
-  .close {
-    color: var(--black);
-    width: 25px;
-    height: auto;
-    position: fixed;
-    top: 5px;
-    right: 31px;
-    z-index: 5;
-    font-family: var(--type-body);
-    font-size: 2em;
-    cursor: pointer;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: var(--red);
-    text-decoration: none;
-  }
-  
-  /* The slide images */
-  .mySlides {
-    display: inline-block;
-    /* width: 100%; */
-    height: 100%;
-  }
+}
 
-  .slides-container{
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Caption text */
-  .caption-container {
+
+#display-window {
+    width: 100%;
+    margin-top: 1%;
+    position: relative;
+    transition: transform 0.3s ease-in-out; /* Smooth open/close */
+    transform: translateY(100%); /* Starts hidden below */
+}
+
+#display-window.hidden {
+    transform: translateY(100%); /* Slide down to hide */
+    opacity: 0;
+}
+
+#display-window.visible {
+    transform: translateY(0); /* Slide up to show */
+    opacity: 1;
+}
+
+#displayed-img {
+    margin-top: 3%;
+    width: 100%;
+    object-fit: contain;
+}
+
+#project-content #display-caption {
+    font-size: 1em;
     text-align: center;
-    background-color: black;
-    padding: 2px 16px;
-    color: white;
-  }
-  
-  /* Next & previous buttons */
-  .prevNext-slide{
-    cursor: pointer;
-    position: absolute;
-    top: 80%;
-    padding: 16px;
-    color: var(--red);
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.6s ease;
-    user-select: none;
-    z-index: 10;
-  }
-  
-  #prev-slide {
-    left: 31px;
-  }
-  
-  #next-slide {
-    right: 31px;
-  }
-  
-  /* Thumbnails */
-  .column {
-    float: left;
-    width: 25%;
-    padding: 0 8px;
-  }
-  
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+}
+
+/* .multi-carousel img:not(.selected) {
+    opacity: 0.7; 
+}
+
+.multi-carousel img.selected {
+    opacity: 1;
+} */
+
+
