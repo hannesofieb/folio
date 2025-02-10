@@ -35,8 +35,33 @@ div.same-topic ul li{
     font-size: 20px; /* Match the normal <p> font size (1em)*/
     margin: 1% 0 7% 0;
     line-height: 18px; /* Match the normal <p> line height (1.3em) */
-
-    /* font-family: var(--type-body);
-    font-style: normal; */
 }
 
+
+/* -------------------- for mobile */
+@media screen and (max-width:650px) {
+    #project-context h2, #proj-nav{
+        font-size: 2em;
+    }
+    
+    #project-context p{
+        font-size: 1em;
+    }
+    
+    #project-content h1{
+        font-size: 2em;
+    }
+    
+    #project-content h2{
+        font-size: 1.6em;
+    }
+    
+    #project-content h3, #project-content p{
+        font-size: 1.2em;
+        line-height: 1.3em;
+    }
+    
+    div.same-topic ul li{
+        font-size: 1.2em;
+    }
+}
