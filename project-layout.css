@@ -23,6 +23,14 @@
         overflow-y: scroll;
         overflow-x: hidden;
     }
+
+    #more-details {
+        display: none;
+    }
+
+    #remarks {
+    display: block;
+    }
 }
 
 #return-to-home{
@@ -304,7 +312,7 @@ div.same-content ul{
     }
 
     #proj-nav{
-        display: none;
+        display: none; 
     }
 
 
@@ -379,11 +387,9 @@ div.same-content ul{
 
     /* ----------------img styling */
     .multi-carousel {
-        width: 100%;
-        height: 100px;
-        padding: 2% 0 2% 2%;
-
-        gap: 5px; /* Ensure proper spacing */
+        width: 96%;
+        height: 120px;
+        padding: 2%;
     }
 
     /* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
@@ -395,27 +401,28 @@ div.same-content ul{
     /* ✅ Force uniform size and cropping */
     .thumbnail-container img {
         width: 100%;
-        height: 98%;
-        object-fit: cover; /* Ensures all images are cropped to fit */
-        cursor: pointer;
-        transition: transform 0.1s ease-in-out;
+        max-height: 90%;
+        margin-bottom: 2%;
+    }
+
+    .thumbnail-container img .selected{
+        width: auto;
+        max-height: 90%;
     }
 
     /* ✅ Make sure images zoom slightly when hovered */
     .thumbnail-container img:hover {
-        scale: 1.1;
+        height: 100%;
         z-index: 1;
         transition: all 0.1s ease-in-out;
     }
 
     /* ✅ Underline is inside each thumbnail-container */
     .underline {
+        display: block;
         width: 100%;
         height: 3px;
-        margin-top: 5%;
-        background-color: var(--red);
-        display: none; /* Initially hidden */
-        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        margin: 2% 0 0 0;
     }
 
     /* ✅ Underline appears only when a thumbnail is selected */
@@ -423,15 +430,6 @@ div.same-content ul{
         display: block;
         opacity: 1;
         transform: scaleX(1);
-    }
-
-    /* ✅ Ensure selected images are fully visible */
-    .multi-carousel img:not(.selected) {
-        opacity: 0.7;
-    }
-
-    .multi-carousel img.selected {
-        opacity: 1;
     }
 
     /* ✅ Ensure smooth horizontal scrolling & hide scrollbar */

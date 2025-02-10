@@ -166,13 +166,21 @@ document.addEventListener('DOMContentLoaded', function () {
         populateList(document.querySelector('#tools + ul'), projectData.tools);
 
         // Populate remarks (if available)
+        // Populate remarks (if available) regardless of viewport size.
         const remarksContainer = document.getElementById('remarks');
         if (projectData.remarked.trim()) {
             populateList(remarksContainer.querySelector('ul'), projectData.remarked);
-            remarksContainer.style.display = 'block';
+            // Now, if the viewport is wide (desktop), show the remarks;
+            // otherwise, hide them (mobile).
+            if (window.innerWidth > 800) {
+                remarksContainer.style.display = 'block';
+            } else {
+                remarksContainer.style.display = 'none';
+            }
         } else {
             remarksContainer.style.display = 'none';
         }
+
 
         // Populate project content
         populateProjectContent(projectData);
@@ -234,11 +242,30 @@ document.addEventListener('DOMContentLoaded', function () {
         if (csvValue) {
             csvValue.split(';').forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = item.trim();
+    
+                // Check if the item contains an arrow
+                const arrowIndex = item.indexOf('→');
+                if (arrowIndex !== -1) {
+                    const boldPart = item.substring(0, arrowIndex).trim(); // Text before arrow
+                    const restPart = item.substring(arrowIndex).trim(); // Arrow + text after arrow
+    
+                    // Create bold element
+                    const boldSpan = document.createElement('span');
+                    boldSpan.style.fontWeight = 'bold';
+                    boldSpan.textContent = boldPart + ' '; // Add space for separation
+    
+                    // Append elements to li
+                    li.appendChild(boldSpan);
+                    li.appendChild(document.createTextNode(restPart));
+                } else {
+                    li.textContent = item.trim();
+                }
+    
                 ulElement.appendChild(li);
             });
         }
     }
+    
     
 
     // ✅ Step 5: Parse & Populate `#project-content`
@@ -733,5 +760,58 @@ if (tagName.toLowerCase() === 'img') {
     });
 
 
+    // --------------- MOBILE LAYOUT: toggle function for project context
+    function toggleMoreDetails() {
+        // Get the "more-details" element.
+        const moreDetails = document.getElementById('more-details');
+        // Get all the elements that should be toggled.
+        // Here, we assume that the lists (roles, tools, remarks) are the elements to hide/show.
+        const lists = document.querySelectorAll('#project-context .list');
+        const remarks = document.querySelectorAll('#project-context .list #remarks');
+      
+        // Check if we are currently expanded.
+        // We can use a data attribute "data-expanded" that defaults to "false".
+        const isExpanded = moreDetails.getAttribute('data-expanded') === 'true';
+      
+        if (isExpanded) {
+          // Collapse: hide all lists.
+          lists.forEach(el => el.style.display = 'none');
+          remarks.forEach(el => el.style.display = 'none');
+          moreDetails.innerHTML = '<p>more details↘</p>';
+          moreDetails.setAttribute('data-expanded', 'false');
+          console.log("🔽 Collapsed additional details.");
+        } else {
+          // Expand: show all lists.
+          lists.forEach(el => el.style.display = 'block');
+          remarks.forEach(el => el.style.display = 'block');
+          moreDetails.innerHTML = '<p>say less↗</p>';
+          moreDetails.setAttribute('data-expanded', 'true');
+          console.log("🔼 Expanded additional details.");
+        }
+      }
+      
+      // Set an initial state on mobile. (On larger screens the element is hidden by CSS.)
+        // Check the viewport width.
+        if (window.innerWidth < 800) {
+            // On mobile, hide the extra details (lists including remarks)
+            const lists = document.querySelectorAll('#project-context .list');
+            lists.forEach(el => el.style.display = 'none');
+
+            // Also hide the remarks container (if not already hidden)
+            const remarks = document.getElementById('remarks');
+            if (remarks) {
+                remarks.style.display = 'none';
+            }
+            
+            const moreDetails = document.getElementById('more-details');
+            if (moreDetails) {
+                moreDetails.setAttribute('data-expanded', 'false');
+                moreDetails.addEventListener('click', toggleMoreDetails);
+                console.log("✅ 'More details' toggle enabled on mobile view.");
+            }
+        }
+        
+        
+      
         
 });
