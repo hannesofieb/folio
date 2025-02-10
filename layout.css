@@ -850,6 +850,7 @@ footer p.caption{
         font-size: 4em;
         margin: 10vh 0 0 1vw;
         font-family: var(--type-italic);
+        font-weight: var(--type-thin-weight);
     }
 
     p#farewell{

@@ -793,7 +793,25 @@ if (tagName.toLowerCase() === 'img') {
       // Set an initial state on mobile. (On larger screens the element is hidden by CSS.)
         // Check the viewport width.
         if (window.innerWidth < 800) {
-            // On mobile, hide the extra details (lists including remarks)
+            // On mobile ...
+            //-------------- img[0] selected
+            const multiCarousel = document.querySelector('.multi-carousel');
+            if (multiCarousel) {
+                // Select the images (not the thumbnail-container wrappers)
+                const images = Array.from(multiCarousel.querySelectorAll("img"));
+                const displayWindow = document.getElementById('display-window');
+                if (displayWindow) {
+                    // Remove the hidden class and add the visible class (make sure CSS for .visible is correct)
+                    displayWindow.classList.remove('hidden');
+                    displayWindow.classList.add('visible');
+                }
+                if (images.length > 0) {
+                    // Automatically select the first image (index 0)
+                    showImage(0, images);
+                }
+            }
+
+            //-------------- hide the extra details (lists including remarks)
             const lists = document.querySelectorAll('#project-context .list');
             lists.forEach(el => el.style.display = 'none');
 
