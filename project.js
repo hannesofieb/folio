@@ -638,6 +638,20 @@ if (tagName.toLowerCase() === 'img') {
         // Insert display window after multi-carousel
         multiCarousel.insertAdjacentElement('afterend', displayContainer);
 
+        // --- Mobile-Specific Code (Now executed after insertion) ---
+        if (window.innerWidth < 800) {
+            // Now the display window exists in the DOM.
+            displayContainer.classList.remove('hidden');
+            displayContainer.classList.add('visible'); // Ensure your CSS for .visible shows the element
+
+            // Select the images from the multi-carousel (not from a wrapper)
+            const images = Array.from(multiCarousel.querySelectorAll("img"));
+            if (images.length > 0) {
+                // Automatically select the first image (index 0)
+                showImage(0, images);
+            }
+        }
+
         // Close display when clicking the displayed image
         displayedImage.addEventListener('click', function () {
             displayContainer.classList.add('hidden');
