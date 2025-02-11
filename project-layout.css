@@ -113,13 +113,17 @@
     padding-left: 0;
 }
 
+#project-content h2{
+    margin: 0 0 2% 0;
+}
+
 #project-content h3{
     margin: 5% 0 0 0;
     padding-left: 0;
 }
 
 #project-content p{
-    margin: 0;
+    margin: 0 0 1% 0;
 }
 
 .col{
@@ -148,6 +152,40 @@
 div.same-content ul{
     margin: 0;
 }
+
+div.inline{
+    display: inline;
+}
+
+
+.solo{
+    margin-bottom: 5%;
+}
+
+.small-gallery, .small-gallery-tall{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 2% 0 10% 0;
+}
+
+.small-gallery-tall{
+    height: 70vh;
+    flex-wrap: nowrap;
+}
+
+.small-gallery img{
+    width: 48%;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+}
+
+.small-gallery-tall img{
+    width: fit-content;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+}
+
 
 /* ----------------img styling */
 .multi-carousel {

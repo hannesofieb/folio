@@ -27,8 +27,10 @@ div.same-topic ul li{
     font-size: 1.5em;
 }
 
-#remarks{
-    /* font-size: 0.8em; */
+#project-content .small{
+    font-size: 1.3em;
+    width: 100%;
+    margin-right: 2%;
 }
 
 #project-content h1 p em{
