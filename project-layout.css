@@ -190,13 +190,18 @@ div.inline{
 .prototypes{
     height: 70vh;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-direction: column;
+    flex-wrap: wrap;
     overflow-x: auto; /* Enable horizontal scrolling */
     scroll-snap-type: x mandatory; /* Ensure snapping */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
-    gap: 5px; /* Ensure proper spacing */
 }
+
+
+.prototypes::-webkit-scrollbar {
+    display: none;
+  }
+
 
 .prototype-container{
     height: 100%;
@@ -205,13 +210,12 @@ div.inline{
 }
 
 .prototypes img{
-    height: 70%;
+    height: 90%;
     margin-right: 2%;
 }
 
-.prototypes-container .select{
-    display: flex;
-    flex-direction: row;
+.prototypes img.selected{
+    transform:translateY(10%);
 }
 
 /* ----------------img styling */
@@ -312,7 +316,7 @@ div.inline{
     object-fit: contain;
 }
 
-#project-content .display-caption, #project-content p.caption {
+#project-content .display-caption, #project-content p.caption, .prototypes-caption-container {
     font-size: 1em;
     text-align: center;
     margin-bottom: 7%;
