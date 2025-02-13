@@ -114,7 +114,7 @@
 }
 
 #project-content h2{
-    margin: 0 0 2% 0;
+    margin: 15% 0 2% 0;
 }
 
 #project-content h3{
@@ -159,7 +159,7 @@ div.inline{
 
 
 .solo{
-    margin-bottom: 5%;
+    /* margin-bottom: 5%; */
 }
 
 .small-gallery, .small-gallery-tall{
@@ -187,11 +187,39 @@ div.inline{
 }
 
 
+.prototypes{
+    height: 70vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Ensure snapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    gap: 5px; /* Ensure proper spacing */
+}
+
+.prototype-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.prototypes img{
+    height: 70%;
+    margin-right: 2%;
+}
+
+.prototypes-container .select{
+    display: flex;
+    flex-direction: row;
+}
+
 /* ----------------img styling */
 .multi-carousel {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    align-content: flex-start;
     height: 160px;
     margin-top: 2%;
     overflow-x: auto; /* Enable horizontal scrolling */
@@ -215,7 +243,7 @@ div.inline{
 /* ✅ Force uniform size and cropping */
 .thumbnail-container img {
     width: 100%;
-    height: 98%;
+    height: 85%;
     object-fit: cover; /* Ensures all images are cropped to fit */
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
@@ -223,7 +251,7 @@ div.inline{
 
 /* ✅ Make sure images zoom slightly when hovered */
 .thumbnail-container img:hover {
-    scale: 1.1;
+    scale: 1.05;
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
@@ -260,7 +288,7 @@ div.inline{
 }
 
 
-#display-window {
+.display-window {
     width: 100%;
     margin-top: 1%;
     position: relative;
@@ -268,25 +296,30 @@ div.inline{
     transform: translateY(100%); /* Starts hidden below */
 }
 
-#display-window.hidden {
+.display-window.hidden {
     transform: translateY(100%); /* Slide down to hide */
     opacity: 0;
 }
 
-#display-window.visible {
+.display-window.visible {
     transform: translateY(0); /* Slide up to show */
     opacity: 1;
 }
 
-#displayed-img {
-    margin-top: 3%;
+.displayed-img {
+    /* margin-top: 3%; */
     width: 100%;
     object-fit: contain;
 }
 
-#project-content #display-caption {
+#project-content .display-caption, #project-content p.caption {
     font-size: 1em;
     text-align: center;
+    margin-bottom: 7%;
+}
+
+#project-content p.caption {
+    padding: 0;
 }
 
 
@@ -476,7 +509,7 @@ div.inline{
     }
 
 
-    #display-window {
+    .display-window {
         display: block;
         width: 100%;
         margin-top: 1%;
@@ -485,18 +518,18 @@ div.inline{
         transform: translateY(100%); /* Starts hidden below */
     }
 
-    #display-window.visible {
+    .display-window.visible {
         transform: translateY(0); /* Slide up to show */
         opacity: 1;
     }
 
-    #displayed-img {
+    .displayed-img {
         margin-top: 3%;
         width: 100%;
         object-fit: contain;
     }
 
-    #project-content #display-caption {
+    #project-content .display-caption {
         font-size: 1em;
         text-align: center;
     }

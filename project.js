@@ -180,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             remarksContainer.style.display = 'none';
         }
+        
 
 
         // Populate project content
@@ -188,6 +189,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update next/prev project navigation
         updateProjectNavigation(projectId);
         console.log("📌 Checking projectData keys:", Object.keys(projectData));
+
+        setTimeout(initCarousels, 500);  // Adjust delay if needed
+        addSoloCaptions();
+
 
     }
 
@@ -265,6 +270,24 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    function addSoloCaptions() {
+        // Select all images with the class "solo"
+        const soloImages = document.querySelectorAll('img.solo');
+        soloImages.forEach(img => {
+          const captionText = img.getAttribute('data-caption');
+          if (captionText) {
+            // Create a new <p> element with class "caption"
+            const captionP = document.createElement('p');
+            captionP.classList.add('caption');
+            captionP.textContent = captionText;
+            // Insert the caption element right after the image
+            img.parentNode.insertBefore(captionP, img.nextSibling);
+          }
+        });
+        console.log("Added captions for", soloImages.length, "img.solo elements.");
+      }
+      
     
     
 
@@ -575,204 +598,135 @@ if (tagName.toLowerCase() === 'img') {
         }
         return fragments;
     }
+
+
       
     // ✅ Start Data Fetch
     fetchData();
 
 
-  // --------------------------------------------------display-window image feature
-    function ensureMultiCarouselExists(callback) {
-        const multiCarousel = document.querySelector('.multi-carousel');
-        if (!multiCarousel) {
-            console.warn("⏳ Waiting for .multi-carousel to load...");
-            setTimeout(() => ensureMultiCarouselExists(callback), 500);
-            return;
-        }
 
-        // Wrap each image inside `.thumbnail-container`
-        const images = Array.from(multiCarousel.querySelectorAll("img"));
+    // ------------------ New Display-Window Image Feature Code ------------------
 
-        images.forEach(img => {
-            const wrapper = document.createElement("div");
-            wrapper.classList.add("thumbnail-container");
-
-            // Create an underline element inside the wrapper
-            const underline = document.createElement("div");
-            underline.classList.add("underline");
-
-            // Move the image inside the wrapper
-            img.parentNode.insertBefore(wrapper, img);
-            wrapper.appendChild(img);
-            wrapper.appendChild(underline); // Append underline below the image
-        });
-
-        console.log("✅ Wrapped all images in .thumbnail-container");
-
-        callback(); // Ensure callback runs after wrapping images
-    }
-
-    let slideIndex = 0;
-
-    function createDisplayWindow() {
-        const multiCarousel = document.querySelector('.multi-carousel');
-        if (!multiCarousel) {
-            console.error("❌ No .multi-carousel found. Aborting display window creation.");
-            return;
-        }
-
-        // Create display container
-        const displayContainer = document.createElement('div');
-        displayContainer.id = 'display-window';
-        displayContainer.classList.add('hidden');
-
-        // Create image display area
-        const displayedImage = document.createElement('img');
-        displayedImage.id = 'displayed-img';
-        displayContainer.appendChild(displayedImage);
-
-        // Create the caption
-        const caption = document.createElement('p');
-        caption.id = 'display-caption';
-        displayContainer.appendChild(caption);
-
-        // Insert display window after multi-carousel
-        multiCarousel.insertAdjacentElement('afterend', displayContainer);
-
-        // --- Mobile-Specific Code (Now executed after insertion) ---
-        if (window.innerWidth < 800) {
-            // Now the display window exists in the DOM.
-            displayContainer.classList.remove('hidden');
-            displayContainer.classList.add('visible'); // Ensure your CSS for .visible shows the element
-
-            // Select the images from the multi-carousel (not from a wrapper)
-            const images = Array.from(multiCarousel.querySelectorAll("img"));
-            if (images.length > 0) {
-                // Automatically select the first image (index 0)
-                showImage(0, images);
-            }
-        }
-
-        // Close display when clicking the displayed image
-        displayedImage.addEventListener('click', function () {
-            displayContainer.classList.add('hidden');
-            console.log("🚪 Hiding display window");
-        });
-
-        console.log("✅ Display window created.");
-    }
-
-    // ✅ Show Image, Move Underline, & Handle Scrolling
-    function showImage(index, images) {
-        // Update global slideIndex
-        slideIndex = index;
+    function initCarousels() {
+        console.log("initCarousels(): Found", document.querySelectorAll('.multi-carousel').length, "multi-carousel(s).");
+        const carousels = document.querySelectorAll('.multi-carousel');
         
-        // Get elements
-        const displayWindow = document.getElementById('display-window');
-        const displayedImage = document.getElementById('displayed-img');
-        const caption = document.getElementById('display-caption');
-        const multiCarousel = document.querySelector('.multi-carousel');
+        carousels.forEach(carousel => {
+        initCarousel(carousel);
+        });
+    }
     
-        // Update image display
-        displayedImage.src = images[index].src;
-        displayedImage.setAttribute('data-index', index);
-        caption.textContent = images[index].getAttribute('data-caption') || "";
+    function initCarousel(carousel) {
+        // 1. Wrap each image in a .thumbnail-container
+        const images = Array.from(carousel.querySelectorAll('img'));
+        images.forEach(img => {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('thumbnail-container');
+        const underline = document.createElement('div');
+        underline.classList.add('underline');
+        img.parentNode.insertBefore(wrapper, img);
+        wrapper.appendChild(img);
+        wrapper.appendChild(underline);
+        });
+        console.log("Wrapped", images.length, "images in carousel:", carousel);
     
-        // Get all thumbnail containers
-        const thumbnails = document.querySelectorAll('.thumbnail-container'); // Updated selector
-        const selectedThumbnail = thumbnails[index];
+        // 2. Create a display window
+        const displayWindow = document.createElement('div');
+        displayWindow.classList.add('display-window', 'hidden');
+        const displayImg = document.createElement('img');
+        displayImg.classList.add('displayed-img');
+        displayWindow.appendChild(displayImg);
+        const caption = document.createElement('p');
+        caption.classList.add('display-caption');
+        displayWindow.appendChild(caption);
+        carousel.insertAdjacentElement('afterend', displayWindow);
+        console.log("Created display window for carousel:", carousel);
     
-        if (!selectedThumbnail) return;
-    
-        // ✅ Remove all "selected" classes
-        thumbnails.forEach(container => {
-            container.classList.remove('selected'); // Remove selected from all
-            const underline = container.querySelector('.underline');
-            if (underline) underline.style.display = 'none'; // Hide underline
+        // 3. Add click event listeners to thumbnails
+        const thumbnails = carousel.querySelectorAll('.thumbnail-container');
+        thumbnails.forEach((thumb, idx) => {
+        thumb.addEventListener('click', function(e) {
+            e.stopPropagation();
+            updateDisplay(carousel, displayWindow, idx);
+        });
         });
     
-        // ✅ Apply "selected" class to the active image container
-        selectedThumbnail.classList.add('selected');
+        // 4. Click on display image to hide display window
+        displayImg.addEventListener('click', function() {
+        displayWindow.classList.add('hidden');
+        });
     
-        // ✅ Show the underline for the selected thumbnail
-        const underline = selectedThumbnail.querySelector('.underline');
-        if (underline) underline.style.display = 'block';
+        // 5. Optionally, show first image on initialization
+        if (images.length > 0) {
+        updateDisplay(carousel, displayWindow, 0);
+        displayWindow.classList.remove('hidden');
+        displayWindow.classList.add('visible');
+        }
+    }
     
-        // Ensure display window is visible
+    function updateDisplay(carousel, displayWindow, index) {
+        const images = Array.from(carousel.querySelectorAll('img'));
+        if (index < 0 || index >= images.length) return;
+        const displayImg = displayWindow.querySelector('.displayed-img');
+        const caption = displayWindow.querySelector('.display-caption');
+        displayImg.src = images[index].src;
+        displayImg.setAttribute('data-index', index);
+        caption.textContent = images[index].getAttribute('data-caption') || "";
+        console.log("Updated display to image index", index, "with src:", displayImg.src);
+    
+        // Update thumbnail selection
+        const thumbnails = carousel.querySelectorAll('.thumbnail-container');
+        thumbnails.forEach(thumb => {
+        thumb.classList.remove('selected');
+        const ul = thumb.querySelector('.underline');
+        if (ul) ul.style.display = 'none';
+        });
+        if (thumbnails[index]) {
+        thumbnails[index].classList.add('selected');
+        const ul = thumbnails[index].querySelector('.underline');
+        if (ul) ul.style.display = 'block';
+        }
         displayWindow.classList.remove('hidden');
         displayWindow.classList.add('visible');
     }
     
+    document.addEventListener('keydown', function(event) {
+        // Get all display windows that are currently visible.
+        const activeDisplays = Array.from(document.querySelectorAll('.display-window.visible'));
+        if (!activeDisplays.length) return;
     
-    
-
-    // ✅ Handles Arrow Key Navigation & Scrolling Behavior
-    function handleKeyPress(event) {
-        const images = Array.from(document.querySelectorAll('.multi-carousel img'));
-        if (images.length === 0) return;
-    
-        let newIndex = slideIndex;
-    
-        if (event.key === "ArrowLeft" && slideIndex > 0) {
-            newIndex = slideIndex - 1;
-        } else if (event.key === "ArrowRight" && slideIndex < images.length - 1) {
-            newIndex = slideIndex + 1;
-        } else {
-            // Prevent further movement beyond edges
-            console.log("🚫 Can't move further in this direction.");
-            return;
-        }
-    
-        showImage(newIndex, images);
-    }
-    
-    
-    // ✅ Handles Manual Clicks & Scrolls to Selected Image
-    function handleImageClick(event) {
-        if (event.target.tagName.toLowerCase() !== 'img') return;
-
-        const images = Array.from(document.querySelectorAll('.multi-carousel img'));
-        const clickedIndex = images.indexOf(event.target);
-        if (clickedIndex === -1) return;
-
-        const displayWindow = document.getElementById('display-window');
-        const displayedImage = document.getElementById('displayed-img');
-
-        if (displayedImage.src === event.target.src) {
-            displayWindow.classList.add('hidden');
-            return;
-        }
-
-        displayWindow.classList.remove('hidden');
-        showImage(clickedIndex, images);
-
-        event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-
-    // ✅ Function to Apply Background Color to Underlines
-    function applyUnderlineBackgroundColor() {
-        const returnToHome = document.getElementById('return-to-home');
-        const projectContext = document.getElementById('project-context');
-        const underlines = document.querySelectorAll('.underline');
-
-        // Get computed background color (fallback to projectContext if returnToHome is missing)
-        const computedColor = window.getComputedStyle(returnToHome || projectContext).backgroundColor;
-
-        // Apply color to all underlines
-        underlines.forEach(underline => {
-            underline.style.backgroundColor = computedColor;
+        // Find the display window that is actually in the viewport.
+        // (You could also choose the one closest to the cursor if you track that.)
+        let targetDisplay = activeDisplays.find(display => {
+        const rect = display.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
         });
-
-        console.log("🎨 Underline background color set to:", computedColor);
-    }
-
-    // ✅ Ensure colors are applied once images are wrapped properly
-    ensureMultiCarouselExists(() => {
-        createDisplayWindow();
-        document.querySelector('.multi-carousel').addEventListener('click', handleImageClick);
-        document.addEventListener('keydown', handleKeyPress);
-        applyUnderlineBackgroundColor(); // Call function after DOM loads
+    
+        // If none are in viewport, default to the first visible display.
+        if (!targetDisplay) targetDisplay = activeDisplays[0];
+    
+        // Now, assume the carousel is immediately preceding the display window.
+        const carousel = targetDisplay.previousElementSibling;
+        if (!carousel || !carousel.classList.contains('multi-carousel')) return;
+        
+        const images = Array.from(carousel.querySelectorAll('img'));
+        if (images.length === 0) return;
+        
+        // Get current image index from the display window.
+        const currentIndex = parseInt(targetDisplay.querySelector('.displayed-img').getAttribute('data-index')) || 0;
+        let newIndex = currentIndex;
+        if (event.key === "ArrowLeft" && currentIndex > 0) {
+        newIndex = currentIndex - 1;
+        } else if (event.key === "ArrowRight" && currentIndex < images.length - 1) {
+        newIndex = currentIndex + 1;
+        } else {
+        return;
+        }
+        
+        // Update the display for the target carousel.
+        updateDisplay(carousel, targetDisplay, newIndex);
     });
-
 
     // --------------- MOBILE LAYOUT: toggle function for project context
     function toggleMoreDetails() {
