@@ -197,6 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
             initPrototypesCarousel();
         }, 500);
 
+        setTimeout(() => {
+            populateNavigationBar();
+          }, 500);
+
 
     }
 
@@ -290,9 +294,64 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
         console.log("Added captions for", soloImages.length, "img.solo elements.");
-      }
-      
+    }
     
+    // ✅ Helper: Create a navigation bar from all .para h2 elements.
+    function populateNavigationBar() {
+        // 1. Get a reference to the pre-defined nav element.
+        const nav = document.getElementById('project-nav');
+        if (!nav) {
+          console.error("❌ Navigation element with id 'project-nav' not found.");
+          return;
+        }
+        
+        // 2. Get the inner <ul> inside the nav.
+        const ul = nav.querySelector('ul');
+        if (!ul) {
+          console.error("❌ No <ul> found inside #project-nav.");
+          return;
+        }
+        
+        // 3. Find all <h2> elements inside .para sections.
+        const paraH2s = document.querySelectorAll('.para h2');
+        if (paraH2s.length === 0) {
+          console.warn("⚠️ No .para h2 elements found for navigation.");
+          return;
+        }
+        
+        // 4. Clear any existing content in the <ul>
+        ul.innerHTML = "";
+        
+        // 5. Loop through each <h2> to create a nav item.
+        paraH2s.forEach((h2, index) => {
+          // If the <h2> doesn’t have an ID, assign one.
+          if (!h2.id) {
+            h2.id = `section-${index}`;
+          }
+          
+          // Create a list item and an anchor.
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          
+          // Set the anchor text and its href attribute.
+          a.textContent = h2.textContent;
+          a.href = `#${h2.id}`;
+          
+          // Add an onclick listener to smoothly scroll to the target section.
+          a.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default jump.
+            document.getElementById(h2.id).scrollIntoView({
+              behavior: 'smooth'
+            });
+          });
+          
+          // Append the anchor to the list item, then the list item to the ul.
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        
+        console.log("✅ Navigation bar populated with", paraH2s.length, "items.");
+      }
     
 
     // ✅ Step 5: Parse & Populate `#project-content`
@@ -611,119 +670,140 @@ if (tagName.toLowerCase() === 'img') {
 
 
     // ------------------ New Display-Window Image Feature Code ------------------
-// Initialize the prototypes carousel
-function initPrototypesCarousel() {
-    // Find the prototypes container within #project-content, for example:
-    const prototypes = document.querySelector('#project-content .prototypes');
-    if (!prototypes) {
-      console.error("❌ No .prototypes element found.");
-      return;
-    }
-  
-    // Wrap each image in a .prototype-container if not already wrapped.
-    const imgs = Array.from(prototypes.querySelectorAll('img'));
-    imgs.forEach(img => {
-      if (!img.parentElement.classList.contains('prototype-container')) {
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('prototype-container');
-        img.parentNode.insertBefore(wrapper, img);
-        wrapper.appendChild(img);
-      }
-    });
-    console.log("✅ Prototypes images wrapped in .prototype-container.");
-  
-    // Create a caption container for prototypes (if it doesn't already exist).
-    let captionContainer = document.querySelector('.prototypes-caption-container');
-    if (!captionContainer) {
-      captionContainer = document.createElement('div');
-      captionContainer.classList.add('prototypes-caption-container');
-      // Append the caption container right after the prototypes container.
-      prototypes.insertAdjacentElement('afterend', captionContainer);
-    }
-  
-    // Set up event listeners on each prototypes image:
-    imgs.forEach((img, index) => {
-      // Mouse hover triggers selection.
-      img.addEventListener('mouseenter', function () {
-        setPrototypesSelected(index, imgs, captionContainer);
-      });
-      // Click also triggers selection.
-      img.addEventListener('click', function () {
-        setPrototypesSelected(index, imgs, captionContainer);
-      });
-    });
-  
-    // Add a scroll event listener to update selection on drag/scroll.
-    // (Debounce the handler for performance.)
-    let scrollTimeout;
-    prototypes.addEventListener('scroll', function () {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(function () {
-        updatePrototypesSelectionOnScroll(prototypes, captionContainer);
-      }, 100);
-    });
-  
-    // Add keydown event listener to allow left/right arrow navigation.
-    document.addEventListener('keydown', function (e) {
-      if (!prototypes) return;
-      let currentIndex = imgs.findIndex(img => img.classList.contains('selected'));
-      if (currentIndex === -1) currentIndex = 0;
-      if (e.key === "ArrowLeft") {
-        currentIndex = currentIndex - 1;
-        if (currentIndex < 0) currentIndex = imgs.length - 1;
-        setPrototypesSelected(currentIndex, imgs, captionContainer);
-        imgs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      } else if (e.key === "ArrowRight") {
-        currentIndex = currentIndex + 1;
-        if (currentIndex >= imgs.length) currentIndex = 0;
-        setPrototypesSelected(currentIndex, imgs, captionContainer);
-        imgs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-    });
-  }
-  
-  // Helper: Set the selected prototype image.
-  function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
-    imgs.forEach((img, idx) => {
-      if (idx === selectedIndex) {
-        img.classList.add('selected');
-        // The caption container gets updated with the data-caption attribute.
-        captionContainer.textContent = img.getAttribute('data-caption') || "";
-      } else {
-        img.classList.remove('selected');
-      }
-    });
-  }
-  
-  // Called when the prototypes container is scrolled.
-  // Finds the image whose horizontal center is closest to the container’s center.
-  function updatePrototypesSelectionOnScroll(prototypes, captionContainer) {
-    const imgs = Array.from(prototypes.querySelectorAll('img'));
-    if (imgs.length === 0) return;
+    // Initialize the prototypes carousel
+    function initPrototypesCarousel() {
+        // Find the prototypes container within #project-content, for example:
+        const prototypes = document.querySelector('#project-content .prototypes');
+        if (!prototypes) {
+        console.error("❌ No .prototypes element found.");
+        return;
+        }
     
-    const containerRect = prototypes.getBoundingClientRect();
-    const containerCenterX = containerRect.left + containerRect.width / 2;
-  
-    let closestIndex = 0;
-    let minDistance = Infinity;
-  
-    imgs.forEach((img, index) => {
-      const imgRect = img.getBoundingClientRect();
-      const imgCenterX = imgRect.left + imgRect.width / 2;
-      const distance = Math.abs(imgCenterX - containerCenterX);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
-      }
-    });
-  
-    setPrototypesSelected(closestIndex, imgs, captionContainer);
-  }
-  
-  // Call the prototypes initializer after all project content is loaded.
-  // For example, call this at the end of your processData() function (or with a small delay).
-  initPrototypesCarousel();
-  
+        // Wrap each image in a .prototype-container if not already wrapped.
+        const imgs = Array.from(prototypes.querySelectorAll('img'));
+        imgs.forEach(img => {
+        if (!img.parentElement.classList.contains('prototype-container')) {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('prototype-container');
+            img.parentNode.insertBefore(wrapper, img);
+            wrapper.appendChild(img);
+        }
+        });
+        console.log("✅ Prototypes images wrapped in .prototype-container.");
+    
+        // Create a caption container for prototypes (if it doesn't already exist).
+        let captionContainer = document.querySelector('.prototypes-caption-container');
+        if (!captionContainer) {
+        captionContainer = document.createElement('div');
+        captionContainer.classList.add('prototypes-caption-container');
+        // Append the caption container right after the prototypes container.
+        prototypes.insertAdjacentElement('afterend', captionContainer);
+        }
+    
+        // Set up event listeners on each prototypes image:
+        imgs.forEach((img, index) => {
+        // Mouse hover triggers selection.
+        img.addEventListener('mouseenter', function () {
+            setPrototypesSelected(index, imgs, captionContainer);
+        });
+        // Click also triggers selection.
+        img.addEventListener('click', function () {
+            setPrototypesSelected(index, imgs, captionContainer);
+        });
+        });
+    
+        // Add a scroll event listener to update selection on drag/scroll.
+        // (Debounce the handler for performance.)
+        let scrollTimeout;
+        prototypes.addEventListener('scroll', function () {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function () {
+            updatePrototypesSelectionOnScroll(prototypes, captionContainer);
+        }, 100);
+        });
+    
+        // Add keydown event listener to allow left/right arrow navigation.
+        document.addEventListener('keydown', function (e) {
+            // "prototypes" was already defined in initPrototypesCarousel(), so we can use that.
+            const prototypes = document.querySelector('#project-content .prototypes');
+            if (!prototypes) return;
+          
+            // Get the bounding rectangle of the prototypes container.
+            const rect = prototypes.getBoundingClientRect();
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            
+            // Calculate how much of the prototypes container is visible vertically.
+            const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+            const visibleRatio = visibleHeight / rect.height;
+            
+            // Only process arrow keys if at least 30% is visible.
+            if (visibleRatio < 0.3) {
+              // If less than 30% is visible, do not process arrow key events for prototypes.
+              return;
+            }
+            
+            // Otherwise, continue with the prototypes arrow navigation.
+            // (Assuming that "imgs" is in scope from your prototypes initialization.)
+            let currentIndex = imgs.findIndex(img => img.classList.contains('selected'));
+            if (currentIndex === -1) currentIndex = 0;
+            
+            if (e.key === "ArrowLeft") {
+              currentIndex = currentIndex - 1;
+              if (currentIndex < 0) currentIndex = imgs.length - 1;
+              setPrototypesSelected(currentIndex, imgs, captionContainer);
+              imgs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else if (e.key === "ArrowRight") {
+              currentIndex = currentIndex + 1;
+              if (currentIndex >= imgs.length) currentIndex = 0;
+              setPrototypesSelected(currentIndex, imgs, captionContainer);
+              imgs[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+          });
+          
+    }
+    
+    // Helper: Set the selected prototype image.
+    function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
+        imgs.forEach((img, idx) => {
+        if (idx === selectedIndex) {
+            img.classList.add('selected');
+            // The caption container gets updated with the data-caption attribute.
+            captionContainer.textContent = img.getAttribute('data-caption') || "";
+        } else {
+            img.classList.remove('selected');
+        }
+        });
+    }
+    
+    // Called when the prototypes container is scrolled.
+    // Finds the image whose horizontal center is closest to the container’s center.
+    function updatePrototypesSelectionOnScroll(prototypes, captionContainer) {
+        const imgs = Array.from(prototypes.querySelectorAll('img'));
+        if (imgs.length === 0) return;
+        
+        const containerRect = prototypes.getBoundingClientRect();
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+    
+        let closestIndex = 0;
+        let minDistance = Infinity;
+    
+        imgs.forEach((img, index) => {
+        const imgRect = img.getBoundingClientRect();
+        const imgCenterX = imgRect.left + imgRect.width / 2;
+        const distance = Math.abs(imgCenterX - containerCenterX);
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+        }
+        });
+    
+        setPrototypesSelected(closestIndex, imgs, captionContainer);
+    }
+    
+    // Call the prototypes initializer after all project content is loaded.
+    // For example, call this at the end of your processData() function (or with a small delay).
+    initPrototypesCarousel();
+    
       
     // ----- Multi-Carousel Code Here -----
     function initCarousels() {

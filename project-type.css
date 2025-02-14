@@ -41,6 +41,10 @@ div.same-topic ul li{
 
 
 
+div.row p{
+    width: 80%;
+}
+
 
 /* -------------------- for mobile */
 @media screen and (max-width:650px) {
