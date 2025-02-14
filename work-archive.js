@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const rowsPerPage = 4;
+    const rowsPerPage = 5;
     let currentPage = 1;
     const tableBody = document.querySelector('#archive-table tbody');
     const pageNumbers = document.querySelector('#page-numbers');
@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let data = [];
     let filteredData = [];
     let activeFilters = new Set();
+    let projectsData = [];
 
 
     // Fetch CSV data
@@ -36,18 +37,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderTable(currentPage);
             }
         });
+        Papa.parse('projects.csv', {
+            download: true,
+            header: true,
+            complete: function (results) {
+                projectsData = results.data.map(row => {
+                    row['project-id'] = row['project-id'].trim(); // Ensure IDs match format
+                    return row;
+                });
+                console.log("📁 Loaded projects.csv:", projectsData); // Debugging log
+    
+                // Now load work-archive.csv
+                loadWorkArchive();
+            }
+        });
+    }
+
+    function loadWorkArchive() {
+        Papa.parse('work-archive.csv', {
+            download: true,
+            header: true,
+            complete: function (results) {
+                data = results.data.map(row => {
+                    row['project-id'] = row['project-id'].trim(); // Ensure IDs are properly formatted
+                    
+                    if (!row.filter) {
+                        row.filter = "all";
+                    } else if (!row.filter.toLowerCase().startsWith('all')) {
+                        row.filter += ";all"; // Append 'all' if it's not there
+                    }
+                    return row;
+                });
+    
+                console.log("📁 Loaded work-archive.csv:", data); // Debugging log
+    
+                filteredData = [...data]; // Initialize with all data
+                renderTable(currentPage);
+            }
+        });
     }
 
     function renderTable(page) {
         tableBody.innerHTML = '';
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        const paginatedData = filteredData.slice(start, end);
+
+        // 🔹 Filter before paginating
+        const filteredProjects = filteredData.filter(row => {
+            console.log(`🔎 Checking project-id: "${row['project-id']}"`);
     
+            // Ensure project IDs are correctly formatted
+            const projectData = projectsData.find(p => p['project-id'].trim() === row['project-id'].trim());
+    
+            if (!projectData) {
+                console.log(`❌ No matching project data for "${row['project-id']}"`);
+                return false;
+            }
+    
+            console.log(`✅ Found matching project for "${row['project-id']}":`, projectData);
+    
+            // ✅ Check if at least one .para field contains "div.reflection"
+            const hasReflection = Object.keys(projectData).some(key => 
+                key.startsWith("para") && projectData[key] && projectData[key].includes("div.reflection")
+            );
+    
+            console.log(`🔎 Project "${row['project-id']}" has reflection? ${hasReflection}`);
+            return hasReflection;
+        });
+
+        console.log(`📌 Projects to Show: ${filteredProjects.length}`);
+
+        // 🔹 **Pagination Calculation (AFTER Filtering)**
+        const totalPages = Math.max(1, Math.ceil(filteredProjects.length / rowsPerPage)); // Always at least 1 page
+
+        // 🔹 Slice data for pagination
+        const paginatedData = filteredProjects.slice(start, end);
+
+        // 🔹 Render Table Rows
         paginatedData.forEach(row => {
             let fullDate = row['end-date']; // Example: "23.07.2024"
             let yearOnly = fullDate.split('.')[2]; // Extracts "2024"
-    
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td data-year="${yearOnly}">${fullDate}</td>
@@ -58,10 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${row.description || ''}</td>
                 <td>${row.skillset ? row.skillset.split(';').map(skill => skill.trim()).join(', ') : ''}</td>
             `;
-    
+        
             // Select the image AFTER tr is created
             const img = tr.querySelector('.hero-img');
     
+            // Mouseover: Show image and custom cursor
             // Mouseover: Show image and custom cursor
             tr.addEventListener('mouseover', () => {
                 console.log('Row filter value:', row.filter); // Debug the filter value
@@ -98,28 +169,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 nav.style.transition = 'background-color 0.5s';
                 document.body.style.backgroundColor = 'var(--white)';
                 nav.style.backgroundColor = 'var(--white)';
-                if (img) {
-                    img.style.visibility = 'hidden'; // ✅ Image is now hidden when mouse leaves row
-                }
+                if (img) img.style.visibility = 'hidden';
                 cursor.classList.remove('show');
             });
     
             tableBody.appendChild(tr);
         });
     
-        renderPagination();
+        // 🔹 Call Pagination Rendering
+        renderPagination(totalPages);
     }
+    
     
 
     // Render pagination
-    function renderPagination() {
-        pageNumbers.innerHTML = '';
-        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-        
-        console.log(`📌 Current Page: ${currentPage}, Total Pages: ${totalPages}, Total Items: ${filteredData.length}`);
+    function renderPagination(totalPages) {
+        pageNumbers.innerHTML = ''; // Clear pagination UI
     
-        if (totalPages === 0) return; // Prevents pagination from rendering if there's no data.
-    
+        // 🔹 **Ensure at least page "1" is always shown**
         for (let i = 1; i <= totalPages; i++) {
             const span = document.createElement('span');
             span.textContent = i;
@@ -134,6 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
             pageNumbers.appendChild(span);
         }
     
+        // 🔹 **Control visibility of Previous & Next Arrows**
+        prevButton.style.display = totalPages > 1 ? "inline-block" : "none";
+        nextButton.style.display = totalPages > 1 ? "inline-block" : "none";
+    
         prevButton.disabled = currentPage === 1;
         nextButton.disabled = currentPage >= totalPages;
     }
@@ -147,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             filteredData = data.filter(row =>
                 Array.from(activeFilters).some(filter => {
-                    if (filter === "ui") {
+                    if (filter === "ui" || filter === "favourite") {
                         // Special case: If 'UI' filter is selected, use includes()
                         return row.filter && row.filter.toLowerCase().includes(filter);
                     } else {

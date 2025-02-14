@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('project-title').textContent = workProject.title;
         document.getElementById('brief-info').textContent = projectData.overview;
 
+        // Update the head title to match the project title
+        document.title = "introducing '" + workProject.title + "'";
+
          // ✅ Set background color based on `filter` column
         const projectContext = document.getElementById('project-context');
         const returnToHome = document.getElementById('return-to-home');
@@ -199,7 +202,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(() => {
             populateNavigationBar();
-          }, 500);
+        }, 20);
+
+        setTimeout(animateOnScroll, 500);
+
 
 
     }
@@ -287,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (captionText) {
             // Create a new <p> element with class "caption"
             const captionP = document.createElement('p');
-            captionP.classList.add('caption');
+            captionP.classList.add('solo-caption');
             captionP.textContent = captionText;
             // Insert the caption element right after the image
             img.parentNode.insertBefore(captionP, img.nextSibling);
@@ -351,7 +357,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         
         console.log("✅ Navigation bar populated with", paraH2s.length, "items.");
-      }
+    }
+
+    // ✅ Function to animate .para elements on scroll
+    function animateOnScroll() {
+        const paras = document.querySelectorAll('.para');
+        const observerOptions = {
+            root: null, // Uses viewport
+            rootMargin: "0px",
+            threshold: 0.03 // Trigger when 20% of the element is visible
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Stops observing once it’s visible
+                }
+            });
+        }, observerOptions);
+
+        paras.forEach(para => observer.observe(para));
+    }
     
 
     // ✅ Step 5: Parse & Populate `#project-content`
