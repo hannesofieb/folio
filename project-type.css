@@ -45,6 +45,10 @@ div.row p{
     width: 80%;
 }
 
+p a{
+    text-decoration: underline;
+}
+
 
 /* -------------------- for mobile */
 @media screen and (max-width:650px) {

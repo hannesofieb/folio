@@ -41,220 +41,232 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ✅ Step 3: Process and match data
     function processData() {
-        // Find project in work-archive.csv
+        // --- Find project in work-archive.csv ---
         const workProject = workArchiveData.find(p => p['project-id'].trim() === projectId);
         if (!workProject) {
-            console.error(`❌ No project found in work-archive.csv with project-id: ${projectId}`);
-            return;
+          console.error(`❌ No project found in work-archive.csv with project-id: ${projectId}`);
+          return;
         }
-
-        // Find project in projects.csv
+      
+        // --- Find project in projects.csv ---
         const projectData = projectsData.find(p => p['project-id'].trim() === projectId);
         if (!projectData) {
-            console.error(`❌ No project found in projects.csv with project-id: ${projectId}`);
-            return;
+          console.error(`❌ No project found in projects.csv with project-id: ${projectId}`);
+          return;
         }
-
+      
         console.log("✅ Matched project:", workProject, projectData);
-
-        // ✅ Step 4: Populate `project.html`
+      
+        // --- Populate basic project elements ---
         document.getElementById('project-title').textContent = workProject.title;
         document.getElementById('brief-info').textContent = projectData.overview;
-
-        // Update the head title to match the project title
         document.title = "introducing '" + workProject.title + "'";
-
-         // ✅ Set background color based on `filter` column
-        const projectContext = document.getElementById('project-context');
-        const returnToHome = document.getElementById('return-to-home');
-
-        if (workProject.filter) {
-            const filterValue = workProject.filter.trim().toLowerCase(); // Normalize text
-            console.log(`🎨 Applying background for filter: ${filterValue}`);
-
-            if (filterValue.startsWith('ux')) {
-                projectContext.style.backgroundColor = 'var(--red)';
-                returnToHome.style.backgroundColor = 'var(--red)';
-            } else if (filterValue.startsWith('branding')) {
-                projectContext.style.backgroundColor = 'var(--yellow-buttermilk)';
-                returnToHome.style.backgroundColor = 'var(--yellow-buttermilk)';
-            } else if (filterValue.startsWith('service-design')) {
-                projectContext.style.backgroundColor = 'var(--green)';
-                returnToHome.style.backgroundColor = 'var(--green)';
-            } else if (filterValue.startsWith('game-design')) {
-                projectContext.style.backgroundColor = 'var(--pink)';
-                returnToHome.style.backgroundColor = 'var(--pink)';
-            } else if (filterValue.startsWith('creative-coding')) {
-                projectContext.style.backgroundColor = 'var(--blue-light)';
-                returnToHome.style.backgroundColor = 'var(--blue-light)';
-            } else {
-                console.log("⚪ No matching color category, keeping default.");
-            }
-        } else {
-            console.warn("⚠️ No filter value found, skipping background color change.");
-        }
-
-        // ✅ Ensure #hero-frame exists before manipulating it
+      
+        // --- Set background colors based on the filter using our new colouring() function ---
+        colouring(workProject);
+      
+        // --- Ensure #hero-frame exists ---
         const heroFrame = document.getElementById('hero-frame');
         if (!heroFrame) {
-            console.error("❌ #hero-frame not found in DOM");
-            return;
+          console.error("❌ #hero-frame not found in DOM");
+          return;
         }
-
-        // ✅ Insert the hero image from `work-archive.csv`
+      
+        // --- Process hero image ---
         let heroImgPath = workProject['hero-img'] ? workProject['hero-img'].trim() : "";
         console.log(`🖼️ Original Hero Image Path: "${heroImgPath}"`);
-
-        // Remove `./` from the start if it exists
         if (heroImgPath.startsWith('./')) {
-            heroImgPath = heroImgPath.substring(2);
+          heroImgPath = heroImgPath.substring(2);
         }
         console.log(`✅ Cleaned Hero Image Path: "${heroImgPath}"`);
-
-        // Ensure the frame is empty before adding new content
         heroFrame.innerHTML = '';
-
         if (heroImgPath) {
-            // Create the image element
-            const heroImg = document.createElement('img');
-            heroImg.src = heroImgPath;
-            heroImg.alt = workProject.title || "Project Image";
-
-            // 🔍 Debug: Check if image loads
-            heroImg.onload = function () {
-                console.log(`✅ Image loaded successfully: ${heroImgPath}`);
-            };
-            heroImg.onerror = function () {
-                console.error(`🚨 Image failed to load: ${heroImgPath}`);
-            };
-
-            // Append to hero frame
-            heroFrame.appendChild(heroImg);
-            console.log(`✅ Final Image Path: ${heroImg.src}`);
+          const heroImg = document.createElement('img');
+          heroImg.src = heroImgPath;
+          heroImg.alt = workProject.title || "Project Image";
+          heroImg.onload = function () {
+            console.log(`✅ Image loaded successfully: ${heroImgPath}`);
+          };
+          heroImg.onerror = function () {
+            console.error(`🚨 Image failed to load: ${heroImgPath}`);
+          };
+          heroFrame.appendChild(heroImg);
+          console.log(`✅ Final Image Path: ${heroImg.src}`);
         } else {
-            console.warn(`⚠️ No hero image found for project ${workProject.title}`);
+          console.warn(`⚠️ No hero image found for project ${workProject.title}`);
         }
-
-        // 🔍 Debug: Check if image is inside hero-frame
         setTimeout(() => {
-            console.log("🖼️ Hero Frame Content:", heroFrame.innerHTML);
-        }, 1000); // Delay check to ensure rendering
-
-            
-        // Calculate and display PROJECT DURATION
-        // Function to parse DD.MM.YYYY format into a JavaScript Date object
+          console.log("🖼️ Hero Frame Content:", heroFrame.innerHTML);
+        }, 1000);
+      
+        // --- Calculate and display project duration ---
         function parseDate(dateString) {
-            if (!dateString) return null;
-            const parts = dateString.split('.'); // Split "23.07.2024" -> ["23", "07", "2024"]
-            if (parts.length !== 3) return null;
-            return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`); // Convert to "YYYY-MM-DD"
+          if (!dateString) return null;
+          const parts = dateString.split('.');
+          if (parts.length !== 3) return null;
+          return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
         }
-        // Convert start and end dates properly
         const startDate = parseDate(projectData['start-date']);
         const endDate = parseDate(workProject['end-date']);
-        // Ensure both dates are valid before calculating
         if (startDate && endDate) {
-            const year = startDate.getFullYear(); // Extracts the year from the start date
-            const weeks = Math.round((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
-            document.getElementById('period').innerHTML = `<h3 class="timeline-label">Timeline</h3> ${year} — ${weeks} weeks`;
+          const year = startDate.getFullYear();
+          const weeks = Math.round((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+          document.getElementById('period').innerHTML = `<h3 class="timeline-label">Timeline</h3> ${year} — ${weeks} weeks`;
         } else {
-            console.error("❌ Invalid date detected:", projectData['start-date'], workProject['end-date']);
-            document.getElementById('period').innerHTML = `<span class="timeline-label">Timeline</span> Unknown`;
+          console.error("❌ Invalid date detected:", projectData['start-date'], workProject['end-date']);
+          document.getElementById('period').innerHTML = `<span class="timeline-label">Timeline</span> Unknown`;
         }
-
-        // Populate ROLES
+      
+        // --- Populate roles, tools, and remarks ---
         populateList(document.querySelector('#roles + ul'), projectData.roles);
-
-        // Populate TOOLS
         populateList(document.querySelector('#tools + ul'), projectData.tools);
-
-        // Populate remarks (if available)
-        // Populate remarks (if available) regardless of viewport size.
         const remarksContainer = document.getElementById('remarks');
         if (projectData.remarked.trim()) {
-            populateList(remarksContainer.querySelector('ul'), projectData.remarked);
-            // Now, if the viewport is wide (desktop), show the remarks;
-            // otherwise, hide them (mobile).
-            if (window.innerWidth > 800) {
-                remarksContainer.style.display = 'block';
-            } else {
-                remarksContainer.style.display = 'none';
-            }
+          populateList(remarksContainer.querySelector('ul'), projectData.remarked);
+          remarksContainer.style.display = window.innerWidth > 800 ? 'block' : 'none';
         } else {
-            remarksContainer.style.display = 'none';
+          remarksContainer.style.display = 'none';
         }
-        
-
-
-        // Populate project content
+      
+        // --- Populate main project content (which may include .para and .reflection elements) ---
         populateProjectContent(projectData);
-
-        // Update next/prev project navigation
+      
+        // --- Update next/prev project navigation ---
         updateProjectNavigation(projectId);
         console.log("📌 Checking projectData keys:", Object.keys(projectData));
-
-        setTimeout(initCarousels, 500);  // Adjust delay if needed
+      
+        // --- Initialize additional features ---
+        setTimeout(initCarousels, 500);
         addSoloCaptions();
-
-        setTimeout(() => {
-            initPrototypesCarousel();
-        }, 500);
-
-        setTimeout(() => {
-            populateNavigationBar();
-        }, 20);
-
+        setTimeout(() => { initPrototypesCarousel(); }, 500);
+        setTimeout(() => { populateNavigationBar(); }, 20);
         setTimeout(animateOnScroll, 500);
-
-
-
-    }
+      }
 
     // ✅ Update next/prev project navigation
     function updateProjectNavigation(currentProjectId) {
         const prevButton = document.getElementById('prev-proj');
         const nextButton = document.getElementById('next-proj');
     
-        // Extract all project IDs from `projectsData`
-        const projectIds = projectsData.map(p => p['project-id']).filter(Boolean); // Removes empty/null values
+        // 🔹 **Filter projectsData to include only those with "div.reflection"**
+        const filteredProjects = projectsData.filter(project => 
+            Object.keys(project).some(key => key.startsWith("para") && project[key] && project[key].includes("div.reflection"))
+        );
+    
+        // Extract project IDs from filtered projects
+        const projectIds = filteredProjects.map(p => p['project-id']).filter(Boolean); // Removes empty/null values
     
         // Find index of the current project
         const currentIndex = projectIds.indexOf(currentProjectId);
         if (currentIndex === -1) {
-            console.error(`❌ Project ID ${currentProjectId} not found in project list.`);
+            console.error(`❌ Project ID ${currentProjectId} not found in filtered project list.`);
             return;
         }
     
-        // Determine previous and next project IDs
+        // Determine previous and next project IDs **(only from filtered projects)**
         const prevProjectId = currentIndex > 0 ? projectIds[currentIndex - 1] : null;
         const nextProjectId = currentIndex < projectIds.length - 1 ? projectIds[currentIndex + 1] : null;
     
-        // Update previous button
+        // ✅ Update Previous Button
         if (prevProjectId) {
             prevButton.style.cursor = "pointer";
+            prevButton.style.opacity = "1"; // Reset opacity
+            prevButton.style.pointerEvents = "auto"; // Enable click
             prevButton.addEventListener('click', () => {
                 window.location.href = `project.html?project-id=${prevProjectId}`;
             });
         } else {
             prevButton.style.opacity = "0.3"; // Disable button visually
             prevButton.style.pointerEvents = "none"; // Prevent click
-            prevButton.style.cursor = "not-allowed"; // ✅ Correct button
+            prevButton.style.cursor = "not-allowed"; // Disable button
         }
     
-        // Update next button
+        // ✅ Update Next Button
         if (nextProjectId) {
             nextButton.style.cursor = "pointer";
+            nextButton.style.opacity = "1"; // Reset opacity
+            nextButton.style.pointerEvents = "auto"; // Enable click
             nextButton.addEventListener('click', () => {
                 window.location.href = `project.html?project-id=${nextProjectId}`;
             });
         } else {
             nextButton.style.opacity = "0.3"; // Disable button visually
             nextButton.style.pointerEvents = "none"; // Prevent click
-            nextButton.style.cursor = "not-allowed"; // ✅ Correct button
+            nextButton.style.cursor = "not-allowed"; // Disable button
         }
     }
-    
 
+    // ✅ Determine the accent color based on workProject.filter 
+    function colouring(workProject) {
+        const projectContext = document.getElementById('project-context');
+        const returnToHome = document.getElementById('return-to-home');
+        // Use querySelectorAll with a compound selector to find reflections inside .para
+        const reflections = document.querySelectorAll('.para .reflection');
+        console.log("Reflections found:", reflections.length);
+      
+        // Determine chosenColor based on filter value.
+        let chosenColor = '';
+        if (workProject.filter) {
+          const filterValue = workProject.filter.trim().toLowerCase();
+          console.log(`🎨 Applying background for filter: ${filterValue}`);
+      
+          if (filterValue.startsWith('ux')) {
+            chosenColor = 'var(--red)';
+          } else if (filterValue.startsWith('branding')) {
+            chosenColor = 'var(--yellow-buttermilk)';
+          } else if (filterValue.startsWith('service-design')) {
+            chosenColor = 'var(--green)';
+          } else if (filterValue.startsWith('game-design')) {
+            chosenColor = 'var(--pink)';
+          } else if (filterValue.startsWith('creative-coding')) {
+            chosenColor = 'var(--blue-light)';
+          } else {
+            console.log("⚪ No matching color category, keeping default.");
+          }
+      
+          if (chosenColor) {
+            // Update background colors of the main elements.
+            projectContext.style.backgroundColor = chosenColor;
+            returnToHome.style.backgroundColor = chosenColor;
+      
+            // Update any existing .reflection elements inside .para.
+            Array.from(reflections).forEach(el => {
+              el.style.backgroundColor = chosenColor;
+              el.style.borderWidth = "20px";
+              el.style.borderStyle = "solid";
+              el.style.borderColor = chosenColor;
+            });
+      
+            // Inject a dynamic CSS rule so that links inside .para use chosenColor on hover.
+            const styleEl = document.createElement('style');
+            styleEl.innerHTML = `.para a:hover { color: ${chosenColor} !important; }`;
+            document.head.appendChild(styleEl);
+          }
+        } else {
+          console.warn("⚠️ No filter value found, skipping background color change.");
+        }
+        // Optionally, use a MutationObserver to update any future .reflection elements.
+        observeReflections(chosenColor);
+      }
+    
+    // ✅ Helper: Colour reflections
+    function observeReflections(color) {
+        const targetNode = document.getElementById('project-content');
+        if (!targetNode) return;
+        const config = { childList: true, subtree: true };
+        const callback = (mutationsList, observer) => {
+          const newReflections = document.querySelectorAll('.para .reflection');
+          console.log("MutationObserver: Reflections found:", newReflections.length);
+          newReflections.forEach(el => {
+            el.style.backgroundColor = color;
+            el.style.borderWidth = "20px";
+            el.style.borderStyle = "solid";
+            el.style.borderColor = color;
+          });
+        };
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+      }
     // ✅ Helper: Populate List Elements
     function populateList(ulElement, csvValue) {
         ulElement.innerHTML = '';
@@ -486,51 +498,93 @@ document.addEventListener('DOMContentLoaded', function () {
         let innerContent = content.substring(tagNameEnd + 1, j - 1);
     
         // Special handling for img tags.
-// Special handling for img tags.
-if (tagName.toLowerCase() === 'img') {
-    let imgEl = document.createElement('img');
-    let srcText = innerContent;  // default: the whole inner content
-    let altText = '';
-    let captionText = '';
+            // Special handling for img, a, and iframe tags.
+            if (tagName.toLowerCase() === 'img') {
+        let imgEl = document.createElement('img');
+        let srcText = innerContent;  // default: use the whole inner content as src
+        let altText = '';
+        let captionText = '';
 
-    // Log to verify what innerContent is.
-    console.log("Processing img innerContent:", innerContent);
+        // Log to verify what innerContent is.
+        console.log("Processing img innerContent:", innerContent);
 
-    // Look for the first '{'
-    let altStart = innerContent.indexOf('{');
-    if (altStart !== -1) {
-        // Everything before '{' is used as the src.
-        srcText = innerContent.substring(0, altStart).trim();
+        // Look for the first '{'
+        let altStart = innerContent.indexOf('{');
+        if (altStart !== -1) {
+            // Everything before '{' is used as the src.
+            srcText = innerContent.substring(0, altStart).trim();
 
-        // Use indexOf() (not lastIndexOf) to find the first closing '}' after the '{'
-        let altEnd = innerContent.indexOf('}', altStart + 1);
-        if (altEnd !== -1 && altEnd > altStart) {
-            // Extract the string inside the curly braces.
-            let altCaption = innerContent.substring(altStart + 1, altEnd).trim();
-            console.log("altCaption:", altCaption);
-            // Split on the first semicolon only. Using split with a limit of 2 ensures we get at most two parts.
-            let parts = altCaption.split(";", 2);
-            console.log("Parts from altCaption:", parts);
-            altText = parts[0].trim();
-            if (parts.length > 1) {
-                captionText = parts[1].trim();
+            // Find the first closing '}' after the '{'
+            let altEnd = innerContent.indexOf('}', altStart + 1);
+            if (altEnd !== -1 && altEnd > altStart) {
+                // Extract the string inside the curly braces.
+                let altCaption = innerContent.substring(altStart + 1, altEnd).trim();
+                console.log("altCaption:", altCaption);
+                // Split on the first semicolon only (limit to 2 parts).
+                let parts = altCaption.split(";", 2);
+                console.log("Parts from altCaption:", parts);
+                altText = parts[0].trim();
+                if (parts.length > 1) {
+                    captionText = parts[1].trim();
+                }
             }
         }
-    }
-    imgEl.src = srcText;
-    imgEl.alt = altText;
-    // Set the data-caption attribute if a caption was provided.
-    if (captionText) {
-        imgEl.setAttribute('data-caption', captionText);
-    }
-
-    console.log(`🖼️ Processed Image: src="${imgEl.src}", alt="${imgEl.alt}", caption="${captionText}"`);
-    return imgEl;
-
-
-
+        imgEl.src = srcText;
+        imgEl.alt = altText;
+        // Set the data-caption attribute if a caption was provided.
+        if (captionText) {
+            imgEl.setAttribute('data-caption', captionText);
+        }
+        console.log(`🖼️ Processed Image: src="${imgEl.src}", alt="${imgEl.alt}", caption="${captionText}"`);
+        return imgEl;
+            } else if (tagName.toLowerCase() === 'a') {
+                // Create anchor element and ensure it opens in a new tab.
+                let aEl = document.createElement('a');
+                aEl.setAttribute('target', '_blank'); // Always open links in a new tab
+                
+                // Check if innerContent contains a semicolon.
+                if (innerContent.indexOf(';') !== -1) {
+                  // Split on the first semicolon (limit to 2 parts).
+                  let parts = innerContent.split(";", 2);
+                  // Set the link text and href from the two parts.
+                  aEl.textContent = parts[0].trim();
+                  aEl.href = parts[1].trim();
+                } else {
+                  // Otherwise, use the entire innerContent as the link text.
+                  aEl.textContent = innerContent;
+                }
+                
+                // If no href was set (or it's an empty string), provide a default.
+                if (!aEl.hasAttribute('href') || aEl.href.trim() === "") {
+                  aEl.href = "#";
+                }
+                
+                return aEl;
+        } else if (tagName.toLowerCase() === 'iframe') {
+            // For iframes, assume innerContent contains valid HTML embed code.
+            // Create a temporary container, set its innerHTML, then get the iframe.
+            let tempContainer = document.createElement('div');
+            tempContainer.innerHTML = innerContent;
+            let iframe = tempContainer.firstElementChild;
+          
+            // Force the iframe to use 100% width.
+            iframe.style.width = "100%";
+          
+            // If the iframe element has width and height attributes,
+            // compute the aspect ratio and apply it using the CSS aspect-ratio property.
+            let originalWidth = iframe.getAttribute('width');
+            let originalHeight = iframe.getAttribute('height');
+            if (originalWidth && originalHeight) {
+              // Set the aspect ratio (modern browsers support this)
+              iframe.style.aspectRatio = `${originalWidth} / ${originalHeight}`;
+              // Remove the old width/height attributes so they don't conflict.
+              iframe.removeAttribute('width');
+              iframe.removeAttribute('height');
+            }
+          
+            return iframe;
         } else {
-            // For other tags, create the element normally.
+            // For all other tags, create the element normally.
             let parentEl = document.createElement(tagName);
             // For div tags, always add the default class "same-topic"
             if (tagName.toLowerCase() === 'div') {
@@ -544,8 +598,8 @@ if (tagName.toLowerCase() === 'img') {
             let childFragments = parseNestedContent(innerContent);
             childFragments.forEach(child => parentEl.appendChild(child));
             return parentEl;
-        }
     }
+}
     
     // New parseTagContent uses splitTopLevel() and then processes each chunk.
     function parseTagContent(content) {
@@ -557,6 +611,7 @@ if (tagName.toLowerCase() === 'img') {
         });
         return elements;
     }
+
   
     function parseNestedContent(text) {
         let fragments = [];
@@ -581,59 +636,76 @@ if (tagName.toLowerCase() === 'img') {
             // Expect nestedString to be like: nestedTag[child content]
             let bracketIdx = nestedString.indexOf('[');
             if (bracketIdx !== -1) {
+              // Get the tag name (which may also include class or id info)
               let nestedTag = nestedString.substring(0, bracketIdx).trim();
               let nestedClassName = '';
               let nestedIdName = '';
       
-              // Handle class and ID for nested elements
+              // If the tag name contains a class (.) or an id (#), split them out.
               if (nestedTag.includes('.')) {
                 [nestedTag, nestedClassName] = nestedTag.split('.');
               }
               if (nestedTag.includes('#')) {
-                  [nestedTag, nestedIdName] = nestedTag.split('#');
+                [nestedTag, nestedIdName] = nestedTag.split('#');
               }
       
-              // Get the inner content (everything after the '[' up to the last character before the closing bracket)
+              // Get the inner content from after the '[' up to just before the closing ']'
               let nestedChildContent = nestedString.substring(bracketIdx + 1, nestedString.length - 1);
               let nestedEl;
       
-              // Special handling for an img tag in nested context:
-              // Inside parseNestedContent()
+              // === Special handling for an <img> tag ===
               if (nestedTag.toLowerCase() === 'img') {
                 nestedEl = document.createElement('img');
                 let altText = '';
                 let captionText = '';
-                let srcText = nestedChildContent; // by default, the entire content
-                // Use indexOf to find the first '{'
+                let srcText = nestedChildContent; // default: use all inner content as the source
+      
+                // Look for the first '{' inside the inner content
                 let altStart = nestedChildContent.indexOf('{');
                 if (altStart !== -1) {
-                    // Everything before '{' is used as the src.
-                    srcText = nestedChildContent.substring(0, altStart).trim();
-                    // Use indexOf (not lastIndexOf) to find the first '}' after altStart.
-                    let altEnd = nestedChildContent.indexOf('}', altStart + 1);
-                    if (altEnd !== -1 && altEnd > altStart) {
-                        // Extract the string inside the curly braces.
-                        let altCaption = nestedChildContent.substring(altStart + 1, altEnd).trim();
-                        // Split on the first semicolon only.
-                        let parts = altCaption.split(";", 2);
-                        if (parts.length >= 1) {
-                            altText = parts[0].trim();
-                        }
-                        if (parts.length >= 2) {
-                            captionText = parts[1].trim();
-                        }
+                  // Everything before '{' is used as the source URL
+                  srcText = nestedChildContent.substring(0, altStart).trim();
+                  // Use indexOf (not lastIndexOf) to find the first '}' after the '{'
+                  let altEnd = nestedChildContent.indexOf('}', altStart + 1);
+                  if (altEnd !== -1 && altEnd > altStart) {
+                    // Extract the string inside the curly braces
+                    let altCaption = nestedChildContent.substring(altStart + 1, altEnd).trim();
+                    // Split on the first semicolon only (limit to 2 parts)
+                    let parts = altCaption.split(";", 2);
+                    if (parts.length >= 1) {
+                      altText = parts[0].trim();
                     }
+                    if (parts.length >= 2) {
+                      captionText = parts[1].trim();
+                    }
+                  }
                 }
                 nestedEl.src = srcText;
                 nestedEl.alt = altText;
                 if (captionText) {
-                    nestedEl.setAttribute("data-caption", captionText);
+                  nestedEl.setAttribute("data-caption", captionText);
                 }
                 if (nestedClassName) nestedEl.classList.add(nestedClassName);
                 if (nestedIdName) nestedEl.id = nestedIdName;
-            }
-
-              // Special handling for "ul": split on semicolons into <li> elements.
+              }
+              // === New branch: Special handling for an <a> tag ===
+              else if (nestedTag.toLowerCase() === 'a') {
+                // Create the anchor element and force it to open in a new tab
+                nestedEl = document.createElement('a');
+                nestedEl.setAttribute('target', '_blank');
+                // Check if the inner content contains a semicolon
+                if (nestedChildContent.indexOf(';') !== -1) {
+                  // Split the inner content into text and href parts (limit to 2 parts)
+                  let parts = nestedChildContent.split(";", 2);
+                  nestedEl.textContent = parts[0].trim(); // The first part is the link text
+                  nestedEl.href = parts[1].trim();        // The second part is the URL
+                } else {
+                  // If no semicolon, simply use the inner content as text and default href
+                  nestedEl.textContent = nestedChildContent;
+                  nestedEl.href = "#";
+                }
+              }
+              // === Handling for a <ul> tag ===
               else if (nestedTag.toLowerCase() === 'ul') {
                 nestedEl = document.createElement('ul');
                 if (nestedClassName) nestedEl.classList.add(nestedClassName);
@@ -647,7 +719,7 @@ if (tagName.toLowerCase() === 'img') {
                     nestedEl.appendChild(li);
                   });
               }
-              // Handling for dash-separated nested tags (e.g. "p-em")
+              // === Handling for dash-separated nested tags (e.g., "p-em") ===
               else if (nestedTag.indexOf('-') !== -1) {
                 let parts = nestedTag.split('-');
                 let parentTag = parts[0].trim();
@@ -658,7 +730,7 @@ if (tagName.toLowerCase() === 'img') {
                 childEl.textContent = nestedChildContent;
                 nestedEl.appendChild(childEl);
               }
-              // For all other nested tags, create the element and set its text content.
+              // === For all other nested tags, create the element normally ===
               else {
                 nestedEl = document.createElement(nestedTag);
                 if (nestedClassName) nestedEl.classList.add(nestedClassName);
@@ -687,7 +759,8 @@ if (tagName.toLowerCase() === 'img') {
           }
         }
         return fragments;
-    }
+      }
+      
 
 
       

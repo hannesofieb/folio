@@ -197,11 +197,8 @@ div.inline{
 }
 
 .reflection{
-    background-color: var(--red);
     width: 100%;
-    border: 20px solid var(--red);
     border-radius: 50px;
-    /* width: 100vw; */
     margin-left: -2%;
 }
 
