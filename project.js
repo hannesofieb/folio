@@ -63,8 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.title = "introducing '" + workProject.title + "'";
       
         // --- Set background colors based on the filter using our new colouring() function ---
+        setTimeout(() => { 
         colouring(workProject);
-      
+        }, 600);
+            
         // --- Ensure #hero-frame exists ---
         const heroFrame = document.getElementById('hero-frame');
         if (!heroFrame) {
@@ -134,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // --- Update next/prev project navigation ---
         updateProjectNavigation(projectId);
         console.log("📌 Checking projectData keys:", Object.keys(projectData));
+
+        colouring(workProject);
+
       
         // --- Initialize additional features ---
         setTimeout(initCarousels, 500);
@@ -198,18 +203,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ✅ Determine the accent color based on workProject.filter 
     function colouring(workProject) {
+        console.log("=== Inside colouring() ===");
+        
+        // Get main elements
         const projectContext = document.getElementById('project-context');
         const returnToHome = document.getElementById('return-to-home');
-        // Use querySelectorAll with a compound selector to find reflections inside .para
+        
+        // Use querySelectorAll to get all .reflection elements inside any .para, and all .underline elements.
         const reflections = document.querySelectorAll('.para .reflection');
         console.log("Reflections found:", reflections.length);
-      
-        // Determine chosenColor based on filter value.
+        const underlineElements = document.querySelectorAll('.underline');
+        console.log("Underline elements found:", underlineElements.length);
+        
         let chosenColor = '';
         if (workProject.filter) {
           const filterValue = workProject.filter.trim().toLowerCase();
-          console.log(`🎨 Applying background for filter: ${filterValue}`);
-      
+          console.log("Filter value:", filterValue);
+          
+          // Determine chosenColor based on filter value.
           if (filterValue.startsWith('ux')) {
             chosenColor = 'var(--red)';
           } else if (filterValue.startsWith('branding')) {
@@ -221,33 +232,55 @@ document.addEventListener('DOMContentLoaded', function () {
           } else if (filterValue.startsWith('creative-coding')) {
             chosenColor = 'var(--blue-light)';
           } else {
-            console.log("⚪ No matching color category, keeping default.");
+            console.log("⚪ No matching color category, chosenColor remains empty.");
           }
-      
+          
+          console.log("Chosen color before resolving:", chosenColor);
+          
+          // Resolve CSS variable if necessary.
+          if (chosenColor.startsWith('var(')) {
+            const varName = chosenColor.slice(4, -1).trim();
+            const computedValue = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            console.log(`Resolved ${varName} to:`, computedValue);
+            chosenColor = computedValue;
+          }
+          console.log("Final chosen color:", chosenColor);
+          
           if (chosenColor) {
-            // Update background colors of the main elements.
+            // Update background colors on main elements.
             projectContext.style.backgroundColor = chosenColor;
             returnToHome.style.backgroundColor = chosenColor;
-      
-            // Update any existing .reflection elements inside .para.
-            Array.from(reflections).forEach(el => {
+            console.log("Set projectContext and returnToHome background to:", chosenColor);
+            
+            // Update each .reflection element.
+            reflections.forEach((el, index) => {
+              console.log(`Updating reflection element ${index}: current background = "${el.style.backgroundColor}"`);
               el.style.backgroundColor = chosenColor;
-              el.style.borderWidth = "20px";
-              el.style.borderStyle = "solid";
-              el.style.borderColor = chosenColor;
+              el.style.border = "20px solid " + chosenColor;
+              console.log(`Reflection element ${index} updated: border = "${el.style.border}"`);
             });
-      
-            // Inject a dynamic CSS rule so that links inside .para use chosenColor on hover.
+            
+            // Update each .underline element.
+            underlineElements.forEach((el, index) => {
+              console.log(`Updating underline element ${index}: current background = "${el.style.backgroundColor}"`);
+              el.style.backgroundColor = chosenColor;
+              console.log(`Underline element ${index} updated: background = "${el.style.backgroundColor}"`);
+            });
+            
+            // Dynamically inject a CSS rule so that links inside .para change color on hover.
             const styleEl = document.createElement('style');
             styleEl.innerHTML = `.para a:hover { color: ${chosenColor} !important; }`;
             document.head.appendChild(styleEl);
+            console.log("Injected dynamic CSS rule for .para a:hover");
           }
         } else {
-          console.warn("⚠️ No filter value found, skipping background color change.");
+          console.warn("⚠️ No filter value found in workProject, skipping background color change.");
         }
-        // Optionally, use a MutationObserver to update any future .reflection elements.
+        
+        // Optionally, observe future changes in .reflection elements.
         observeReflections(chosenColor);
       }
+      
     
     // ✅ Helper: Colour reflections
     function observeReflections(color) {
