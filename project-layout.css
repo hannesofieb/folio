@@ -208,11 +208,13 @@ div.inline{
 
 .small-gallery, .small-gallery-tall{
     width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
     margin: 2% 0 10% 0;
+    gap: 20px;
 }
 
 .small-gallery-tall{
