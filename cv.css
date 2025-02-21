@@ -1,0 +1,75 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--white);
+    overflow-x: hidden;
+}
+
+/* ------------------------------- CV-MARGIN */
+
+#cv-margin {
+    position: fixed;  /* Fixes the element to the viewport */
+    top: 0;
+    left: 0;
+    width: 30vw;      /* Sidebar width */
+    height: 100vh;    /* Full viewport height */
+    overflow-y: auto; /* (Optional) Enable vertical scroll in the sidebar if content overflows */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+#cv-margin a{
+    height: auto;
+}
+#cv-margin #back{
+    margin: 2rem;
+    width: 150px;
+    height: 150px;
+    background-color: rgb(65, 173, 73);
+}
+/* ------------------------------- CV-MAIN */
+#cv-main {
+    margin-left: 30vw; /* Leave space for the fixed sidebar */
+    margin-bottom: 4rem;
+    padding-right:2vw;
+    width: 68vw;       /* Adjust as needed */
+    height: 100%;     /* If you want it to take full viewport height */
+    overflow-y: auto;  /* Enable vertical scrolling for main content */
+  }
+
+#cv-main .contact{
+    margin: 4rem 0;
+}
+
+#experiences{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin: 4rem 0;
+}
+
+.col-1, .col-2{
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+}
+
+.col-1{
+    width: 40%;
+}
+
+.col-2{
+    width: 60%;
+}
+
+#education, #skillsets, #work-exp{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2rem;
+}

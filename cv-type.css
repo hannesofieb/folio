@@ -1,0 +1,37 @@
+#cv-margin h1{
+    margin: 2rem;
+    color: rgb(65, 173, 73);
+}
+
+#cv-main h2{
+    font-size: 1.5em;
+    margin: 0;
+}
+
+#cv-main .contact p{
+    font-size: 1em;
+    line-height: 0.5em;
+}
+
+#cv-main .contact a:hover{
+    text-decoration: underline;
+    color: rgb(65, 173, 73);
+}
+
+#cv-main .group h3{
+    font-size: 1.3em;
+    line-height: 1em;
+    margin: 0;
+}
+
+#cv-main .group p{
+    font-size: 1.2em;
+    line-height: 1.3em;
+    margin: 0.5rem 0;
+}
+
+#cv-main .group .date{
+    font-size: 1em;
+    line-height: 1em;
+    color: rgb(var(--black), 0.5);
+}
