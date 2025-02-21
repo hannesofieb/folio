@@ -530,14 +530,16 @@ div.inline{
     }
 
     .small-gallery, .small-gallery-tall{
-        width: 100%;
+        width: 96%;
         flex-direction: row;
-        gap: 20px;
+        gap: 5px;
+        margin: 1.5rem;
     }
     
     .small-gallery-tall{
-        height: 70vh;
+        height: 40vh;
         flex-wrap: nowrap;
+
     }
     
     .small-gallery img{
@@ -626,6 +628,26 @@ div.inline{
     #project-content .display-caption {
         font-size: 1em;
         text-align: center;
+    }
+
+    .prototypes{
+        height: 70vh;
+    }
+    
+    
+    .prototypes::-webkit-scrollbar {
+        display: none;
+      }
+    
+    
+    .prototype-container{
+        height: 100%;
+    }
+    
+    .prototype-container img{
+        width:100%;
+        height: 90%;
+        margin-right: 2%;
     }
 
 }
