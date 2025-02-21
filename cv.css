@@ -26,10 +26,11 @@ body{
 }
 #cv-margin #back{
     margin: 2rem;
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     background-color: rgb(65, 173, 73);
 }
+
 /* ------------------------------- CV-MAIN */
 #cv-main {
     margin-left: 30vw; /* Leave space for the fixed sidebar */
@@ -72,4 +73,57 @@ body{
     flex-direction: column;
     gap: 10px;
     margin-top: 2rem;
+}
+
+/* ------------------------------- MOBILE VIEW */
+
+@media screen and (max-width:800px){
+    body{
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+
+    #cv-margin{
+        flex-direction: row;
+        height: 25vh;
+        width: 100vw;
+    }
+
+    #cv-main{
+        margin-top: 25vh;
+        margin-left: 2rem;
+        margin-bottom: 0;
+        width: 95vw;
+        height: auto;
+    }
+}
+
+@media screen and (max-width:650px){
+    body{
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+
+    #cv-margin{
+        flex-direction: row;
+        height: 25vh;
+        width: 100vw;
+    }
+
+    #cv-main{
+        margin-top: 25vh;
+        margin-left: 2rem;
+        margin-bottom: 0;
+        width: 95vw;
+        height: auto;
+    }
+
+    #experiences{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .col-1,.col-2{
+        width: 100%;
+    }
 }
