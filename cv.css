@@ -68,16 +68,20 @@ body{
     width: 40%;
 }
 
-#education, #extra-cur,#skillsets, #langs, #work-exp{
+#education, #extra-cur,#addit, #skillsets, #langs, #work-exp{
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 3rem;
 }
 
+#cv-main ul li{
+    list-style: square;
+}
+
 /* ------------------------------- MOBILE VIEW */
 
-@media screen and (max-width:800px){
+@media screen and (max-width:930px){
     body{
         flex-direction: column;
         margin-bottom: 0;
@@ -98,7 +102,7 @@ body{
     }
 }
 
-@media screen and (max-width:650px){
+@media screen and (max-width:670px){
     body{
         flex-direction: column;
         margin-bottom: 0;
@@ -126,4 +130,19 @@ body{
     .col-1,.col-2{
         width: 100%;
     }
+}
+
+@media screen and (max-width:600) {
+    #cv-margin{
+        height: 150px;
+    }
+    
+    #cv-main{
+        margin-top: 190px;
+    }
+
+    #cv-main .contact{
+        margin: 0 0 2rem 0;
+    }
+    
 }

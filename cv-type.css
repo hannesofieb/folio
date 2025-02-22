@@ -13,7 +13,7 @@
     line-height: 0.5em;
 }
 
-#cv-main .contact a:hover{
+#cv-main a:hover{
     text-decoration: underline;
     color: rgb(65, 173, 73);
 }
@@ -24,7 +24,7 @@
     margin: 0;
 }
 
-#cv-main .group p{
+#cv-main .group p, #cv-main ul li{
     font-size: 1.2em;
     line-height: 1.3em;
     margin: 0.5rem 0;
@@ -34,4 +34,18 @@
     font-size: 1em;
     line-height: 1em;
     color: rgb(var(--black), 0.5);
+}
+
+@media screen and (max-width:600px){
+    #cv-margin h1{
+        margin-bottom: 0;
+    }
+
+    #cv-main h2{
+        padding: 0;
+    }
+
+    #cv-main p{
+        padding: 0;
+    }
 }
