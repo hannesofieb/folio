@@ -61,18 +61,18 @@ body{
 }
 
 .col-1{
-    width: 40%;
-}
-
-.col-2{
     width: 60%;
 }
 
-#education, #skillsets, #work-exp{
+.col-2{
+    width: 40%;
+}
+
+#education, #extra-cur,#skillsets, #langs, #work-exp{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 /* ------------------------------- MOBILE VIEW */
