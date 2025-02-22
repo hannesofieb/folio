@@ -134,9 +134,9 @@ body{
 
 @media screen and (max-width:600) {
     #cv-margin{
-        height: 150px;
+        height: 120px;
     }
-    
+
     #cv-main{
         margin-top: 190px;
     }
