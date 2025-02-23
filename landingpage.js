@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth > 600) {
                 cursor.classList.add('show');
                 cursor.style.color = colors[4];
-                cursor.textContent = 'expand \u2197'; // Add the glyph U+2197 at the end of 'expand'
+                cursor.textContent = 'wow'; 
+                // cursor.textContent = 'expand \u2197'; 
                 console.log(`Font used for cursor: ${window.getComputedStyle(cursor).fontFamily}`);
             } else {
                 milestone.style.cursor = 'pointer';
