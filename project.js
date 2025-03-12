@@ -738,6 +738,36 @@ document.addEventListener('DOMContentLoaded', function () {
                   nestedEl.href = "#";
                 }
               }
+              else if (nestedTag.toLowerCase() === 'hover') {
+                // Create a <p> element that will hold the hover content.
+                const hoverEl = document.createElement('p');
+                hoverEl.classList.add('hover'); // add a class for targeted styling
+                
+                // Check if the inner content contains a semicolon.
+                if (nestedChildContent.indexOf(';') !== -1) {
+                    // Split the content into two parts: the display text and the image path.
+                    const parts = nestedChildContent.split(";", 2);
+                    const textContent = parts[0].trim();  // e.g., "portfolio trend discovery"
+                    const imgPath = parts[1].trim();      // e.g., "assets/proj/folio/disc.jpg"
+                    
+                    // Set the text content of the paragraph.
+                    hoverEl.textContent = textContent;
+                    
+                    // Create an image element that will appear at the end of the text.
+                    const imgEl = document.createElement('img');
+                    imgEl.src = imgPath;
+                    imgEl.alt = ""; // set alt text as needed
+                    imgEl.classList.add('hover-img'); // add a class for CSS styling
+                    
+                    // Append the image element so that it follows the text.
+                    hoverEl.appendChild(imgEl);
+                } else {
+                    // If no semicolon is found, just display the text.
+                    hoverEl.textContent = nestedChildContent;
+                }
+                // Assign the constructed element to nestedEl so it gets added to the DOM.
+                nestedEl = hoverEl;
+            }
               // === Handling for a <ul> tag ===
               else if (nestedTag.toLowerCase() === 'ul') {
                 nestedEl = document.createElement('ul');
