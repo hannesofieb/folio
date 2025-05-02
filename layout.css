@@ -342,6 +342,21 @@ th#proj-tags{
     visibility: visible;
 }
 
+.skillset-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid var(--black);
+    color: var(--black);
+    white-space: nowrap;
+}
+
+
 /* click to see more projects section */
 #pagination {
     display: flex;

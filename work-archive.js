@@ -134,7 +134,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${row['hero-img']}" class="hero-img" alt="${row.title}" style="visibility: hidden;">
                 </td>
                 <td>${row.description || ''}</td>
-                <td>${row.skillset ? row.skillset.split(';').map(skill => skill.trim()).join(', ') : ''}</td>
+                <td>
+                    <div class="skillset-tags">
+                        ${row.skillset ? row.skillset.split(';').map(skill => 
+                            `<div class="skill-tag">${skill.trim()}</div>`).join('') : ''}
+                    </div>
+                </td>
             `;
         
             // Select the image AFTER tr is created
