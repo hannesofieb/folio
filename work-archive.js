@@ -121,11 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // 🔹 Render Table Rows
         paginatedData.forEach(row => {
             let fullDate = row['end-date']; // Example: "23.07.2024"
-            let yearOnly = fullDate.split('.')[2]; // Extracts "2024"
+            let [day, month, year] = fullDate.split('.');
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let formattedDate = `${monthNames[parseInt(month, 10) - 1]} ${year}`;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td data-year="${yearOnly}">${fullDate}</td>
+                <td data-year="${year}">${formattedDate}</td>
                 <td class="proj-title">
                     ${row.title}
                     <img src="${row['hero-img']}" class="hero-img" alt="${row.title}" style="visibility: hidden;">
