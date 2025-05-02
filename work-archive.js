@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
-        // 🔹 Filter before paginating
+        // 🔹 Filter and sort projects by date
         const filteredProjects = filteredData.filter(row => {
             console.log(`🔎 Checking project-id: "${row['project-id']}"`);
     
@@ -103,9 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
             console.log(`🔎 Project "${row['project-id']}" has reflection? ${hasReflection}`);
             return hasReflection;
+        }).sort((a, b) => {
+            // Sort by end-date in descending order (most recent first)
+            const dateA = new Date(a['end-date'].split('.').reverse().join('-'));
+            const dateB = new Date(b['end-date'].split('.').reverse().join('-'));
+            return dateB - dateA;
         });
 
-        console.log(`📌 Projects to Show: ${filteredProjects.length}`);
+        console.log(`📌 Projects to Show (Sorted by Date): ${filteredProjects.length}`);
 
         // 🔹 **Pagination Calculation (AFTER Filtering)**
         const totalPages = Math.max(1, Math.ceil(filteredProjects.length / rowsPerPage)); // Always at least 1 page

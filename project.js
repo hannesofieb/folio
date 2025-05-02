@@ -150,56 +150,76 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ✅ Update next/prev project navigation
     function updateProjectNavigation(currentProjectId) {
-        const prevButton = document.getElementById('prev-proj');
-        const nextButton = document.getElementById('next-proj');
-    
-        // 🔹 **Filter projectsData to include only those with "div.reflection"**
-        const filteredProjects = projectsData.filter(project => 
-            Object.keys(project).some(key => key.startsWith("para") && project[key] && project[key].includes("div.reflection"))
-        );
-    
-        // Extract project IDs from filtered projects
-        const projectIds = filteredProjects.map(p => p['project-id']).filter(Boolean); // Removes empty/null values
-    
-        // Find index of the current project
-        const currentIndex = projectIds.indexOf(currentProjectId);
-        if (currentIndex === -1) {
-            console.error(`❌ Project ID ${currentProjectId} not found in filtered project list.`);
-            return;
-        }
-    
-        // Determine previous and next project IDs **(only from filtered projects)**
-        const prevProjectId = currentIndex > 0 ? projectIds[currentIndex - 1] : null;
-        const nextProjectId = currentIndex < projectIds.length - 1 ? projectIds[currentIndex + 1] : null;
-    
-        // ✅ Update Previous Button
-        if (prevProjectId) {
-            prevButton.style.cursor = "pointer";
-            prevButton.style.opacity = "1"; // Reset opacity
-            prevButton.style.pointerEvents = "auto"; // Enable click
-            prevButton.addEventListener('click', () => {
-                window.location.href = `project.html?project-id=${prevProjectId}`;
-            });
-        } else {
-            prevButton.style.opacity = "0.3"; // Disable button visually
-            prevButton.style.pointerEvents = "none"; // Prevent click
-            prevButton.style.cursor = "not-allowed"; // Disable button
-        }
-    
-        // ✅ Update Next Button
-        if (nextProjectId) {
-            nextButton.style.cursor = "pointer";
-            nextButton.style.opacity = "1"; // Reset opacity
-            nextButton.style.pointerEvents = "auto"; // Enable click
-            nextButton.addEventListener('click', () => {
-                window.location.href = `project.html?project-id=${nextProjectId}`;
-            });
-        } else {
-            nextButton.style.opacity = "0.3"; // Disable button visually
-            nextButton.style.pointerEvents = "none"; // Prevent click
-            nextButton.style.cursor = "not-allowed"; // Disable button
-        }
-    }
+      const prevButton = document.getElementById('prev-proj');
+      const nextButton = document.getElementById('next-proj');
+  
+      // 🔹 Filter projectsData to include only those with "div.reflection"
+      const filteredProjects = projectsData.filter(project =>
+          Object.keys(project).some(key => key.startsWith("para") && project[key] && project[key].includes("div.reflection"))
+      );
+  
+      // 🔹 Lag en liste med { projectId, endDate } for sortering
+      const projectsWithDates = filteredProjects.map(project => {
+          const projectId = project['project-id'];
+          const matchingWork = workArchiveData.find(w => w['project-id'] === projectId);
+          const rawDate = matchingWork?.['end-date'];
+          const parsedDate = rawDate && /^\d{2}\.\d{2}\.\d{4}$/.test(rawDate)
+              ? new Date(rawDate.split('.').reverse().join('-'))
+              : null;
+  
+          return {
+              projectId,
+              date: parsedDate
+          };
+      }).filter(p => p.date); // Fjern de uten gyldig dato
+  
+      // 🔹 Sorter etter end-date (descending)
+      projectsWithDates.sort((a, b) => b.date - a.date);
+  
+      // 🔹 Ekstraher kun ID-er
+      const projectIds = projectsWithDates.map(p => p.projectId);
+  
+      // 🔹 Finn nåværende indeks
+      const currentIndex = projectIds.indexOf(currentProjectId);
+      if (currentIndex === -1) {
+          console.error(`❌ Project ID ${currentProjectId} not found in sorted reflection list.`);
+          return;
+      }
+  
+      const prevProjectId = currentIndex > 0 ? projectIds[currentIndex - 1] : null;
+      const nextProjectId = currentIndex < projectIds.length - 1 ? projectIds[currentIndex + 1] : null;
+  
+      // ✅ Oppdater Previous Button
+      if (prevProjectId) {
+          prevButton.style.cursor = "pointer";
+          prevButton.style.opacity = "1";
+          prevButton.style.pointerEvents = "auto";
+          prevButton.onclick = () => {
+              window.location.href = `project.html?project-id=${prevProjectId}`;
+          };
+      } else {
+          prevButton.style.opacity = "0.3";
+          prevButton.style.pointerEvents = "none";
+          prevButton.style.cursor = "not-allowed";
+          prevButton.onclick = null;
+      }
+  
+      // ✅ Oppdater Next Button
+      if (nextProjectId) {
+          nextButton.style.cursor = "pointer";
+          nextButton.style.opacity = "1";
+          nextButton.style.pointerEvents = "auto";
+          nextButton.onclick = () => {
+              window.location.href = `project.html?project-id=${nextProjectId}`;
+          };
+      } else {
+          nextButton.style.opacity = "0.3";
+          nextButton.style.pointerEvents = "none";
+          nextButton.style.cursor = "not-allowed";
+          nextButton.onclick = null;
+      }
+  }
+  
 
     // ✅ Determine the accent color based on workProject.filter 
     function colouring(workProject) {
