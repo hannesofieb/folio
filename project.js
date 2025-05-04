@@ -856,7 +856,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize the prototypes carousel
     function initPrototypesCarousel() {
         // Find the prototypes container within #project-content, for example:
-        const prototypes = document.querySelector('#project-content .prototypes');
+        const prototypes = document.querySelector('#project-content .prototypes-mobile, #project-content .prototypes-mac');
         if (!prototypes) {
         console.error("❌ No .prototypes element found.");
         return;
@@ -908,7 +908,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add keydown event listener to allow left/right arrow navigation.
         document.addEventListener('keydown', function (e) {
             // "prototypes" was already defined in initPrototypesCarousel(), so we can use that.
-            const prototypes = document.querySelector('#project-content .prototypes');
+            const prototypes = document.querySelector('#project-content .prototypes-mobile, #project-content .prototypes-mac');
             if (!prototypes) return;
           
             // Get the bounding rectangle of the prototypes container.
