@@ -282,6 +282,11 @@ body{
         height: 180px;
     }
 
+    #cv-margin #back{
+        width: 60px;
+        height: 60px;
+    }
+
     #cv-main{
         margin-top: 190px;
     }
