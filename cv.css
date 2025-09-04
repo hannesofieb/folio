@@ -28,7 +28,7 @@ body{
     margin: 2rem;
     width: 120px;
     height: 120px;
-    background-color: rgb(65, 173, 73);
+    background-color: var(--black);
 }
 
 /* ------------------------------- CV-MAIN */
@@ -46,36 +46,173 @@ body{
 }
 
 #experiences{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
     width: 100%;
-    height: 100%;
+}
+
+#education, #projects-exp, #other-exp, #skills {
+    width: 97%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--black);
+}
+
+#education .vis:hover{
+    background-color: var(--blue);
+}
+
+#projects-exp .vis:hover{
+    background-color: var(--pink);
+}
+
+#other-exp .vis:hover{
+    background-color: var(--green);
+}
+
+#skills .vis:hover{
+    background-color: var(--yellow-buttermilk);
+}
+
+.vis{
+    width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 30px;
-    margin: 4rem 0;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.col-1, .col-2{
+.hid {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+.hid.show {
+    visibility: visible;
+    height: auto;
+    margin-bottom: 20px;
+    
+}
+
+.hid .unit{
     display: flex;
-    flex-direction: column;
-    margin-right: 2rem;
+    flex-direction: row;
+    margin-bottom: 5%;
+    width: 100%;
 }
 
-.col-1{
-    width: 60%;
+.hid .unit .det, #skills .hid .det{
+    width: 20%;
+    margin: 0.5% 5% 0 0;
 }
 
-.col-2{
-    width: 40%;
+.hid .unit .desc, #skills .hid .desc{
+    width: 80%;
+
 }
 
-#education, #extra-cur,#addit, #skillsets, #langs, #work-exp{
+.tagline{
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 3rem;
+    flex-direction: row;
+    list-style: none;
+    flex-wrap: wrap;
 }
 
-#cv-main ul li{
+.tagline li.tag{
+    list-style: none;
+    margin: 1% 1% 0 0;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+}
+
+#skills .hid{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+#skills .hid .det .btn-cat{
+    margin: 0;
+    padding: 0;
+}
+
+#skills .hid .det .btn-cat button{
+    width: fit-content;
+    list-style: none;
+    margin: 1% 1% 5% 0;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+
+    background-color: transparent;
+    color: var(--black);
+    transition: background 0.2s, color 0.2s;
+}
+
+#skills .hid .det .btn-cat button.active {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+@media screen and (min-width: 930px) {
+    #skills .hid .det .btn-cat button:hover{
+        cursor: pointer;
+        background-color: var(--yellow-buttermilk);
+        border-color: var(--yellow-buttermilk);
+        color: var(--black);
+    }
+}
+
+@media screen and (max-width:670px) {
+    #skills .hid .det .btn-cat button.shake {
+        animation: shake 1.5s;
+    }
+}
+
+@keyframes shake {
+    0%   { transform: translate(0, 0); }
+    10%  { transform: translate(-0.1px, -0.1px); }
+    20%  { transform: translate(0.2px, 0.2px); }
+    30%  { transform: translate(-0.5px,0.5px); }
+    40%  { transform: translate(1px, -1px); }
+    50%  { transform: translate(-1px, 1px); }
+    60%  { transform: translate(1px, -1px); }
+    70%  { transform: translate(-1px, -1px); }
+    80%  { transform: translate(1px, 1px); }
+    90%  { transform: translate(-1px, 1px); }
+    100% { transform: translate(0, 0); }
+}
+
+
+#skills .hid .desc{
+    height: max-content;
+}
+#skills .hid .desc .btns{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+#skills .hid .desc .btns li{
+    width: auto;
+    list-style: none;
+    margin: 1% 1% 0 0;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+#cv-main ul.bullets li{
     list-style: square;
 }
 
@@ -100,6 +237,8 @@ body{
         width: 95vw;
         height: auto;
     }
+
+    
 }
 
 @media screen and (max-width:670px){
@@ -127,12 +266,18 @@ body{
         width: 100%;
     }
 
-    .col-1,.col-2{
+    .hid .unit{
+        flex-direction: column;
+    }
+
+    .hid .unit .det, .hid .unit .desc{
         width: 100%;
     }
+
+
 }
 
-@media screen and (max-width:600) {
+@media screen and (max-width:600px) {
     #cv-margin{
         height: 120px;
     }
@@ -143,6 +288,24 @@ body{
 
     #cv-main .contact{
         margin: 0 0 2rem 0;
+    }
+
+    #skills .hid{
+        flex-direction: column;
+    }
+
+    #skills .hid .det, #skills .hid .desc{
+        width: 100%;
+    }
+
+    #skills .hid .det .btn-cat{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #skills .hid .desc .btns{
+        justify-content: flex-start;
     }
     
 }

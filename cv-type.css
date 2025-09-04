@@ -1,6 +1,7 @@
 #cv-margin h1{
     margin: 2rem;
-    color: rgb(65, 173, 73);
+    /* color: rgb(65, 173, 73); */
+    color: var(--black);
 }
 
 #cv-main h2{
@@ -15,25 +16,36 @@
 
 #cv-main a:hover{
     text-decoration: underline;
-    color: rgb(65, 173, 73);
+    color: var(--blue);
 }
 
-#cv-main .group h3{
-    font-size: 1.3em;
-    line-height: 1em;
+#cv-main h1{
+    font-size: 2em;
+    line-height: 1.3em;
+    margin: 0;
+}
+#cv-main .hid h3{
+    font-family: var(--type-italic);
+    font-weight: 100;
+    font-size: 1.2em;
+    line-height: 1.3em;
     margin: 0;
 }
 
-#cv-main .group p, #cv-main ul li{
-    font-size: 1.2em;
-    line-height: 1.3em;
-    margin: 0.5rem 0;
-}
-
-#cv-main .group .date{
+#cv-main .hid .date, #cv-main .hid .loc{
     font-size: 1em;
     line-height: 1em;
     color: rgb(var(--black), 0.5);
+    margin: 0 0 0.6em 0;
+}
+
+.tagline li.tag{
+    font-size: 1em;
+
+}
+
+#cv-main ul.bullets li{
+    font-size: 1.2em;
 }
 
 @media screen and (max-width:600px){

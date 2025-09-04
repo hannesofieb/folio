@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="main-styles.css">
     <link rel="stylesheet" href="brandtoolkit.css">
     <link rel="stylesheet" href="cv.css">
+
     <link rel="stylesheet" href="cv-type.css">
+    <style>
+        body {
+            transition: background-color 0.7s cubic-bezier(0.4,0,0.2,1);
+        }
+    </style>
 
     <title>cv</title>
     <link rel="icon" type="image/x-icon" href="/assets/logo-bw.png">
@@ -17,7 +23,6 @@
         <h1>Hanne Sofie Berg</h1>
         <a href="index.html"><div id="back" title="go back home"></div></a>
     </section>
-
     <section id="cv-main">
         <section id="about-me">
             <div class="contact">
@@ -30,97 +35,251 @@
         </section>
 
         <section id="experiences">
-            <section class="col-1">
-                <div id="education">
-                    <h2>Education</h2>
-                    <div class="group">
-                        <p class="date">2022—2024</p>
-                        <h3>University of Melbourne</h3>
-                        <p>Bachelor of Design (Double Major: UX & Graphic Design)</p>
-                        <p>Focused on user experience design, visual communication, and creative coding, applying human-centered design principles across digital and physical spaces. Developed skills in UX research, prototyping, wireframing, branding, and front-end development. Total of seven projects got exhibited @Melbourne School of Design, one of them permanently installed. UX—and Graphic Design Capstone Projects recieved top marks.</p>
-                    </div>
-                    <div class="group">
-                        <p class="date">2017—2020</p>
-                        <h3>Elvebakken Videregående Skole</h3>
-                        <p>Studiespesialisering med realfag</p>
-                    </div>
+            <section id="education">
+                <div class="vis">
+                    <h1>Education</h1>
+                    <p>↘</p>
                 </div>
-                <div id="extra-cur">
-                    <h2>Exra Curriculars</h2>
-                    <div class="group">
-                        <p class="date">2022 mar — 2023 mar</p>
-                        <h3>Ansa Melbourne, Local Committee President</h3>
-                        <p>Led ANSA Melbourne, creating events that helped new Norwegian students feel welcome and connected. Strengthened leadership and community-building skills, fostering an inclusive environment that inspired long-term engagement.</p>
+                <div class="hid">
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2022 feb—2024 dec</p>
+                            <p class="loc">Melbourne, Australia</p>
+                        </div>
+                        <div class="desc">
+                            <h2>University of Melbourne</h2>
+                            <h3>Bachelor of Design, Double Major in User Experience and Graphic Design</h3> 
+                            <div class="tagline">
+                                <li class="tag">Interaction Design</li>
+                                <li class="tag">Usability Testing</li>
+                                <li class="tag">Service Design</li>
+                                <li class="tag">Branding</li>
+                                <li class="tag">Creative Coding</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Process-driven curriculum with a strong focus on design thinking and UX methodology.</li>
+                                <li>Hands-on experience in rapid, iterative project cycles, completing over a dozen team- and individual projects per semester.</li>
+                                <li>Top marks on capstone projects in <a href="https://www.hannesofieberg.com/project.html?project-id=001">UX</a> and Graphic Design.</li>
+                                <li>Total of 7 projects exhibited at the University – one permanently.</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div id="addit">
-                    <h2>Additionally...</h2>
-                    <div class="group">
-                        <p class="date">2024 dec — present</p>
-                        <h3>Elisabeth Murdoch Building, Permantent Instillation</h3>
-                        <p><a href="project.html?project-id=008" target="_blank">A poster I made</a> in response to Harrison Butker's graduation speech May 2024 was picked to hang permanently at the Elisabeth Murdoch Building on the University of Melbourne's Southbank Campus</p>
-                    </div>
-                    <div class="group">
-                        <p class="date">2024 dec</p>
-                        <h3>Melbourne School of Design, DesignX</h3>
-                        <p>Three of my designs got chosen to be exhibited at DesignX December 2024 (<a href="project.html?project-id=001" target="_blank">Drop it Off</a>, <a href="project.html?project-id=010" target="_blank">OAK rebrand</a> posters and packaging design, <a href="project.html?project-id=008" target="_blank">Butker Poster</a>).</p>
-                    </div>
-                    <div class="group">
-                        <p class="date">2024 dec</p>
-                        <h3>Victorian College of Arts, End of Year Exhibition</h3>
-                        <p>My final capstone project, <a href="project.html?project-id=002" target="_blank">the fictional wine club</a> got exhibited at the EYE 2024.</p>
-                    </div>
-                </div>
-                <div id="skillsets">
-                    <h2>Skillsets</h2>
-                    <div class="group">
-                        <p>Skilled in UX research, wireframing, and prototyping with a user-first approach. Strong technical and design abilities, bridging design and development. Clear communicator, quick thinker, and adaptable in fast-paced, collaborative environments.</p>
-                        <!-- <p>Skilled in UX research, wireframing, and prototyping, with a user-first approach to design.</p>
-                        <p>Fluent in HTML, CSS, and JavaScript, bridging design and development seamlessly.</p>
-                        <p>Quick thinker with strong presentation skills, able to communicate ideas clearly and adapt on the spot.</p> -->
-                    </div>
-                    <div class="group">
-                        <h3>Software</h3>
-                        <p>AdobeXD, Figma, Adobe InDesign, Voiceflow, VSCode</p>
-                    </div>
-                </div>
-                <div id="langs">
-                    <h2>Languages</h2>
-                    <div class="group">
-                        <p>Norwegian: First Language</p>
-                        <p>English: Fluent</p>
-                        <p>French: Intermediate</p>
-                        <!-- <p>HTML, CSS, JS: Fluent</p> -->
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2017 aug—2020 jun</p>
+                            <p class="loc">Oslo, Norway</p>
+                        </div>
+                        <div class="desc">
+                            <h2>Elvebakken Videregående Skole</h2>
+                            <h3>Specialisation in Natural Sciences</h3>                        
+                            <ul class="bullets">
+                                <li>Graduated with 57 study points (of 64)</li>
+                                <li>Participated in the school play, student council, and 'russe'-council.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
-            <section class="col-2">
-                <div id="work-exp">
-                    <h2>Work Experience</h2>
-                    <div class="group">
-                        <p class="date">2025 jan — present</p>
-                        <h3>Smestad Aktivitetsskole, Assistant</h3>
-                        <p>Back full time after working part time between semesters. Now I co-supervise 60–80 children (ages 5–7), leading activities, ensuring their well-being, and managing group dynamics. Strengthening my problem-solving, adaptability, observation, communication, and leadership skills.</p>
+            <section id="projects-exp">
+                <div class="vis">
+                    <h1>Projects and Experiences</h1>
+                    <p>↘</p>
+                </div>
+                <div class="hid">
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2025 may—present</p>
+                            <p class="loc">Oslo, Norway</p>
+                        </div>
+                        <div class="desc">
+                            <h2>Hanne Sofie Berg ENK</h2>
+                            <h3>Freelance UX- and Graphic Designer</h3>
+                            <div class="tagline">
+                                <li class="tag">User Experience</li>
+                                <li class="tag">Graphic Design</li>
+                                <li class="tag">Design Research</li>
+                            </div>
+                            <ul class="bullets">
+                                <li>Create visual identities, websites, and marketing materials for various clients.</li>
+                                <li>Collaborate with clients to understand their needs and deliver tailored design solutions.</li>
+                                <li>Manage multiple projects simultaneously while meeting tight deadlines.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="group">
-                        <p class="date">2023 may — 2024 dec</p>
-                        <h3>Denmark House, Waitress (Melbourne)</h3>
-                        <p>Provided fast, friendly service in a busy restaurant, handling orders, payments, and customer interactions. Developed multitasking, customer service, and teamwork skills in a high-pressure environment.</p>
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2025 aug —present</p>
+                            <p class="loc">Oslo, Norway</p>
+                        </div>
+                        <div class="desc">
+                            <h2>Brain Bella</h2>
+                            <h3>Design Lead</h3>
+                            <div class="tagline">
+                                <li class="tag">UX Design</li>
+                                <li class="tag">Content Design</li>
+                                <li class="tag">Branding</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Established site framework based on customer needs and identified barriers to purchase.</li>
+                                <li>Adapted packaging-based visual identity for digital channels, ensuring consistency across website and SoMe.</li>
+                                <li>Rewrote and structured content with a new tone of voice tailored to the target audience.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="group">
-                        <p class="date">2023 nov</p>
-                        <h3>Australia Post, UX/UI Consultant (Melbourne)</h3>
-                        <p>Presented a UI/UX talk to Australia Post’s SAP development team and reviewed an internal app, offering insights to improve usability. Our session led to a partnership between them and the University of Melbourne.</p>
+                    <!-- <div class="unit">
+                        <div class="det">
+                            <p class="date">2025 feb–mar</p>
+                            <p class="loc">Oslo, Norway</p>
+                        </div>
+                        <div class="desc">
+                            <h2><a href="https://www.hannesofieberg.com/project.html?project-id=011">Personal Folio</a></h2>
+                            <h3>Design Lead and Frontend Developer</h3>
+                            <div class="tagline">
+                                <li class="tag">UX Design</li>
+                                <li class="tag">Branding</li>
+                                <li class="tag">Creative Coding</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Designed and coded a responsive portfolio site from scratch (HTML, CSS, JS).</li>
+                                <li>Structured content and navigation specifically for recruiters’ needs – prioritising clarity, accessibility, and quick access to key project info.</li>
+                                <li>Built a modular, database-driven system to ensure scalability and easy updates.</li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2024 jul—dec</p>
+                            <p class="loc">Melbourne, Australia</p>
+                        </div>
+                        <div class="desc">
+                            <h2><a href="https://www.hannesofieberg.com/project.html?project-id=001">Drop it Off</a></h2>
+                            <h3>UX Designer and Project Manager</h3>
+                            <div class="tagline">
+                                <li class="tag">UX Research</li>
+                                <li class="tag">Usability Testing</li>
+                                <li class="tag">Mapping</li>
+                                <li class="tag">Prototyping</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Co-led research and design for a donation platform connecting individuals with NGOs.</li>
+                                <li>Developed a map feature that visualised smaller and less-visible organisations (e.g. local sports clubs, shelters) to increase transparency and donor choice.</li>
+                                <li>Designed and tested flows including an AI scanner to help users assess donation quality and guide items to the most environmentally friendly use.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="group">
-                        <p class="date">2020 nov — 2022 feb</p>
-                        <h3>Smestad skole, Substitute Teacher & SFO Assistant</h3>
-                        <p>Taught multiple subjects, including Maths, English, Norwegian, Science, and Woodwork, to children (ages 5–13). Honed public speaking, adaptability, and leadership skills.</p>
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2024 apr—jun</p>
+                            <p class="loc">Melbourne, Australia</p>
+                        </div>
+                        <div class="desc">
+                            <h2><a href="https://www.hannesofieberg.com/project.html?project-id=003">UniAdventures</a></h2>
+                            <h3>Service Designer and Project Manager</h3>
+                            <div class="tagline">
+                                <li class="tag">Service Design</li>
+                                <li class="tag">Conversational Design</li>
+                                <li class="tag">Accessibility</li>
+                                <li class="tag">Chatbot</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Designed a hybrid service combining chatbot and in-person consultation to make domestic travel easier for students.</li>
+                                <li>Facilitated co-creation workshops, mapped journeys, and iterated prototypes to ensure clarity and inclusion.</li>
+                                <li>Built and tested chatbot flows in Voiceflow with Wizard-of-Oz methodology, improving guidance and user trust.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="group">
-                        <p class="date">2015 oct — 2022 feb</p>
-                        <h3>Private Tutor</h3>
-                        <p>Supported students (ages 7–17) with learning disabilities, focusing on Maths and Science. Strengthened communication, patience, and problem-solving through tailored teaching approaches.</p>
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2023 oct—nov</p>
+                            <p class="loc">Melbourne, Australia</p>
+                        </div>
+                        <div class="desc">
+                            <h2>Australia Post</h2>
+                            <h3>Workshop Facilitator</h3>
+                            <div class="tagline">
+                                <li class="tag">UX Design</li>
+                                <li class="tag">Workshop Fascilitation</li>
+                                <li class="tag">Collaboration</li>
+                                <li class="tag">Usability Heuristics</li>
+                                <li class="tag">Gestalt Principles</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Designed and led a UX workshop for 20 SAP developers with no prior design background.</li>
+                                <li>Used real case examples and live evaluation of an internal application to explain key UX principles.</li>
+                                <li>Increased team understanding and initiated new collaboration with the University of Melbourne.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="other-exp">
+                <div class="vis">
+                    <h1>Other Experiences</h1>
+                    <p>↘</p>
+                </div>
+                <div class="hid">
+                    <div class="unit">
+                        <div class="det">
+                            <p class="date">2022 mar —2023 mar</p>
+                            <p class="loc">Melbourne, Australia</p>
+                        </div>
+                        <div class="desc">
+                            <h2>ANSA Melbourne</h2>
+                            <h3>President</h3>
+                            <div class="tagline">
+                                <li class="tag">Leadership</li>
+                                <li class="tag">Event Design</li>
+                                <li class="tag">Community Engagement</li>
+                            </div>                           
+                            <ul class="bullets">
+                                <li>Led an insight-driven redesign of event and communication flows, which was continued by the next board.</li>
+                                <li>Increased event attendance by 15%, boosted election participation by 50% in the first semester and by 500% in the second.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="skills">
+                <div class="vis">
+                    <h1>Skillsets</h1>
+                    <p>↘</p>
+                </div>
+                <div class="hid">
+                    <div class="det">
+                        <div class="btn-cat">
+                            <button id="PC">Personal Characteristics</button>
+                            <button id="DM">Design & Methodology</button>
+                            <button id="TT">Technology & Tools</button>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <ul class="btns">
+                            <li class="PC">Proactive</li>
+                            <li class="PC">Self-Driven</li>
+                            <li class="PC">Structured</li>
+                            <li class="PC">Analytical</li>
+                            <li class="PC">Curious</li>
+                            <li class="PC">Collaborative</li>
+                            <li class="PC">Engaging</li>
+                            <li class="PC">Communicative</li>
+                            <li class="DM">AI Implementation in Design Process</li> 
+                            <li class="DM">User-Centered Design</li>
+                            <li class="DM">Design Thinking</li>
+                            <li class="DM">Agile Methodologies</li>
+                            <li class="DM">Prototyping</li>
+                            <li class="DM">Usability Testing</li>
+                            <li class="DM">Accessibility (WCAG)</li>
+                            <li class="DM">UX Research</li>
+                            <li class="DM">Concept Development</li>
+                            <li class="TT">Figma</li>
+                            <li class="TT">Adobe Creative Suite</li>
+                            <li class="TT">Voiceflow</li>
+                            <li class="TT">Miro</li>
+                            <li class="TT">Notion</li>
+                            <li class="TT">HTML</li>
+                            <li class="TT">CSS</li>
+                            <li class="TT">JS</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -128,5 +287,139 @@
 
     </section>
     
+        <script>
+    console.log('Script loaded');
+    document.querySelectorAll('.vis').forEach(function(vis, idx) {
+        console.log('Setting up click for .vis element', idx, vis);
+        vis.addEventListener('click', function() {
+            console.log('Clicked .vis element', idx, vis);
+            var hid = vis.nextElementSibling;
+            var arrow = vis.querySelector('p');
+            if (!hid) {
+                console.log('No .hid element found for .vis', idx);
+                return;
+            }
+            if (hid.classList.contains('show')) {
+                console.log('Hiding .hid element', hid);
+                hid.style.height = hid.scrollHeight + 'px';
+                void hid.offsetWidth;
+                hid.style.height = '0px';
+                hid.classList.remove('show');
+                if (arrow) arrow.textContent = '↘';
+            } else {
+                console.log('Showing .hid element', hid);
+                hid.classList.add('show');
+                hid.style.height = hid.scrollHeight + 'px';
+                if (arrow) arrow.textContent = '↗';
+                hid.addEventListener('transitionend', function handler() {
+                    console.log('Transition ended for .hid', hid);
+                    hid.style.height = '';
+                    hid.removeEventListener('transitionend', handler);
+                });
+            }
+        });
+    });
+    // Skillset filter buttons
+    document.querySelectorAll('#skills .btn-cat button').forEach(function(btn) {
+        btn.classList.add('active'); // default all active
+        btn.addEventListener('click', function() {
+            var id = btn.id;
+            var btns = document.querySelectorAll('#skills .desc .btns li.' + id);
+            if (btn.classList.contains('active')) {
+                // deactivate
+                btn.classList.remove('active');
+                btns.forEach(function(li) {
+                    li.style.display = 'none';
+                });
+            } else {
+                // activate
+                btn.classList.add('active');
+                btns.forEach(function(li) {
+                    li.style.display = 'inline-block';
+                });
+            }
+        });
+    });
+
+    // Change body background color on .vis hover
+    document.querySelectorAll('.vis').forEach(function(vis) {
+        vis.addEventListener('mouseenter', function() {
+            if (vis.parentElement.id === 'education') {
+                document.body.style.backgroundColor = 'var(--blue)';
+            } else if (vis.parentElement.id === 'projects-exp') {
+                document.body.style.backgroundColor = 'var(--pink)';
+            } else if (vis.parentElement.id === 'other-exp') {
+                document.body.style.backgroundColor = 'var(--green)';
+            } else if (vis.parentElement.id === 'skills') {
+                document.body.style.backgroundColor = 'var(--yellow-buttermilk)';
+            }
+        });
+        vis.addEventListener('mouseleave', function() {
+            document.body.style.backgroundColor = 'var(--white)';
+        });
+    });
+
+    // Sequential shake animation for .btn-cat buttons on mobile
+    function shakeButtonsSequentially() {
+        if (window.matchMedia('(max-width: 670px)').matches) {
+            var buttons = document.querySelectorAll('#skills .hid .det .btn-cat button');
+            buttons.forEach(function(btn, idx) {
+                setTimeout(function() {
+                    btn.classList.add('shake');
+                    setTimeout(function() {
+                        btn.classList.remove('shake');
+                    }, 2000);
+                }, idx * 2000);
+            });
+        }
+    }
+
+    // Trigger shake when #skills .hid becomes visible
+    var skillsVis = document.querySelector('#skills .vis');
+    if (skillsVis) {
+        skillsVis.addEventListener('click', function() {
+            setTimeout(shakeButtonsSequentially, 350); // Wait for rollout animation
+        });
+    }
+
+    // Mobile: scroll-based background color change
+    function checkVisScrollHover() {
+        const yPos = window.innerHeight / 2;
+        const visSections = document.querySelectorAll('.vis');
+        let foundVis = null;
+        visSections.forEach(vis => {
+            const rect = vis.getBoundingClientRect();
+            if (rect.top <= yPos && rect.bottom >= yPos) {
+                foundVis = vis;
+            }
+        });
+        if (foundVis) {
+            if (foundVis.parentElement.id === 'education') {
+                document.body.style.backgroundColor = 'var(--blue)';
+            } else if (foundVis.parentElement.id === 'projects-exp') {
+                document.body.style.backgroundColor = 'var(--pink)';
+            } else if (foundVis.parentElement.id === 'other-exp') {
+                document.body.style.backgroundColor = 'var(--green)';
+            } else if (foundVis.parentElement.id === 'skills') {
+                document.body.style.backgroundColor = 'var(--yellow-buttermilk)';
+            }
+        } else {
+            document.body.style.backgroundColor = 'var(--white)';
+        }
+    }
+
+    function enableScrollBgIfMobile() {
+        if (window.matchMedia('(max-width: 800px)').matches) {
+            window.addEventListener('scroll', checkVisScrollHover);
+            checkVisScrollHover();
+        } else {
+            window.removeEventListener('scroll', checkVisScrollHover);
+            document.body.style.backgroundColor = 'var(--white)';
+        }
+    }
+
+    window.addEventListener('resize', enableScrollBgIfMobile);
+    enableScrollBgIfMobile();
+    </script>
 </body>
 </html>
