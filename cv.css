@@ -212,9 +212,14 @@ body{
     background-color: rgba(255, 255, 255, 0);
 }
 
+#cv-main ul.bullets {
+    display: block;
+}
+
 #cv-main ul.bullets li{
     list-style: square;
 }
+
 
 /* ------------------------------- MOBILE VIEW */
 
