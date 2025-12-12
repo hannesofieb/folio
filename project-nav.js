@@ -141,9 +141,9 @@ function initNotionNavigation() {
             }
             
             // Or if scrolling down and touch is on right side
-            if (touchX > screenWidth - 100 && deltaY < -15) {
-                navSpan.classList.add('visible');
-            }
+            // if (touchX > screenWidth - 100 && deltaY < -15) {
+            //     navSpan.classList.add('visible');
+            // }
         });
 
         // Close nav when tapping outside
