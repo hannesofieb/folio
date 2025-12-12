@@ -135,8 +135,8 @@ function initNotionNavigation() {
             
             const screenWidth = window.innerWidth;
             
-            // If touch starts near right edge (within 50px) and swipes left
-            if (touchStartX > screenWidth - 50 && deltaX < -30) {
+            // If touch starts near right edge (within 30px) and swipes left
+            if (touchStartX > screenWidth - 30 && deltaX < -30) {
                 navSpan.classList.add('visible');
             }
             
