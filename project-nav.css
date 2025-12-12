@@ -1,0 +1,199 @@
+/* =====================================================
+   NOTION-LIKE SIDEBAR NAVIGATION
+   ===================================================== */
+
+/* Container for the navigation - hidden by default */
+span:has(#project-nav) {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Show navigation when visible class is added */
+span:has(#project-nav).visible {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* The navigation itself */
+#project-nav {
+    position: absolute;
+    right: 0;
+    top: 35%;
+    transform: translateY(-50%);
+    width: 220px;
+    max-height: 80vh;
+    backdrop-filter: blur(100px);
+    border-radius: 2px 0 0 2px;
+    /* box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1); */
+    padding: 20px;
+    overflow-y: auto;
+}
+
+
+/* Navigation list styling */
+#project-nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#project-nav ul li {
+    width: 100%;
+    line-height: 1.4em;
+    margin: 0;
+}
+
+#project-nav ul li a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--black);
+    transition: all 0.2s ease;
+    font-size: 0.95em;
+    position: relative;
+}
+
+/* Hover effect */
+#project-nav ul li a:hover {
+    transform: translateX(-3px);
+}
+
+/* Active section indicator */
+#project-nav ul li a.active {
+    font-weight: 600;
+}
+
+#project-nav ul li a.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 100%;
+    border-radius: 2px;
+}
+
+/* Hide scrollbar in navigation */
+#project-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+#project-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#project-nav::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+#project-nav::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Hide nav trigger area when image is zoomed */
+body.image-zoomed span:has(#project-nav) {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* =====================================================
+   DESKTOP SPECIFIC (> 800px)
+   ===================================================== */
+@media screen and (min-width: 801px) {
+    /* Subtle hint indicator near scrollbar */
+    span:has(#project-nav)::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60px;
+        background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1));
+        border-radius: 2px 0 0 2px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Show hint on hover */
+    #project-content:hover ~ span:has(#project-nav)::before,
+    span:has(#project-nav):hover::before {
+        opacity: 1;
+    }
+}
+
+/* =====================================================
+   MOBILE SPECIFIC (≤ 800px)
+   ===================================================== */
+@media screen and (max-width: 800px) {
+    span:has(#project-nav) {
+        width: 65%;
+        max-width: 300px;
+    }
+
+    #project-nav {
+        width: 100%;
+        min-height: 100vh;
+        right: 0;
+        top: 0;
+        transform: translateY(0%);
+        border-radius: 2px 0 0 2px;
+        padding: 0;
+    }
+    #project-nav ul {
+        height: 95vh;
+        padding: 10px 0;
+    }
+
+    /* Overlay background when nav is open */
+    span:has(#project-nav).visible::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: -1;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Swipe indicator on right edge */
+    span:has(#project-nav)::before {
+        content: '';
+        position: fixed;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 100px;
+        background: linear-gradient(to left, rgba(0, 0, 0, 0.05), transparent);
+        border-radius: 4px 0 0 4px;
+        pointer-events: none;
+    }
+
+    /* Make links larger for touch */
+    #project-nav ul li a {
+        padding: 12px 16px;
+        font-size: 1em;
+    }
+}

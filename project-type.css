@@ -1,79 +1,490 @@
-body{
+/* =============================================================================
+   PROJECT PAGE TYPOGRAPHY - CONSOLIDATED
+   ============================================================================= */
+
+/* =============================================================================
+   BASE TYPOGRAPHY
+   ============================================================================= */
+
+body {
     font-family: var(--type-body);
 }
 
-#project-context h2, #proj-nav{
+/* =============================================================================
+   FONT SIZE GROUPS
+   ============================================================================= */
+
+/* --- 2em (Large Titles) --- */
+#project-context h2,
+#proj-nav,
+#project-content h1 {
     font-size: 2em;
 }
 
-#project-context p{
-    font-size: 1em;
+#project-content h1 {
+    margin: 0 0 1% 0;
+    padding-left: 0;
 }
 
-#project-content h1{
-    font-size: 2em;
-}
-
-#project-content h2{
+/* --- 1.7em (Section Headings) --- */
+#project-content h2 {
     font-size: 1.7em;
+    margin-top: 15%;
+    margin-bottom: 2%;
 }
 
-#project-content h3, #project-content p{
-    font-size: 1.5em;
+#project-content h2.multi-h3s {
+    margin-bottom: 0;
+}
+
+/* --- 1.3em (Subheadings & Body Text) --- */
+#project-content h3,
+#project-content p,
+#project-content li,
+div.same-topic ul li {
+    font-size: 1.3em;
     line-height: 1.4em;
 }
 
-div.same-topic ul li{
-    font-size: 1.5em;
+#project-content h3 {
+    margin: 3% 0 0 0;
+    padding-left: 0;
 }
 
-#project-content .small{
-    font-size: 1.3em;
-    width: 100%;
-    margin-right: 2%;
+#project-content ul h3 {
+    margin-top: 0;
 }
 
-#project-content h1 p em{
-    font-size: 20px; /* Match the normal <p> font size (1em)*/
-    margin: 1% 0 7% 0;
-    line-height: 18px; /* Match the normal <p> line height (1.3em) */
-}
-
-
-
-div.row p{
+#project-content p {
     width: 80%;
 }
 
-p a{
+/* #project-content p:not(.carousel-expand-toggle) {
+    margin: 0 0 2% 0;
+} */
+
+/* --- 1em (Base Size - Context, Captions, Small Text) --- */
+#project-context p,
+#project-context h3,
+#project-context p.caption,
+#project-content .small,
+#project-content .display-caption,
+#project-content p.caption,
+#project-content .prototypes-caption-container .prototypes-caption,
+#project-content .solo-caption {
+    font-size: 1em;
+}
+
+/* Caption-specific styles */
+#project-content .display-caption,
+#project-content p.caption,
+#project-content .solo-caption {
+    text-align: left;
+}
+
+#project-content .display-caption:not(.design-decisions),
+#project-content p.caption,
+.prototypes-caption-container,
+#project-content .solo-caption {
+    margin-bottom: 7%;
+}
+
+#project-content p.caption,
+#project-content .solo-caption {
+    padding: 0;
+}
+
+#project-content .small {
+    width: 100%;
+}
+
+/* =============================================================================
+   SPECIAL TEXT STYLES
+   ============================================================================= */
+
+/* Emphasized quotes */
+#project-content p em {
+    font-size: 2em;
+    line-height: normal;
+}
+
+#project-content p:has(em) {
+    width: 90%;
+    margin: 150px 0 100px 0;
+}
+
+/* Links */
+p a {
     text-decoration: underline;
 }
 
+/* Row paragraphs */
+div.row p {
+    width: 80%;
+}
 
-/* -------------------- for mobile */
-@media screen and (max-width:650px) {
-    #project-context h2, #proj-nav{
+/* =============================================================================
+   PROJECT CONTEXT - LISTS & STRUCTURE
+   ============================================================================= */
+
+#project-context h3,
+#project-context p.caption,
+#project-context .list ul {
+    padding-left: 0;
+}
+
+#project-context .list {
+    display: flex;
+    flex-direction: column;
+}
+
+#project-context .list h3 {
+    width: auto;
+}
+
+#project-context .list ul {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Remarks Section */
+#project-context #remarks h3 {
+    width: auto;
+    margin: 10% 0 1% 0;
+}
+
+#project-context #remarks ul {
+    margin-top: 4%;
+    padding: 0;
+}
+
+#project-context #remarks li {
+    margin-bottom: 1%;
+}
+
+/* =============================================================================
+   REFLECTION SECTIONS
+   ============================================================================= */
+
+#project-content .reflection h1, 
+#project-content .reflection h2, 
+#project-content .reflection p {
+    width: 50%;
+    margin-left: 25vw;
+    color: var(--white);
+}
+
+#project-content .reflection h2 {
+    margin-top: 4vh;
+    margin-bottom: 1vh;
+}
+
+/* =============================================================================
+   TABLET TYPOGRAPHY (≤ 650px)
+   ============================================================================= */
+
+@media screen and (min-width: 651px) and (max-width: 1050px) {
+    
+    /* --- Medium Screen Font Sizes --- */
+    
+    /* 2em - Large titles stay the same */
+    #project-context h2,
+    #proj-nav,
+    #project-content h1 {
         font-size: 2em;
     }
     
-    #project-context p{
-        font-size: 1em;
-    }
-    
-    #project-content h1{
+    /* 1.6em - Section headings slightly smaller */
+    #project-content h2, #project-content p em {
         font-size: 2em;
     }
+
     
-    #project-content h2{
-        font-size: 1.6em;
-    }
-    
-    #project-content h3, #project-content p{
-        font-size: 1.2em;
+    /* 1.1em - Most text becomes base size */
+    #project-context h3,
+    #project-context p,
+    #project-context li,
+    #project-content h3,
+    #project-content p,
+    #project-content li,
+    div.same-topic ul li {
+        font-size: 1.1em;
         line-height: 1.3em;
     }
     
-    div.same-topic ul li{
-        font-size: 1.2em;
+    /* 0.9em - smaller caption sizes */
+    #project-content .caption-container, #project-content .prototypes-caption-container, #project-content .solo-caption{
+        font-size: 0.9em;
     }
+
+    /* --- Tablet Spacing --- */
+    
+    #project-content h1 {
+        margin: 0 0 1% 0;
+        padding-left: 1em;
+    }
+
+    #project-content h2 {
+        margin: 15% 0 0 0;
+        padding-left: 1px;
+    }
+
+    #project-content h3 {
+        margin: 7% 0 0 0;
+        padding-left: 0;
+    }
+
+    #project-content p {
+        width: 98%;
+        margin: 0;
+        padding: 0.5em 0 0 0;
+    }
+    
+    #project-content p:has(em) {
+        width: 100%;
+        margin: 5em 0 1EM 0; 
+        padding: 0;
+    }
+
+    /* --- Context Spacing --- */
+    
+    #project-context h2 {
+        margin: 5% 0 0 0;
+        padding: 0;
+    }
+
+    #project-context p {
+        padding: 0;
+        margin: 0;
+    }
+
+    #project-context .list,
+    #project-context #period {
+        margin-bottom: 3%;
+    }
+
+    #project-context #remarks {
+        margin-bottom: 0;
+    }
+
+    #project-context #remarks h3 {
+        width: auto;
+        margin: 5% 0 1% 0;
+    }
+
+    #project-context #remarks ul {
+        margin-top: 2%;
+        padding: 0;
+    }
+
+    #project-context #remarks li {
+        margin-bottom: 0;
+    }
+
+    #project-context .list ul {
+        display: inline-block;
+        margin-top: 5px;
+    }
+
+    /* --- List Styles --- */
+    
+    .col li {
+        padding-bottom: 0.3em;
+        list-style: none;
+    }
+
+    .row li {
+        margin: 0;
+    }
+
+    /* --- Reflection --- */
+    #project-content .reflection h1, 
+    #project-content .reflection h2, 
+    #project-content .reflection p {
+        width: 90%;
+        margin-left: 20px;
+        color: var(--white);
+    }
+
+    #project-content .reflection h2 {
+        margin: 4vh 0 1vh 20px;
+    }
+}
+
+/* =============================================================================
+   MOBILE TYPOGRAPHY (≤ 650px)
+   ============================================================================= */
+
+@media screen and (max-width: 650px) {
+    
+    /* --- Mobile Font Sizes --- */
+    
+    /* 2em - Large titles stay the same */
+    #project-context h2,
+    #proj-nav,
+    #project-content h1 {
+        font-size: 2em;
+    }
+    
+    /* 1.6em - Section headings slightly smaller */
+    #project-content h2, #project-content p em {
+        font-size: 1.6em;
+    }
+
+    
+    /* 1em - Most text becomes base size */
+    #project-context h3,
+    #project-context p,
+    #project-context li,
+    #project-content h3,
+    #project-content p,
+    #project-content li,
+    div.same-topic ul li {
+        font-size: 1em;
+        line-height: 1.3em;
+    }
+    
+    /* 0.8em - smaller caption sizes */
+    #project-content .caption-container, #project-content .prototypes-caption-container, #project-content .solo-caption{
+        font-size: 0.9em;
+    }
+    
+    /* --- Mobile Spacing --- */
+    
+    #project-content h1 {
+        margin: 0 0 1% 0;
+        padding-left: 1em;
+    }
+
+    #project-content h2 {
+        margin: 30% 0 0 0;
+        padding-left: 1px;
+    }
+
+    #project-content h3 {
+        margin: 7% 0 0 0;
+        padding-left: 0;
+    }
+
+    #project-content p {
+        width: 98%;
+        margin: 0;
+        padding: 0.5em 0 0 0;
+    }
+    
+    #project-content p:has(em) {
+        width: 100%;
+        margin: 5em 0 1EM 0; 
+        padding: 0;
+    }
+
+    /* --- Context Spacing --- */
+    
+    #project-context h2 {
+        margin: 5% 0 0 0;
+        padding: 0;
+    }
+
+    #project-context p {
+        padding: 0;
+        margin: 0;
+    }
+
+    #project-context .list,
+    #project-context #period {
+        margin-bottom: 3%;
+    }
+
+    #project-context #remarks {
+        margin-bottom: 0;
+    }
+
+    #project-context #remarks h3 {
+        width: auto;
+        margin: 5% 0 1% 0;
+    }
+
+    #project-context #remarks ul {
+        margin-top: 2%;
+        padding: 0;
+    }
+
+    #project-context #remarks li {
+        margin-bottom: 0;
+    }
+
+    #project-context .list ul {
+        display: inline-block;
+        margin-top: 5px;
+    }
+
+    /* --- List Styles --- */
+    
+    .col li {
+        padding-bottom: 0.3em;
+        list-style: none;
+    }
+
+    .row li {
+        margin: 0;
+    }
+
+    /* --- Reflection --- */
+    #project-content .reflection h1, 
+    #project-content .reflection h2, 
+    #project-content .reflection p {
+        width: 90%;
+        margin-left: 20px;
+        color: var(--white);
+    }
+
+    #project-content .reflection h2 {
+        margin: 4vh 0 1vh 20px;
+    }
+}
+
+/* =============================================================================
+   LARGE SCREENS (> 2000px)
+   ============================================================================= */
+
+@media screen and (min-width: 2000px) {
+    /* --- LARGE SCREENS Font Sizes --- */
+    
+    /* 2em - Large titles stay the same */
+    #project-context h2,
+    #proj-nav,
+    #project-content h1 {
+        font-size: 2em;
+    }
+    
+    /* 1.6em - Section headings slightly smaller */
+    #project-content h2, #project-content p em {
+        font-size: 2.3em;
+    }
+
+    
+    /* 1em - Most text becomes base size */
+    #project-context h3,
+    #project-context p,
+    #project-context li,
+    #project-content h3,
+    #project-content p,
+    #project-content li,
+    div.same-topic ul li {
+        font-size: 1.3em;
+        line-height: 1.3em;
+    }
+    
+    /* 0.8em - smaller caption sizes */
+    #project-content .caption-container, #project-content .prototypes-caption-container, #project-content .solo-caption{
+        font-size: 1em;
+    }
+
+    #project-content p, #project-context p em{
+        width: 50%;
+        margin: 0;
+        padding: 0.5em 0 0 0;
+    }
+
+
 }

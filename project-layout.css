@@ -1,139 +1,112 @@
-@media screen and (min-width:801px){
-    #container-project{
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: row;
-    }
+/* =============================================================================
+   PROJECT PAGE STYLES - CLEANED & ORGANIZED
+   ============================================================================= */
+body{
+    overflow-y: scroll;
+}
+/* =============================================================================
+   LAYOUT - DESKTOP (> 800px)
+   ============================================================================= */
 
-    #project-context{
-        width: 25vw;
-        height: 100%;
+@media screen and (min-width: 1051px) {
+    #container-project {
+        width: 100vw;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 0 2%;
-        z-index: 10;
-    }
-    #project-content{
-        width: 70vw;
-        height: 100%;
-        padding: 0 5%;;
         background-color: var(--white);
-        overflow-y: scroll;
         overflow-x: hidden;
     }
 
-    #more-details {
-        display: none;
+    #project-context {
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0 2vw;
     }
 
-    #remarks {
-    display: block;
+    #project-content {
+        width: 75vw;
+        padding: 0 2vw 0 25vw;
     }
 }
 
-#project-content .project-nav{
-    width: 100%;
-    position: relative;
-    padding: 0;
-}
+/* =============================================================================
+   GLOBAL ELEMENTS
+   ============================================================================= */
 
-#project-content .project-nav ul{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 10px 30px;
-}
-
-#project-content .project-nav ul li{
-    line-height: 1em;
-}
-
-#project-content .project-nav ul li:hover{
-    text-decoration: underline;
-}
-
-#return-to-home{
+#return-to-home {
     width: 25px;
     height: 25px;
     position: fixed;
     top: 2%;
     right: 2%;
-    z-index: 2;
-}
-/* ----------------------- Context */
-#project-context h3, #project-context p.caption{
-    padding-left: 0;
-}
-
-#project-context .list{
+    z-index: 200;
+    
+    /* Center any content */
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+    /* Ensure smooth rotation */
+    will-change: transform;
 }
 
+/* =============================================================================
+   PROJECT CONTEXT SECTION
+   ============================================================================= */
+
+/* Timeline */
 .timeline-label {
     display: inline-block;
     width: 85px;
 }
 
-#project-context .list h3{
-    width: 80px;
+/* Hero Image */
+#hero-frame {
+    width: 96vw;
+    height: 65vh;
+    margin-bottom: 2%;
 }
 
-#project-context #remarks h3{
-    width: auto;
-    margin: 10% 0 1% 0;
+#hero-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-#project-context #remarks ul{
-    margin-top:4%;
-    padding: 0;
-}
-
-#project-context #remarks li{
-    margin-bottom: 1%;
-}
-
-
-#project-context .list ul{
-    display: inline-block;
-    margin-top: 5px;
-}
-
-/* ----------------------- proj nav */
-#proj-nav{
+/* Project Details */
+#project-context #proj-details {
+    width: 75%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: 0 -3% 5% -3%;
+    flex-wrap: wrap;
+    padding-left: 23vw;
+}
+
+#project-context #proj-details #brief-info {
+    width: 35vw;
+    margin-right: 10vw;
+}
+
+#project-context #proj-details #roles,
+#project-context #proj-details #tools {
+    width: 10vw;
+    margin-right: 5vw;
 }
 
 
-/* ----------------------- Project Content */
 
-#hero-frame{
-    width: 73.4vw;
-    height: 70%;
-    padding: 0;
-    margin: 0 -9%;
-}
+/* =============================================================================
+   PROJECT CONTENT SECTION
+   ============================================================================= */
 
-#hero-frame img{
-    width: 100%; /* Ensure the image fills the width */
-    height: 100%; /* Ensure the image fills the height */
-    object-fit: cover; /* Crop the image to fit the container */
-}
-
-.para{
-    margin: 4% 0 10% 0;
-}
-
+/* Paragraph Sections */
 .para {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    margin: 5% 5% 10% 0;
 }
 
 .para.visible {
@@ -141,73 +114,78 @@
     transform: translateY(0);
 }
 
-
-#project-content h1{
-    margin: 0 0 1% 0;
-    padding-left: 0;
+#project-content .para p :not(.carousel-expand-toggle){
+    width: 85%;
 }
 
-#project-content h2{
-    margin-top: 15%;
-    margin-bottom: 2%;
+/* Reflection Sections */
+.reflection {
+    width: 98vw;
+    margin-left: -25vw;
+    overflow-x: hidden;
+    background-color: var(--black);
+    padding: 15vh 0;
 }
 
-#project-content h2.multi-h3s{
-    margin-bottom: 0;
-}
-
-
-#project-content h3{
-    margin: 3% 0 0 0;
-    padding-left: 0;
-}
-
-#project-content p{
-    margin: 0 0 1% 0;
-}
-
-.col{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 1% 0;
-    padding-inline-start: 40px;
-}
-
-.row{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
-.col li{
-    padding-bottom: 0;
-    list-style: square;
-}
-
-.row li{
-    margin: 0 5%;
-}
-
-div.same-content ul{
+/* Content Layout */
+div.same-content ul {
     margin: 0;
 }
 
-div.inline{
+div.inline {
     display: inline;
 }
 
-.reflection{
-    width: 100%;
-    /* border-radius: 50px; */
-    margin-left: -2%;
+/* Columns & Rows */
+.col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1%;
+    padding-inline-start: 40px;
 }
 
-#project-content .reflection h2{
-    margin-top: 10%;
+.col li {
+    padding-bottom: 0;
+    list-style: none;
 }
 
-.small-gallery, .small-gallery-tall{
+.row, .multi-row, .single-row {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-items: flex-start;
+}
+
+.single-row{
+    width: 80%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+.multi-row, .multi-row .col {
+    margin-bottom: 0px;
+    padding-right: 0;
+}
+
+
+.row h3, .multi-row h3, #project-content .row p,#project-content .multi-row p {
+    width: 15vw;
+}
+
+.single-row li{
+    width: auto;
+    margin-bottom: 2%;
+}
+
+/* =============================================================================
+   IMAGE GALLERIES
+   ============================================================================= */
+
+/* Small Galleries */
+.small-gallery,
+.small-gallery-tall {
     width: 100%;
     height: fit-content;
     display: flex;
@@ -218,24 +196,28 @@ div.inline{
     gap: 20px;
 }
 
-.small-gallery-tall{
+.small-gallery-tall {
     height: 70vh;
     flex-wrap: nowrap;
 }
 
-.small-gallery img{
+.small-gallery img {
     width: 48%;
-    object-fit: cover; /* Ensures all images are cropped to fit */
+    object-fit: cover;
 }
 
-.small-gallery-tall img{
+.small-gallery-tall img {
     width: fit-content;
-    object-fit: cover; /* Ensures all images are cropped to fit */
+    object-fit: cover;
 }
 
+/* =============================================================================
+   PROTOTYPES CAROUSEL
+   ============================================================================= */
 
 .prototypes-mac,
 .prototypes-mobile {
+    margin-left: -25vw;
     height: 70vh;
     display: flex;
     flex-direction: column;
@@ -269,356 +251,580 @@ div.inline{
     transition: all 0.3s ease;
 }
 
+/* =============================================================================
+   MULTI-IMAGE CAROUSEL
+   ============================================================================= */
 
-
-/* ----------------img styling */
 .multi-carousel {
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
     align-content: flex-start;
-    height: 160px;
-    margin-top: 2%;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Ensure snapping */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
-    gap: 5px; /* Ensure proper spacing */
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
-.thumbnail-container {
-    width: 24%;
-    margin-right: 0.5%;
-    height: 100%;
+.carousel-flex-container:not(.design-decision){
+    margin-left: -10vw;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.carousel-flex-container:not(.design-decision) .multi-carousel{
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the image & underline */
+}
+
+.carousel-flex-container:not(.design-decision) .thumbnail-container{
+    scale: 1;
+    width: 10vw;
+    margin-bottom: 5%;
+    margin-right: 2.5vw;
+}
+
+.multi-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.multi-carousel :not(.design-decisions){
+    flex-direction: column;
+}
+
+/* Thumbnail Container */
+.thumbnail-container {
+    width: 15vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     scroll-snap-align: start;
 }
 
-/* ✅ Force uniform size and cropping */
 .thumbnail-container img {
-    width: 100%;
-    height: 85%;
-    object-fit: cover; /* Ensures all images are cropped to fit */
+    width: 90%;
+    object-fit: cover;
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
 }
 
-/* ✅ Make sure images zoom slightly when hovered */
 .thumbnail-container img:hover {
     scale: 1.05;
     z-index: 1;
     transition: all 0.1s ease-in-out;
 }
 
-/* ✅ Underline is inside each thumbnail-container */
-.underline {
-    width: 100%;
-    height: 3px;
-    margin-top: 5%;
-    background-color: var(--red);
-    display: none; /* Initially hidden */
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-/* ✅ Underline appears only when a thumbnail is selected */
-.thumbnail-container.selected .underline {
-    display: block;
-    opacity: 1;
-    transform: scaleX(1);
-}
-
-/* ✅ Ensure selected images are fully visible */
+/* Selection States */
 .multi-carousel img:not(.selected) {
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 .multi-carousel img.selected {
     opacity: 1;
 }
 
-/* ✅ Ensure smooth horizontal scrolling & hide scrollbar */
-.multi-carousel::-webkit-scrollbar {
+/* Underline Indicator */
+.underline {
+    display: inline-block;
+    width: 100%;
+    height: 3px;
+    margin-top: 5%;
     display: none;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    background-color: var(--project-accent-color);
 }
 
+.thumbnail-container.selected .underline {
+    display: block;
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* design decision carousels */
+.carousel-flex-container{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.carousel-flex-container .expanded .thumbnail-container::after {
+    content: attr(data-caption);
+    font-size: 1em;
+    text-align: center;
+    margin-top: 1%;
+    display: block;
+}
+
+.carousel-flex-container .solo-images-container{
+    margin-left: 10vw;
+}
+
+.carousel-flex-container .solo-images-container .side-cap-container{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: end;
+    margin-bottom: 3%;
+}
+
+.carousel-flex-container .solo-images-container .side-cap-container .solo-caption{
+    width: 20%;
+    margin-right: 2%;
+}
+
+.carousel-flex-container .solo-images-container .side-cap-container img{
+    width: 80%;
+    margin-right: 2%;
+}
+
+
+.caption-container, .prototypes-caption-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+    margin-left: 2%;
+}
+
+
+
+.display-caption {
+    margin: 0;
+}
+
+.prototypes-caption-container .prototypes-counter, .caption-container .display-counter {
+    width: 5%;
+}
+
+.prototypes-caption-container .prototypes-caption, .caption-container .display-caption {
+    width: 95%;
+}
+/* =============================================================================
+   SOLO IMAGE STYLES
+   ============================================================================= */
+.solo{
+    margin-top: 1%;
+}
+
+.semi{
+    width: 80%
+}
+
+/* =============================================================================
+   IMAGE ZOOM STYLES
+   ============================================================================= */
+
+.displayed-img-wrapper {
+    overflow: hidden;
+    position: relative;
+    display: inline-block; /* Shrink to fit image */
+    width: 100%;
+}
+
+.displayed-img {
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+    cursor: zoom-in;
+    touch-action: pan-x pan-y;
+    width: 100%;
+    display: block;
+}
+
+.displayed-img.zoomed {
+    transform: scale(2);
+    cursor: zoom-out;
+}
+
+/* =============================================================================
+   EXPAND TOGGLE POSITIONING UPDATE
+   ============================================================================= */
+
+.carousel-view-toggle {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    position: relative;
+    padding-bottom: 4px;
+    margin-bottom: 1rem;
+}
+
+.toggle-option {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toggle-label {
+    font-size: 0.9rem;
+    color: #666;
+    transition: color 0.3s ease;
+    padding: 0.25rem 0;
+}
+
+.toggle-option input[type="radio"]:checked + .toggle-label {
+    color: var(--black);
+    font-weight: 500;
+}
+
+.toggle-underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--project-accent-color);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Optional hover effect */
+.toggle-option:hover .toggle-label {
+    color: #333;
+}
+
+
+/* =============================================================================
+   DISPLAY WINDOW (IMAGE VIEWER)
+   ============================================================================= */
 
 .display-window {
     width: 100%;
-    margin-top: 1%;
     position: relative;
-    transition: transform 0.3s ease-in-out; /* Smooth open/close */
-    transform: translateY(100%); /* Starts hidden below */
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(100%);
 }
 
 .display-window.hidden {
-    transform: translateY(100%); /* Slide down to hide */
+    transform: translateY(100%);
     opacity: 0;
 }
 
 .display-window.visible {
-    transform: translateY(0); /* Slide up to show */
+    transform: translateY(0);
     opacity: 1;
 }
 
 .displayed-img {
-    /* margin-top: 3%; */
     width: 100%;
     object-fit: contain;
 }
 
-#project-content .display-caption, #project-content p.caption, .prototypes-caption-container, #project-content .solo-caption {
-    font-size: 1em;
-    text-align: center;
-    margin-bottom: 7%;
-}
 
-#project-content p.caption, #project-content .solo-caption {
-    padding: 0;
-}
+/* =============================================================================
+   TABLET (≤ 900px)
+   ============================================================================= */
 
+@media screen and (min-width: 751px) and (max-width:1050px){
+/* --- CRITICAL: Fix scrolling --- */
+    html, body {
+        /* overflow-x: hidden; */
+        -webkit-overflow-scrolling: touch;  /* Smooth iOS scrolling */
+    }
 
-/* ---------------------------------------- for mobile/tablet */
+    
+    /* Allow vertical scrolling to pass through horizontal scroll containers */
+    .multi-carousel,
+    .prototypes-mac,
+    .prototypes-mobile {
+        touch-action: pan-x;  /* Allow both directions */
+        /* OR use this to prioritize vertical scrolling: */
+        /* touch-action: pan-y pinch-zoom; */
+    }
 
-@media  screen and (max-width: 800px) {
-    #container-project{
+    /* Don't block parent scroll */
+    .prototype-container,
+    .prototype-container img {
+        touch-action: auto;  /* ← CHANGE from manipulation */
+    }
+    
+    /* Ensure thumbnails don't block scrolling */
+    .thumbnail-container,
+    .thumbnail-container img {
+        touch-action: manipulation;
+    }
+    
+    /* Images that aren't in carousels should allow scroll-through */
+    .para img:not(.displayed-img),
+    .solo,
+    .semi {
+        touch-action: pan-y pan-x pinch-zoom;
+    }
+    
+    /* Display window images - allow vertical scroll unless zoomed */
+    .displayed-img {
+        touch-action: pan-y pinch-zoom;
+    }
+
+        #project-context {
+        height: auto;           /* Not fixed height */
+        min-height: unset;      /* Remove any min-height */
+        max-height: unset;      /* Remove any max-height */
+        overflow: visible;      /* Don't create scroll container */
+        overflow-y: visible;
+        -webkit-overflow-scrolling: unset;
+    }
+    
+    /* Also ensure the hero frame doesn't trap touches */
+    #hero-frame {
+        touch-action: pan-y;
+    }
+    
+    #hero-frame img {
+        touch-action: pan-y;
+    }
+    
+    /* And the details section */
+    #proj-details {
+        touch-action: pan-y;
+    }
+
+    
+    
+    /* --- Layout --- */
+    #container-project {
         flex-direction: column;
-        width: 100vw;
+        width: 96vw;
+        margin: 0 2vw;
         border-radius: 0;
         overflow-x: hidden;
+        overflow-y: visible;  /* Don't create scroll container */
+        height: auto;  /* Allow natural height */
     }
+
+    #project-context {
+        width: 100%;
+        overflow-y: visible;  /* CHANGED FROM HIDDEN */
+        overflow-x: hidden;
+    }
+
+    #project-content {
+        width: 100%;
+        padding: 0;
+        overflow-y: visible;  /* REMOVE scroll container on mobile */
+        overflow-x: hidden;
+    }
+
+    #project-context #proj-details{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: baseline;
+        width: 100%;
+        padding: 0;
+        gap: 10px;
+    }
+
+    #project-context #proj-details #brief-info{
+        width: 80%;
+        margin-right: 10%;
+    }
+
+    #project-context #proj-details .list{
+        width: 40%;
+    }
+
+    #project-context #proj-details #roles,
+    #project-context #proj-details #tools {
+        width: 100%;
+        margin-bottom: 0.5em;
+    }
+
     
-    #return-to-home{
+
+    /* Reflection Sections */
+    .reflection {
+        width: 100vw;
+        margin-left: 0;
+        padding: 15vh 0;
+    }
+
+    /* --- Global Elements --- */
+    #return-to-home {
         width: 35px;
         height: 35px;
-        position: fixed;
         top: 2%;
-        right: 7%;
+        right: 2%;
         z-index: 2;
     }
-    
 
-    /* ----------------------- Context */
-    #project-content .project-nav{
+    /* --- Hero Image --- */
+    #hero-frame {
         width: 100%;
-        position: relative;
-        padding: 0;
-    }
-    
-    #project-content .project-nav ul{
-        flex-direction: column;
-        margin: 2rem 0 2rem 1.5rem;
-    }
-    #project-context{
-        width: 100%;
-
-    }
-
-    #project-context h2, #project-context p{
-        padding: 2%;
-        margin: 0;
-    }
-    
-
-    #project-context .list, #project-context #period{
-        margin: 2% 2% 0 2%;
-    }
-
-    #project-context #remarks{
-        margin-bottom: 0;
-    }
-
-    #project-context #remarks h3{
-        width: auto;
-        margin: 5% 0 1% 0;
-    }
-
-    #project-context #remarks ul{
-        margin-top:2%;
-        padding: 0;
-    }
-
-    #project-context #remarks li{
-        margin-bottom: 1%;
-    }
-
-
-    #project-context .list ul{
-        display: inline-block;
-        margin-top: 5px;
-    }
-
-    #proj-nav{
-        display: none; 
-    }
-
-
-    /* ----------------------- Project Content */
-    #project-content{
-        width: 100%;
-        padding: 0;
-    }
-
-    #hero-frame{
-        width: 100%;
-        height: 340px;
+        height: 550px;
         padding: 0;
         margin: 0;
     }
 
-    #hero-frame img{
-        width: 100%; /* Ensure the image fills the width */
-        object-fit: cover; /* Crop the image to fit the container */
+    #hero-frame img {
+        width: 100%;
+        object-fit: cover;
     }
 
-    .para{
+    /* --- Project Content --- */
+    .para {
         margin: 4% 0 10% 0;
     }
-    
 
-    #project-content h1{
-        margin: 0 0 1% 0;
-        padding-left: 1.5rem;
-    }
-
-    #project-content h2{
-        margin: 15% 0 0 0;
-        padding-left: 1.5rem;
-    }
-
-    #project-content h3{
-        margin: 7% 0 0 0;
-        padding-left: 1.5rem;
-    }
-
-    #project-content p{
-        margin: 0;
-        padding: 0.5rem 1.5rem 0 1.5rem;
-    }
-
-    .col{
+    /* --- Columns & Rows --- */
+    .col {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         margin: 2% 0;
-        padding-inline-start: 40px;
+        padding-inline-start: 20px;
     }
 
-    .row{
+    .row {
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: baseline;
+        padding-left: 0;
     }
 
-    .col li{
-        padding-bottom: 0;
-        list-style: square;
+    .row h3, .multi-row h3 {
+        width: 32%;
     }
 
-    .row li{
-        margin: 0 5%;
+    .row ul, .multi-row ul {
+        width: 68%;
     }
 
-    div.same-content ul{
+    div.same-content ul {
         margin: 0;
     }
 
-    /* ----------------img styling */
-
-     #project-content .solo img{
-        width: 100%;
-        margin: 0 1.5rem;
+    .multi-row{
+        justify-content: flex-start;
+        align-items: baseline;
     }
 
-    .small-gallery, .small-gallery-tall{
-        width: 96%;
-        flex-direction: row;
-        gap: 5px;
-        margin: 1.5rem;
+    .multi-row ul{
+        padding: 0;
     }
+
     
-    .small-gallery-tall{
+
+
+    /* --- Images --- */
+    #project-content .solo img, #project-content .semi {
+        width: 100%;
+        margin: 0;
+    }
+
+    /* --- Small Galleries --- */
+    .small-gallery,
+    .small-gallery-tall {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 0;
+    }
+
+    .small-gallery-tall {
         height: 40vh;
         flex-wrap: nowrap;
-
     }
-    
-    .small-gallery img{
-        width: 90%;
-        margin: 0 1.5rem;
 
+    .small-gallery img {
+        width: 49.5%;
+        margin: 0;
     }
-    
-    .small-gallery-tall img{
+
+    .small-gallery-tall img {
         width: fit-content;
-        object-fit: cover; /* Ensures all images are cropped to fit */
+        object-fit: cover;
     }
 
+    /* --- Multi-Carousel --- */
     .multi-carousel {
         width: 96%;
         height: 60px;
-        padding: 2%;
+        /* padding: 2%; */
+        margin-top: 10px;
+
     }
 
-    /* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
-    .thumbnail-container {
-        width: 25%;
+    .multi-carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-flex-container:not(.design-decision) .thumbnail-container {
+        /* width: 25%; */
         height: 100%;
+        margin-bottom: 0;
     }
 
-    /* ✅ Force uniform size and cropping */
     .thumbnail-container img {
         width: 100%;
         max-height: 90%;
         margin-bottom: 2%;
     }
 
-    .thumbnail-container img .selected{
+    .thumbnail-container img.selected {
         width: auto;
         max-height: 90%;
     }
 
-    /* ✅ Make sure images zoom slightly when hovered */
     .thumbnail-container img:hover {
         height: 100%;
         z-index: 1;
         transition: all 0.1s ease-in-out;
     }
 
-    /* ✅ Underline is inside each thumbnail-container */
     .underline {
         display: none;
         width: 100%;
         height: 3px;
         margin: 2% 0 0 0;
+        background-color: var(--project-accent-color);
     }
 
-    /* ✅ Underline appears only when a thumbnail is selected */
     .thumbnail-container.selected .underline {
+        background-color: var(--project-accent-color);
         display: block;
         opacity: 1;
         transform: scaleX(1);
     }
 
-    /* ✅ Ensure smooth horizontal scrolling & hide scrollbar */
-    .multi-carousel::-webkit-scrollbar {
-        display: none;
+    .carousel-flex-container:not(.design-decision) {
+        flex-direction: column;
     }
 
+    .carousel-flex-container .multi-carousel{
+        flex-direction: row;
+        margin-bottom: 0;
+        margin-left: 8vw;
+        padding: 0;
+    }
 
+    
+
+    .carousel-flex-container .displayed-img{
+        margin-top: 0;
+    }
+    .carousel-view-toggle{
+        margin-top: 10px;
+    }
+
+    /* --- Display Window --- */
     .display-window {
         display: block;
-        width: 100%;
+        width: 98%;
         margin-top: 1%;
+        margin-left: 2%;
         position: relative;
-        transition: transform 0.3s ease-in-out; /* Smooth open/close */
-        transform: translateY(100%); /* Starts hidden below */
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(100%);
     }
 
     .display-window.visible {
-        transform: translateY(0); /* Slide up to show */
+        transform: translateY(0);
         opacity: 1;
     }
 
@@ -633,33 +839,505 @@ div.inline{
         text-align: center;
     }
 
-    .prototypes-mac{
-        max-height: 50vh;
+    /* --- Prototypes Carousel --- */
+    .prototypes-mac {
+        max-height: 35vh;
+        margin-left: 0;
     }
 
-    .prototypes-mobile{
+    .prototypes-mobile {
         max-height: 80vh;
     }
-    
-    .prototypes-mac::-webkit-scrollbar, .prototypes-mobile::-webkit-scrollbar {
+
+    .prototypes-mac::-webkit-scrollbar,
+    .prototypes-mobile::-webkit-scrollbar {
         display: none;
     }
-    
-    .prototypes-mac .prototype-container{
-        height: auto;
+
+    .prototypes-mac .prototype-container {
+        width: 75%;
+        height: 100%;
+        margin: 0;
     }
-    
-    .prototype-container img{
-        width:100%;
+
+    .prototype-container img {
+        width: 90%;
         height: 90%;
-        margin-right: 2%;
+        margin-right: 0;
+            align-self: center;
+
     }
 
-    .prototypes-mac .prototype-container img.selected{
+    .prototypes-mac .prototype-container img.selected {
+        width: 90%;
+        height: 90%;
+        align-self: center;
+    }
+
+    #project-content.prototypes-caption-container, #project-content .display-window .caption-container {
+        width: 95%;
+        gap: 2px;;
+    }
+
+    #project-content .prototypes-caption-container{
+        margin-left: 0;
+    }
+
+    #project-content .display-window .caption-container{
+        margin-left: 10vw;
+    }
+    
+    #project-content .prototypes-caption-container .prototypes-counter, #project-content .carousel-flex-container .display-counter{
+        width: 10%;
+    }
+
+    #project-content .prototypes-caption-container .prototypes-caption,#project-content .carousel-flex-container .display-caption{
+        width: 85%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* =============================================================================
+   MOBILE (≤ 750px)
+   ============================================================================= */
+
+@media screen and (max-width: 750px) {
+    
+    /* --- CRITICAL: Fix scrolling --- */
+    html, body {
+        /* overflow-x: hidden; */
+        -webkit-overflow-scrolling: touch;  /* Smooth iOS scrolling */
+    }
+
+    
+    /* Allow vertical scrolling to pass through horizontal scroll containers */
+    .multi-carousel,
+    .prototypes-mac,
+    .prototypes-mobile {
+        touch-action: pan-x;  /* Allow both directions */
+        /* OR use this to prioritize vertical scrolling: */
+        /* touch-action: pan-y pinch-zoom; */
+    }
+
+    /* Don't block parent scroll */
+    .prototype-container,
+    .prototype-container img {
+        touch-action: auto;  /* ← CHANGE from manipulation */
+    }
+    
+    /* Ensure thumbnails don't block scrolling */
+    .thumbnail-container,
+    .thumbnail-container img {
+        touch-action: manipulation;
+    }
+    
+    /* Images that aren't in carousels should allow scroll-through */
+    .para img:not(.displayed-img),
+    .solo,
+    .semi {
+        touch-action: pan-y pan-x pinch-zoom;
+    }
+    
+    /* Display window images - allow vertical scroll unless zoomed */
+    .displayed-img {
+        touch-action: pan-y pinch-zoom;
+    }
+
+        #project-context {
+        height: auto;           /* Not fixed height */
+        min-height: unset;      /* Remove any min-height */
+        max-height: unset;      /* Remove any max-height */
+        overflow: visible;      /* Don't create scroll container */
+        overflow-y: visible;
+        -webkit-overflow-scrolling: unset;
+    }
+    
+    /* Also ensure the hero frame doesn't trap touches */
+    #hero-frame {
+        touch-action: pan-y;
+    }
+    
+    #hero-frame img {
+        touch-action: pan-y;
+    }
+    
+    /* And the details section */
+    #proj-details {
+        touch-action: pan-y;
+    }
+
+    
+    
+    /* --- Layout --- */
+    #container-project {
+        flex-direction: column;
+        width: 96vw;
+        margin: 0 2vw;
+        border-radius: 0;
+        overflow-x: hidden;
+        overflow-y: visible;  /* Don't create scroll container */
+        height: auto;  /* Allow natural height */
+    }
+
+    #project-context {
         width: 100%;
-        height: auto;
+        overflow-y: visible;  /* CHANGED FROM HIDDEN */
+        overflow-x: hidden;
     }
 
-    .prototypes-mobile .prototype-container img.selected{
+    #project-content {
+        width: 100%;
+        padding: 0;
+        overflow-y: visible;  /* REMOVE scroll container on mobile */
+        overflow-x: hidden;
+    }
+
+    #project-context #proj-details{
+        flex-direction: row;
+        flex-wrap: wrap-reverse;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        gap: 15px;
+    }
+
+    #project-context #proj-details #brief-info{
+        width: 100%;
+        margin-right: 0;
+    }
+
+    #project-context #proj-details .list{
+        width: 40%;
+    }
+
+    #project-context #proj-details #roles,
+    #project-context #proj-details #tools {
+        width: 100%;
+        margin-bottom: 0.5em;
+    }
+
+    
+
+    /* Reflection Sections */
+    .reflection {
+        width: 100vw;
+        margin-left: 0;
+        padding: 15vh 0;
+    }
+
+    /* --- Global Elements --- */
+    #return-to-home {
+        width: 35px;
+        height: 35px;
+        top: 2%;
+        right: 2%;
+        z-index: 2;
+    }
+
+    /* --- Hero Image --- */
+    #hero-frame {
+        width: 100%;
+        height: 340px;
+        padding: 0;
+        margin: 0;
+    }
+
+    #hero-frame img {
+        width: 100%;
+        object-fit: cover;
+    }
+
+    /* --- Project Content --- */
+    .para {
+        margin: 4% 0 10% 0;
+    }
+
+    /* --- Columns & Rows --- */
+    .col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 2% 0;
+        padding-inline-start: 20px;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        padding-left: 0;
+    }
+
+    .row h3, .multi-row h3 {
+        width: 32%;
+    }
+
+    .row ul, .multi-row ul {
+        width: 68%;
+    }
+
+    div.same-content ul {
+        margin: 0;
+    }
+
+    .multi-row{
+        justify-content: flex-start;
+        align-items: baseline;
+        margin-top: 2%;
+    }
+
+    .multi-row ul{
+        padding: 0;
+    }
+
+    .single-row{
+        width: 90%;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10%;
+    }
+
+    .single-row li{
+        padding: 2px;
+        margin: 0;
+        border: 1px solid var(--black);
+    }
+
+
+    /* --- Images --- */
+    #project-content .solo img, #project-content .semi {
+        width: 100%;
+        margin: 0;
+    }
+
+    /* --- Small Galleries --- */
+    .small-gallery,
+    .small-gallery-tall {
+        width: 100%;
+        flex-direction: row;
+        gap: 5px;
+        margin: 0;
+    }
+
+    .small-gallery-tall {
+        height: 40vh;
+        flex-wrap: nowrap;
+    }
+
+    .small-gallery img {
+        width: 100%;
+        margin: 0;
+    }
+
+    .small-gallery-tall img {
+        width: fit-content;
+        object-fit: cover;
+    }
+
+    /* --- Multi-Carousel --- */
+    .multi-carousel {
+        width: 96%;
+        height: 60px;
+        /* padding: 2%; */
+        margin-top: 10px;
+
+    }
+
+    .multi-carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-flex-container:not(.design-decision) .thumbnail-container {
+        /* width: 25%; */
+        height: 100%;
+        margin-bottom: 0;
+    }
+
+    .thumbnail-container img {
+        width: 100%;
+        max-height: 90%;
+        margin-bottom: 2%;
+    }
+
+    .thumbnail-container img.selected {
+        width: auto;
+        max-height: 90%;
+    }
+
+    .thumbnail-container img:hover {
+        height: 100%;
+        z-index: 1;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .underline {
+        display: none;
+        width: 100%;
+        height: 3px;
+        margin: 2% 0 0 0;
+        background-color: var(--project-accent-color);
+    }
+
+    .thumbnail-container.selected .underline {
+        background-color: var(--project-accent-color);
+        display: block;
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    .carousel-flex-container:not(.design-decision) {
+        flex-direction: column;
+    }
+
+    .carousel-flex-container .multi-carousel{
+        flex-direction: row;
+        margin-bottom: 0;
+        margin-left: 8vw;
+        padding: 0;
+    }
+
+    
+
+    .carousel-flex-container .displayed-img{
+        margin-top: 0;
+    }
+    .carousel-view-toggle{
+        margin-top: 10px;
+    }
+
+    /* --- Display Window --- */
+    .display-window {
+        display: block;
+        width: 98%;
+        margin-top: 1%;
+        margin-left: 2%;
+        position: relative;
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(100%);
+    }
+
+    .display-window.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .displayed-img {
+        margin-top: 3%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    #project-content .display-caption {
+        font-size: 1em;
+        text-align: center;
+    }
+
+    /* --- Prototypes Carousel --- */
+    .prototypes-mac {
+        max-height: 35vh;
+        margin-left: 0;
+    }
+
+    .prototypes-mobile {
+        max-height: 80vh;
+    }
+
+    .prototypes-mac::-webkit-scrollbar,
+    .prototypes-mobile::-webkit-scrollbar {
+        display: none;
+    }
+
+    .prototypes-mac .prototype-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    .prototype-container img {
+        width: 90%;
+        height: 90%;
+        margin-right: 0;
+            align-self: center;
+
+    }
+
+    .prototypes-mac .prototype-container img.selected {
+        width: 90%;
+        height: 90%;
+        align-self: center;
+    }
+
+    #project-content.prototypes-caption-container, #project-content .display-window .caption-container {
+        width: 95%;
+        gap: 2px;;
+    }
+
+    #project-content .prototypes-caption-container{
+        margin-left: 0;
+    }
+
+    #project-content .display-window .caption-container{
+        margin-left: 10vw;
+    }
+    
+    #project-content .prototypes-caption-container .prototypes-counter, #project-content .carousel-flex-container .display-counter{
+        width: 10%;
+    }
+
+    #project-content .prototypes-caption-container .prototypes-caption,#project-content .carousel-flex-container .display-caption{
+        width: 85%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+
+
+/* =============================================================================
+   LARGE SCREENS (> 2000px)
+   ============================================================================= */
+
+@media screen and (min-width: 2000px) {
+    #project-content{
+        padding-left: 30vw;
+    }
+    
+    #project-context, #project-content, .small-gallery, .solo {
+        width: 80%;
+    }
+
+    .carousel-flex-container{
+        width: 95%;
+    }
+
+    #project-context #proj-details{
+        width: 80%;
+        justify-content: space-around;
+    }
+
+    #project-context #proj-details #brief-info{
+        margin-right: 10%;
+    }
+
+    #project-context .list{
+        width: auto;
+    }
+
+    #project-context #proj-details #roles, #project-context #proj-details #tools{
+        width: auto;
+        padding-right: 20px;
+    }
+
+    #project-content .prototypes-mac, .prototypes-mobile{
+        margin-left: -30vw;
+    }
+
+    .semi{
+        width: 60%;
+    }
+
+    .row h3, .multi-row h3{
+        width: 9vw;
     }
 }

@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="layout.css">
     <link rel="stylesheet" href="project-layout.css">
     <link rel="stylesheet" href="project-type.css">
+    <link rel="stylesheet" href="project-nav.css">
+    <link rel="stylesheet" href="project-footer.css">
 
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    
 
     <title>WORK by Hanne Sofie Berg</title>
     <link rel="icon" type="image/x-icon" href="/assets/logo-bw.png">
@@ -25,38 +29,44 @@
             <section id="details">
                 <h2 id="project-title"></h2> 
                 <p class="caption" id="period">Timeline</p>
-                <p id="brief-info"></p>
-                <div id="more-details"><p>more details↘</p></div>
-                <div class="list"> 
-                    <h3 id="roles">My roles</h3> 
-                    <ul></ul> 
-                </div>
-                <div class="list">
-                    <h3 id="tools">Tools</h3> 
-                    <ul></ul> 
-                </div>
-                <div class="list" id="remarks"> 
+                <div id="hero-frame"></div> <!-- hero-img here -->
+                <div id="proj-details">
+                    <p id="brief-info"></p>
+                    <div class="list"> 
+                        <h3 id="roles">My roles</h3> 
+                        <ul></ul> 
+                    </div>
+                    <div class="list">
+                        <h3 id="tools">Tools</h3> 
+                        <ul></ul> 
+                    </div>
+                    <div class="list" id="remarks"> 
                     <h3>Project remarks:</h3>
-                    <ul></ul> 
+                        <ul></ul> 
+                    </div>
                 </div>
               </section>
-    
-            <section id="proj-nav">
-                <div id="prev-proj">←Previous</div>
-                <div id="next-proj">Next→</div>
-            </section>
         </section>
     
         <section id="project-content">
-            <div id="hero-frame"></div> <!-- hero-img here -->
+            <!-- Other project content populates here -->
+        </section>
+
+        <span>
             <nav id="project-nav" class="project-nav"> <!-- Pre-defined navigation bar -->
                 <ul></ul>
             </nav>
-            <!-- Other project content populates here -->
-        </section>
+        </span>
     </section>
+    <footer>
+        <p class="intro-text">Hungry for more? Have a look at some of my favourite projects:</p>
+        <section class="favs"></section>
+        <p class="footer-caption">*designed and developed by Hanne Sofie Berg.</p>
+    </footer>
     
-
     <script src="project.js"></script>
+    <script src="home-animation.js"></script>
+    <script src="project-footer.js"></script>
+    <script src="project-nav.js"></script>
 </body>
 </html>

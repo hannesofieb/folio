@@ -65,9 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
     /**
      * Main data processing function - orchestrates page setup
      */
-    /**
-     * Main data processing function - orchestrates page setup
-     */
     function processData() {
         // Find project data in both CSV files
         const workProject = workArchiveData.find(p => p['project-id'].trim() === projectId);
@@ -86,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         populateTimeline(workProject, projectData);
         populateMetadata(projectData);
         populateProjectContent(projectData);
-        // updateProjectNavigation(projectId);
+        updateProjectNavigation(projectId);
 
         // Apply styling and initialize features
         setTimeout(() => colouring(workProject), 600);
@@ -94,111 +91,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * Parse overview text with support for {br} and {a[text;url]} syntax
-     * 
-     * Examples:
-     * - {br} = line break
-     * - {a[Click here;https://example.com]} = link
-     */
-    function parseOverviewToFragments(overviewText) {
-        if (!overviewText) return [];
-        
-        const fragments = [];
-        let currentIndex = 0;
-        
-        while (currentIndex < overviewText.length) {
-            // Look for special syntax
-            const brIndex = overviewText.indexOf('{br}', currentIndex);
-            const aIndex = overviewText.indexOf('{a[', currentIndex);
-            
-            let nextSpecial = -1;
-            let specialType = null;
-            
-            // Determine which comes first
-            if (brIndex !== -1 && (aIndex === -1 || brIndex < aIndex)) {
-                nextSpecial = brIndex;
-                specialType = 'br';
-            } else if (aIndex !== -1) {
-                nextSpecial = aIndex;
-                specialType = 'a';
-            }
-            
-            // If no special syntax found, add remaining text
-            if (nextSpecial === -1) {
-                const remainingText = overviewText.substring(currentIndex);
-                if (remainingText) {
-                    fragments.push(document.createTextNode(remainingText));
-                }
-                break;
-            }
-            
-            // Add text before the special syntax
-            const textBefore = overviewText.substring(currentIndex, nextSpecial);
-            if (textBefore) {
-                fragments.push(document.createTextNode(textBefore));
-            }
-            
-            // Handle special syntax
-            if (specialType === 'br') {
-                fragments.push(document.createElement('br'));
-                fragments.push(document.createElement('br'));
-                currentIndex = nextSpecial + 4; // Move past "{br}"
-                console.log("📄 Added line break to overview");
-            } else if (specialType === 'a') {
-                const anchorStart = nextSpecial + 3; // After "{a["
-                const anchorEnd = overviewText.indexOf(']}', anchorStart);
-                
-                if (anchorEnd !== -1) {
-                    const anchorContent = overviewText.substring(anchorStart, anchorEnd);
-                    const parts = anchorContent.split(';');
-                    
-                    if (parts.length === 2) {
-                        const anchor = document.createElement('a');
-                        anchor.textContent = parts[0].trim();
-                        anchor.href = parts[1].trim();
-                        anchor.setAttribute('target', '_blank');
-                        fragments.push(anchor);
-                        currentIndex = anchorEnd + 2; // Move past "]}"
-                        console.log(`🔗 Added link to overview: "${anchor.textContent}" → ${anchor.href}`);
-                    } else {
-                        // Invalid syntax, treat as plain text
-                        console.warn("⚠️ Invalid link syntax, treating as plain text");
-                        fragments.push(document.createTextNode(overviewText.substring(nextSpecial, anchorEnd + 2)));
-                        currentIndex = anchorEnd + 2;
-                    }
-                } else {
-                    // No closing found, treat as plain text
-                    console.warn("⚠️ No closing ]} found for link, treating as plain text");
-                    fragments.push(document.createTextNode(overviewText.substring(nextSpecial)));
-                    break;
-                }
-            }
-        }
-        
-        return fragments;
-    }
-
-
-    /**
      * Populate basic project information
      */
     function populateBasicInfo(workProject, projectData) {
         document.getElementById('project-title').textContent = workProject.title;
-        
-        // Parse and populate overview with br and link support
-        const briefInfo = document.getElementById('brief-info');
-        if (briefInfo && projectData.overview) {
-            briefInfo.innerHTML = ''; // Clear existing content
-            
-            const parsedContent = parseOverviewToFragments(projectData.overview);
-            parsedContent.forEach(fragment => {
-                briefInfo.appendChild(fragment);
-            });
-            
-            console.log("✅ Overview parsed with", parsedContent.length, "fragments");
-        }
-        
-        document.title = `${workProject.title} by HS`;
+        document.getElementById('brief-info').textContent = projectData.overview;
+        document.title = `introducing '${workProject.title}'`;
     }
 
     /**
@@ -421,50 +319,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
- * Parse tag identifier (e.g., "div.class1;class2#myid" or "div.class1.class2#myid")
- * Supports both dot and semicolon as class separators
- */
-function parseTagIdentifier(rawTagName) {
-    let tagName = "";
-    let id = "";
-    const classes = [];
+     * Parse tag identifier (e.g., "div.class1.class2#myid")
+     */
+    function parseTagIdentifier(rawTagName) {
+        const tagMatch = rawTagName.match(/^([a-zA-Z0-9]+)(([.#][^.#]+)*)$/);
+        let tagName = "";
+        let id = "";
+        const classes = [];
 
-    // First, extract ID if present
-    let workingString = rawTagName;
-    const hashIndex = workingString.indexOf('#');
-    
-    if (hashIndex !== -1) {
-        id = workingString.substring(hashIndex + 1).trim();
-        workingString = workingString.substring(0, hashIndex);
+        if (tagMatch) {
+            tagName = tagMatch[1];
+            if (tagMatch[2]) {
+                const groups = tagMatch[2].match(/([.#])([^.#]+)/g);
+                if (groups) {
+                    groups.forEach(g => {
+                        if (g.startsWith('.')) {
+                            classes.push(g.substring(1).trim());
+                        } else if (g.startsWith('#')) {
+                            id = g.substring(1).trim();
+                        }
+                    });
+                }
+            }
+        } else {
+            tagName = rawTagName;
+        }
+
+        return { tagName, classes, id };
     }
-
-    // Extract tag name (everything before first dot or semicolon)
-    const firstDot = workingString.indexOf('.');
-    const firstSemi = workingString.indexOf(';');
-    
-    let classStartIndex = -1;
-    
-    if (firstDot !== -1 && firstSemi !== -1) {
-        classStartIndex = Math.min(firstDot, firstSemi);
-    } else if (firstDot !== -1) {
-        classStartIndex = firstDot;
-    } else if (firstSemi !== -1) {
-        classStartIndex = firstSemi;
-    }
-
-    if (classStartIndex !== -1) {
-        tagName = workingString.substring(0, classStartIndex).trim();
-        const classString = workingString.substring(classStartIndex + 1);
-        
-        // Split by both dots and semicolons
-        const classNames = classString.split(/[.;]/).map(c => c.trim()).filter(c => c !== '');
-        classes.push(...classNames);
-    } else {
-        tagName = workingString.trim();
-    }
-
-    return { tagName, classes, id };
-}
 
     /**
      * Extract content between matching brackets
@@ -642,46 +524,22 @@ function parseTagIdentifier(rawTagName) {
     }
 
     /**
- * Parse nested tag identifier
- * Supports both dot and semicolon as class separators
- */
-function parseNestedTagIdentifier(rawTag) {
-    let tagName = rawTag;
-    let idName = '';
-    const classes = [];
+     * Parse nested tag identifier
+     */
+    function parseNestedTagIdentifier(rawTag) {
+        let tagName = rawTag;
+        let className = '';
+        let idName = '';
 
-    // Extract ID first
-    const hashIndex = rawTag.indexOf('#');
-    if (hashIndex !== -1) {
-        idName = rawTag.substring(hashIndex + 1).trim();
-        rawTag = rawTag.substring(0, hashIndex);
+        if (rawTag.includes('.')) {
+            [tagName, className] = rawTag.split('.');
+        }
+        if (rawTag.includes('#')) {
+            [tagName, idName] = rawTag.split('#');
+        }
+
+        return { tagName, classes: className ? [className] : [], id: idName };
     }
-
-    // Extract tag name and classes
-    const firstDot = rawTag.indexOf('.');
-    const firstSemi = rawTag.indexOf(';');
-    
-    let classStartIndex = -1;
-    
-    if (firstDot !== -1 && firstSemi !== -1) {
-        classStartIndex = Math.min(firstDot, firstSemi);
-    } else if (firstDot !== -1) {
-        classStartIndex = firstDot;
-    } else if (firstSemi !== -1) {
-        classStartIndex = firstSemi;
-    }
-
-    if (classStartIndex !== -1) {
-        tagName = rawTag.substring(0, classStartIndex).trim();
-        const classString = rawTag.substring(classStartIndex + 1);
-        const classNames = classString.split(/[.;]/).map(c => c.trim()).filter(c => c !== '');
-        classes.push(...classNames);
-    } else {
-        tagName = rawTag.trim();
-    }
-
-    return { tagName, classes, id: idName };
-}
 
     /**
      * Create element from nested tag definition
@@ -837,7 +695,7 @@ function parseNestedTagIdentifier(rawTag) {
         injectDynamicStyles(chosenColor);
 
         // Observe future reflection elements
-        // observeReflections(chosenColor);
+        observeReflections(chosenColor);
     }
 
     /**
@@ -876,20 +734,18 @@ function parseNestedTagIdentifier(rawTag) {
      * Apply color to various page elements
      */
     function applyColorToElements(color) {
-        // Set CSS custom property for dynamic elements
-        document.documentElement.style.setProperty('--project-accent-color', color);        
-        
         // Main elements
         const returnToHome = document.getElementById('return-to-home');
 
         if (returnToHome) returnToHome.style.backgroundColor = color;
 
         // Reflection elements
-        const reflections = document.querySelectorAll('.para .reflection');
-        console.log("Applying color to", reflections.length, "reflection elements");
+        // const reflections = document.querySelectorAll('.para .reflection');
+        // console.log("Applying color to", reflections.length, "reflection elements");
         
         reflections.forEach((el, index) => {
-            
+            el.style.backgroundColor = color;
+            el.style.border = `20px solid ${color}`;
         });
 
         // Underline elements
@@ -899,28 +755,6 @@ function parseNestedTagIdentifier(rawTag) {
         underlineElements.forEach(el => {
             el.style.backgroundColor = color;
         });
-
-        // Active navigation indicator - inject dynamic CSS for ::before pseudo-element
-        const navActiveStyle = document.createElement('style');
-        navActiveStyle.id = 'nav-active-color-style';
-        navActiveStyle.innerHTML = `
-            #project-nav ul li a.active::before {
-                background-color: ${color} !important;
-            }
-
-            #project-nav ul li a:hover{
-            border-left: 2px solid ${color} !important;
-          }
-        `;
-        
-        // Remove existing style if present
-        const existingStyle = document.getElementById('nav-active-color-style');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
-        
-        document.head.appendChild(navActiveStyle);
-        console.log("Applied active nav color:", color);
     }
 
     /**
@@ -958,7 +792,137 @@ function parseNestedTagIdentifier(rawTag) {
         observer.observe(targetNode, config);
     }
 
-    
+    // =============================================================================
+    // NAVIGATION
+    // =============================================================================
+
+    /**
+     * Update prev/next project navigation buttons
+     */
+    function updateProjectNavigation(currentProjectId) {
+        const prevButton = document.getElementById('prev-proj');
+        const nextButton = document.getElementById('next-proj');
+
+        // Filter projects with reflections
+        const reflectionProjects = projectsData.filter(project =>
+            Object.keys(project).some(key => 
+                key.startsWith("para") && 
+                project[key] && 
+                project[key].includes("div.reflection")
+            )
+        );
+
+        // Create sorted list by end date
+        const sortedProjects = getSortedProjectsByDate(reflectionProjects);
+
+        // Find current index
+        const currentIndex = sortedProjects.indexOf(currentProjectId);
+        if (currentIndex === -1) {
+            console.error(`❌ Project ID ${currentProjectId} not found in reflection list`);
+            return;
+        }
+
+        const prevProjectId = currentIndex > 0 ? sortedProjects[currentIndex - 1] : null;
+        const nextProjectId = currentIndex < sortedProjects.length - 1 
+            ? sortedProjects[currentIndex + 1] 
+            : null;
+
+        // Update buttons
+        updateNavigationButton(prevButton, prevProjectId);
+        updateNavigationButton(nextButton, nextProjectId);
+    }
+
+    /**
+     * Get projects sorted by end date (descending)
+     */
+    function getSortedProjectsByDate(projects) {
+        const projectsWithDates = projects.map(project => {
+            const projectId = project['project-id'];
+            const matchingWork = workArchiveData.find(w => w['project-id'] === projectId);
+            const rawDate = matchingWork?.['end-date'];
+            const parsedDate = rawDate && /^\d{2}\.\d{2}\.\d{4}$/.test(rawDate)
+                ? new Date(rawDate.split('.').reverse().join('-'))
+                : null;
+
+            return { projectId, date: parsedDate };
+        }).filter(p => p.date);
+
+        // Sort descending
+        projectsWithDates.sort((a, b) => b.date - a.date);
+
+        return projectsWithDates.map(p => p.projectId);
+    }
+
+    /**
+     * Update a single navigation button
+     */
+    function updateNavigationButton(button, targetProjectId) {
+        if (!button) return;
+
+        if (targetProjectId) {
+            button.style.cursor = "pointer";
+            button.style.opacity = "1";
+            button.style.pointerEvents = "auto";
+            button.onclick = () => {
+                window.location.href = `project.html?project-id=${targetProjectId}`;
+            };
+        } else {
+            button.style.opacity = "0.3";
+            button.style.pointerEvents = "none";
+            button.style.cursor = "not-allowed";
+            button.onclick = null;
+        }
+    }
+
+    /**
+     * Create navigation bar from h2 elements
+     */
+    function populateNavigationBar() {
+        const nav = document.getElementById('project-nav');
+        if (!nav) {
+            console.error("❌ Navigation element not found");
+            return;
+        }
+
+        const ul = nav.querySelector('ul');
+        if (!ul) {
+            console.error("❌ No <ul> found in navigation");
+            return;
+        }
+
+        const paraH2s = document.querySelectorAll('.para h2');
+        if (paraH2s.length === 0) {
+            console.warn("⚠️ No section headers found for navigation");
+            return;
+        }
+
+        ul.innerHTML = "";
+
+        paraH2s.forEach((h2, index) => {
+            if (!h2.id) {
+                h2.id = `section-${index}`;
+            }
+
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+
+            a.textContent = h2.textContent;
+            a.href = `#${h2.id}`;
+
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById(h2.id).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        console.log("✅ Navigation bar populated with", paraH2s.length, "items");
+    }
+
     // =============================================================================
     // IMAGE GALLERIES & CAROUSELS
     // =============================================================================
@@ -992,43 +956,9 @@ function parseNestedTagIdentifier(rawTag) {
             }
         });
 
-        // Create flexbox container for carousel and display window
-        const flexContainer = document.createElement('div');
-        flexContainer.classList.add('carousel-flex-container');
-
-        // Check if this carousel is in a "Design Decisions" section
-        const parentPara = carousel.closest('.para');
-        let isDesignDecisions = false;
-        
-        if (parentPara) {
-            const h2 = parentPara.querySelector('h2');
-            if (h2 && h2.textContent.includes('Design Decisions')) {
-                isDesignDecisions = true;
-                flexContainer.classList.add('design-decisions');
-            }
-        }
-
-        console.log(`Carousel in "${parentPara?.querySelector('h2')?.textContent || 'unknown'}" section - Design Decisions: ${isDesignDecisions}`);
-
         // Create display window
         const displayWindow = createDisplayWindow();
-
-        // Insert flex container after carousel
-        carousel.insertAdjacentElement('afterend', flexContainer);
-
-        // Move carousel into flex container
-        flexContainer.appendChild(carousel);
-
-        // Add display window to flex container (appears after carousel in DOM)
-        flexContainer.appendChild(displayWindow);
-
-        // Add expand/collapse toggle for Design Decisions sections
-        if (isDesignDecisions) {
-            const toggleButton = createExpandToggle();
-            // Insert toggle BEFORE the flex container, not inside it
-            flexContainer.insertAdjacentElement('beforebegin', toggleButton);
-            setupExpandToggle(toggleButton, flexContainer, displayWindow);
-        }
+        carousel.insertAdjacentElement('afterend', displayWindow);
 
         // Add event listeners
         setupCarouselEvents(carousel, displayWindow, images);
@@ -1040,472 +970,112 @@ function parseNestedTagIdentifier(rawTag) {
             displayWindow.classList.add('visible');
         }
 
-        console.log("✅ Carousel initialized with", images.length, "images", isDesignDecisions ? "(column layout)" : "(row layout)");
+        console.log("✅ Carousel initialized with", images.length, "images");
     }
-    
-/**
- * Create expand/collapse toggle button
- */
-function createExpandToggle() {
-    const toggle = document.createElement('div');
-    toggle.classList.add('carousel-view-toggle');
-    toggle.innerHTML = `
-        <label class="toggle-option">
-            <input type="radio" name="carousel-view" value="condensed" checked>
-            <span class="toggle-label">Condensed view</span>
-        </label>
-        <label class="toggle-option">
-            <input type="radio" name="carousel-view" value="expanded">
-            <span class="toggle-label">See all</span>
-        </label>
-        <div class="toggle-underline"></div>
-    `;
-    return toggle;
-}
-
-/**
- * Setup expand/collapse toggle functionality
- */
-function setupExpandToggle(toggleButton, flexContainer, displayWindow) {
-    const carousel = flexContainer.querySelector('.multi-carousel');
-    const radios = toggleButton.querySelectorAll('input[type="radio"]');
-    const underline = toggleButton.querySelector('.toggle-underline');
-    const labels = toggleButton.querySelectorAll('.toggle-option');
-    let soloContainer = null;
-    let originalThumbnails = [];
-
-    // Position underline on initial load
-    requestAnimationFrame(() => {
-        updateUnderlinePosition(labels[0], underline);
-    });
-
-    radios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            const isExpanded = this.value === 'expanded';
-            const activeLabel = this.closest('.toggle-option');
-            
-            // Animate underline
-            updateUnderlinePosition(activeLabel, underline);
-
-            if (isExpanded) {
-                // --- EXPAND: Convert to solo images ---
-                
-                // Hide display window
-                displayWindow.style.display = 'none';
-                
-                // Store original thumbnails
-                originalThumbnails = Array.from(carousel.querySelectorAll('.thumbnail-container'));
-                
-                // Create container for solo images
-                soloContainer = document.createElement('div');
-                soloContainer.classList.add('solo-images-container');
-                
-                // Convert each thumbnail to solo image
-                originalThumbnails.forEach(thumb => {
-                    const img = thumb.querySelector('img');
-                    if (!img) return;
-                    
-                    // Create wrapper for zoom overflow handling
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.classList.add('solo-image-wrapper');
-                    
-                    // Clone the image
-                    const soloImg = img.cloneNode(true);
-                    soloImg.classList.add('solo');
-                    
-                    // Add to wrapper
-                    imgWrapper.appendChild(soloImg);
-                    
-                    // Add wrapper to solo container
-                    soloContainer.appendChild(imgWrapper);
-                    
-                    // Setup zoom on this solo image
-                    setupImageZoom(soloImg, imgWrapper);
-                    
-                    // Add caption if exists
-                    const caption = img.getAttribute('data-caption');
-                    if (caption) {
-                        const captionP = document.createElement('p');
-                        captionP.classList.add('solo-caption');
-                        captionP.textContent = caption;
-                        soloContainer.appendChild(captionP);
-                    }
-                });
-                
-                // Hide carousel and insert solo images
-                carousel.style.display = 'none';
-                flexContainer.appendChild(soloContainer);
-                
-                console.log("📖 Carousel expanded - images converted to solo with zoom enabled");
-                
-            } else {
-                // --- COLLAPSE: Restore carousel ---
-                
-                // Show display window
-                displayWindow.style.display = '';
-                
-                // Remove solo container
-                if (soloContainer) {
-                    soloContainer.remove();
-                    soloContainer = null;
-                }
-                
-                // Show carousel
-                carousel.style.display = '';
-                
-                console.log("📕 Carousel condensed - restored to carousel view");
-            }
-        });
-    });
-}
-
-/**
- * Update underline position with smooth animation
- */
-function updateUnderlinePosition(activeLabel, underline) {
-    const labelRect = activeLabel.getBoundingClientRect();
-    const parentRect = activeLabel.parentElement.getBoundingClientRect();
-    
-    const left = activeLabel.offsetLeft;
-    const width = activeLabel.offsetWidth;
-    
-    underline.style.left = `${left}px`;
-    underline.style.width = `${width}px`;
-}
-
-/**
- * Create display window for carousel
- */
-function createDisplayWindow() {
-    const displayWindow = document.createElement('div');
-    displayWindow.classList.add('display-window', 'hidden');
-
-    // Create wrapper for zoom containment
-    const imgWrapper = document.createElement('div');
-    imgWrapper.classList.add('displayed-img-wrapper');
-
-    const displayImg = document.createElement('img');
-    displayImg.classList.add('displayed-img');
-
-    imgWrapper.appendChild(displayImg);
-
-    // Create caption container with counter and caption
-    const captionContainer = document.createElement('div');
-    captionContainer.classList.add('caption-container');
-
-    const counter = document.createElement('span');
-    counter.classList.add('display-counter');
-
-    const caption = document.createElement('p');
-    caption.classList.add('display-caption');
-
-    captionContainer.appendChild(counter);
-    captionContainer.appendChild(caption);
-
-    displayWindow.appendChild(imgWrapper);
-    displayWindow.appendChild(captionContainer);
-
-    return displayWindow;
-}
-
-/**
- * Setup carousel event listeners
- */
-function setupCarouselEvents(carousel, displayWindow, images) {
-    const thumbnails = carousel.querySelectorAll('.thumbnail-container');
-
-    thumbnails.forEach((thumb, idx) => {
-        thumb.addEventListener('click', function(e) {
-            e.stopPropagation();
-            updateDisplay(carousel, displayWindow, idx);
-        });
-    });
-
-    // Setup zoom on display image (use wrapper as container)
-    const displayImg = displayWindow.querySelector('.displayed-img');
-    const imgWrapper = displayWindow.querySelector('.displayed-img-wrapper');
-    setupImageZoom(displayImg, imgWrapper);
-}
-
-/**
- * Update zoom transform origin based on mouse position
- */
-function updateZoomOrigin(img, e) {
-    const rect = img.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    img.style.transformOrigin = `${x}% ${y}%`;
-}
-
-/**
- * Update zoom transform origin based on touch position
- */
-function updateZoomOriginFromTouch(img, touch) {
-    const rect = img.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 100;
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
-    img.style.transformOrigin = `${x}% ${y}%`;
-}
-
-/**
- * Calculate distance between two touch points
- */
-function getPinchDistance(touches) {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
-/**
- * Setup zoom functionality for an image element
- */
-function setupImageZoom(img, container) {
-    let isZoomed = false;
-    let leaveTimeout;
-    let lastTap = 0;
-    let initialDistance = 0;
-    let currentScale = 1;
-
-    // Helper to set global zoom state
-    function setGlobalZoomState(zoomed) {
-        isZoomed = zoomed;
-        if (zoomed) {
-            document.body.classList.add('image-zoomed');
-        } else {
-            document.body.classList.remove('image-zoomed');
-        }
-    }
-
-    // Desktop: Click to zoom in/out
-    img.addEventListener('click', function(e) {
-        e.stopPropagation();
-        
-        if (isZoomed) {
-            // Zoom out
-            img.classList.remove('zoomed');
-            img.style.transform = '';
-            setGlobalZoomState(false);
-            img.style.transformOrigin = 'center center';
-        } else {
-            // Zoom in at click position
-            updateZoomOrigin(img, e);
-            img.classList.add('zoomed');
-            setGlobalZoomState(true);
-        }
-    });
-
-    // Desktop: Track mouse movement when zoomed
-    img.addEventListener('mousemove', (e) => {
-        if (isZoomed) {
-            updateZoomOrigin(img, e);
-        }
-    });
-
-    // Desktop: Reset zoom when mouse leaves for 1.5s
-    img.addEventListener('mouseleave', () => {
-        if (isZoomed) {
-            leaveTimeout = setTimeout(() => {
-                img.classList.remove('zoomed');
-                img.style.transform = '';
-                setGlobalZoomState(false);
-                img.style.transformOrigin = 'center center';
-            }, 1500);
-        }
-    });
-
-    // Desktop: Cancel reset if mouse re-enters
-    img.addEventListener('mouseenter', () => {
-        clearTimeout(leaveTimeout);
-    });
-
-    // Desktop: Click outside image to reset zoom (on container)
-    if (container) {
-        container.addEventListener('click', (e) => {
-            if (e.target !== img && isZoomed) {
-                img.classList.remove('zoomed');
-                img.style.transform = '';
-                setGlobalZoomState(false);
-                img.style.transformOrigin = 'center center';
-            }
-        });
-    }
-
-    // Mobile: Double tap to zoom
-    img.addEventListener('touchend', (e) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
-        
-        if (tapLength < 300 && tapLength > 0) {
-            // Double tap detected
-            e.preventDefault();
-            
-            if (isZoomed) {
-                img.classList.remove('zoomed');
-                img.style.transform = '';
-                setGlobalZoomState(false);
-                img.style.transformOrigin = 'center center';
-                currentScale = 1;
-            } else {
-                // Zoom in at tap position
-                const touch = e.changedTouches[0];
-                updateZoomOriginFromTouch(img, touch);
-                img.classList.add('zoomed');
-                setGlobalZoomState(true);
-            }
-        }
-        lastTap = currentTime;
-    });
-
-    // Mobile: Pinch to zoom
-    img.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 2) {
-            e.preventDefault();
-            initialDistance = getPinchDistance(e.touches);
-            
-            // Set transform origin to center of pinch
-            const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-            const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-            const rect = img.getBoundingClientRect();
-            const x = ((centerX - rect.left) / rect.width) * 100;
-            const y = ((centerY - rect.top) / rect.height) * 100;
-            img.style.transformOrigin = `${x}% ${y}%`;
-        }
-    }, { passive: false });
-
-    img.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 2) {
-            e.preventDefault();
-            const currentDistance = getPinchDistance(e.touches);
-            const scale = currentDistance / initialDistance;
-            
-            currentScale = Math.min(Math.max(scale, 1), 3); // Clamp between 1 and 3
-            img.style.transform = `scale(${currentScale})`;
-            
-            if (currentScale > 1) {
-                setGlobalZoomState(true);
-                img.classList.add('zoomed');
-            }
-        }
-    }, { passive: false });
-
-    img.addEventListener('touchend', (e) => {
-        if (e.touches.length === 0 && currentScale !== 1) {
-            // Snap to either zoomed (scale 2) or normal (scale 1)
-            if (currentScale < 1.5) {
-                img.style.transform = '';
-                img.classList.remove('zoomed');
-                setGlobalZoomState(false);
-                currentScale = 1;
-            } else {
-                img.style.transform = 'scale(2)';
-                currentScale = 2;
-            }
-        }
-    });
-
-    return {
-        resetZoom: () => {
-            img.classList.remove('zoomed');
-            img.style.transform = '';
-            setGlobalZoomState(false);
-            currentScale = 1;
-            img.style.transformOrigin = 'center center';
-        }
-    };
-}
-
-/**
- * Calculate distance between two touch points
- */
-function getPinchDistance(touches) {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
-/**
- * Update carousel display to show specific image
- */
-function updateDisplay(carousel, displayWindow, index) {
-    const images = Array.from(carousel.querySelectorAll('img'));
-    if (index < 0 || index >= images.length) return;
-
-    const displayImg = displayWindow.querySelector('.displayed-img');
-    const caption = displayWindow.querySelector('.display-caption');
-    const counter = displayWindow.querySelector('.display-counter');
-
-    displayImg.src = images[index].src;
-    displayImg.setAttribute('data-index', index);
-    caption.textContent = images[index].getAttribute('data-caption') || "";
-    
-    // Update counter (index + 1 for human-readable numbering)
-    counter.textContent = `${index + 1} / ${images.length}`;
-
-    // Update thumbnail selection
-    const thumbnails = carousel.querySelectorAll('.thumbnail-container');
-    thumbnails.forEach((thumb, idx) => {
-        thumb.classList.toggle('selected', idx === index);
-        const underline = thumb.querySelector('.underline');
-        if (underline) {
-            underline.style.display = idx === index ? 'block' : 'none';
-        }
-    });
-
-    displayWindow.classList.remove('hidden');
-    displayWindow.classList.add('visible');
-
-    console.log("Updated carousel display to image", index + 1, "of", images.length);
-}
 
     /**
- * Initialize prototypes carousel with special behavior
- */
-function initPrototypesCarousel() {
-    const prototypes = document.querySelector('#project-content .prototypes-mobile, #project-content .prototypes-mac');
-    if (!prototypes) {
-        console.log("No prototypes carousel found");
-        return;
-    }
+     * Create display window for carousel
+     */
+    function createDisplayWindow() {
+        const displayWindow = document.createElement('div');
+        displayWindow.classList.add('display-window', 'hidden');
 
-    // Wrap images
-    const imgs = Array.from(prototypes.querySelectorAll('img'));
-    imgs.forEach(img => {
-        if (!img.parentElement.classList.contains('prototype-container')) {
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('prototype-container');
-            img.parentNode.insertBefore(wrapper, img);
-            wrapper.appendChild(img);
-        }
-    });
-
-    // Create caption container with counter and caption
-    let captionContainer = document.querySelector('.prototypes-caption-container');
-    if (!captionContainer) {
-        captionContainer = document.createElement('div');
-        captionContainer.classList.add('prototypes-caption-container');
-
-        const counter = document.createElement('span');
-        counter.classList.add('prototypes-counter');
+        const displayImg = document.createElement('img');
+        displayImg.classList.add('displayed-img');
 
         const caption = document.createElement('p');
-        caption.classList.add('prototypes-caption');
+        caption.classList.add('display-caption');
 
-        captionContainer.appendChild(counter);
-        captionContainer.appendChild(caption);
+        displayWindow.appendChild(displayImg);
+        displayWindow.appendChild(caption);
 
-        prototypes.insertAdjacentElement('afterend', captionContainer);
+        return displayWindow;
     }
 
-    // Setup event listeners
-    setupPrototypesEvents(imgs, captionContainer, prototypes);
+    /**
+     * Setup carousel event listeners
+     */
+    function setupCarouselEvents(carousel, displayWindow, images) {
+        const thumbnails = carousel.querySelectorAll('.thumbnail-container');
 
-    // Initialize with first image selected
-    if (imgs.length > 0) {
-        setPrototypesSelected(0, imgs, captionContainer);
+        thumbnails.forEach((thumb, idx) => {
+            thumb.addEventListener('click', function(e) {
+                e.stopPropagation();
+                updateDisplay(carousel, displayWindow, idx);
+            });
+        });
+
+        // Click on display image to hide
+        const displayImg = displayWindow.querySelector('.displayed-img');
+        displayImg.addEventListener('click', function() {
+            displayWindow.classList.add('hidden');
+        });
     }
 
-    console.log("✅ Prototypes carousel initialized");
-}
+    /**
+     * Update carousel display to show specific image
+     */
+    function updateDisplay(carousel, displayWindow, index) {
+        const images = Array.from(carousel.querySelectorAll('img'));
+        if (index < 0 || index >= images.length) return;
+
+        const displayImg = displayWindow.querySelector('.displayed-img');
+        const caption = displayWindow.querySelector('.display-caption');
+
+        displayImg.src = images[index].src;
+        displayImg.setAttribute('data-index', index);
+        caption.textContent = images[index].getAttribute('data-caption') || "";
+
+        // Update thumbnail selection
+        const thumbnails = carousel.querySelectorAll('.thumbnail-container');
+        thumbnails.forEach((thumb, idx) => {
+            thumb.classList.toggle('selected', idx === index);
+            const underline = thumb.querySelector('.underline');
+            if (underline) {
+                underline.style.display = idx === index ? 'block' : 'none';
+            }
+        });
+
+        displayWindow.classList.remove('hidden');
+        displayWindow.classList.add('visible');
+
+        console.log("Updated carousel display to image", index);
+    }
+
+    /**
+     * Initialize prototypes carousel with special behavior
+     */
+    function initPrototypesCarousel() {
+        const prototypes = document.querySelector('#project-content .prototypes-mobile, #project-content .prototypes-mac');
+        if (!prototypes) {
+            console.log("No prototypes carousel found");
+            return;
+        }
+
+        // Wrap images
+        const imgs = Array.from(prototypes.querySelectorAll('img'));
+        imgs.forEach(img => {
+            if (!img.parentElement.classList.contains('prototype-container')) {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('prototype-container');
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+            }
+        });
+
+        // Create caption container
+        let captionContainer = document.querySelector('.prototypes-caption-container');
+        if (!captionContainer) {
+            captionContainer = document.createElement('div');
+            captionContainer.classList.add('prototypes-caption-container');
+            prototypes.insertAdjacentElement('afterend', captionContainer);
+        }
+
+        // Setup event listeners
+        setupPrototypesEvents(imgs, captionContainer, prototypes);
+
+        console.log("✅ Prototypes carousel initialized");
+    }
 
     /**
      * Setup prototypes carousel events
@@ -1537,22 +1107,18 @@ function initPrototypesCarousel() {
     }
 
     /**
- * Set selected prototype image
- */
-function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
-    const counter = captionContainer.querySelector('.prototypes-counter');
-    const caption = captionContainer.querySelector('.prototypes-caption');
-
-    imgs.forEach((img, idx) => {
-        if (idx === selectedIndex) {
-            img.classList.add('selected');
-            caption.textContent = img.getAttribute('data-caption') || "";
-            counter.textContent = `${selectedIndex + 1} / ${imgs.length}`;
-        } else {
-            img.classList.remove('selected');
-        }
-    });
-}
+     * Set selected prototype image
+     */
+    function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
+        imgs.forEach((img, idx) => {
+            if (idx === selectedIndex) {
+                img.classList.add('selected');
+                captionContainer.textContent = img.getAttribute('data-caption') || "";
+            } else {
+                img.classList.remove('selected');
+            }
+        });
+    }
 
     /**
      * Update prototypes selection based on scroll position
@@ -1705,6 +1271,29 @@ function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
     // =============================================================================
 
     /**
+     * Toggle project details on mobile
+     */
+    function toggleMoreDetails() {
+        const moreDetails = document.getElementById('more-details');
+        const lists = document.querySelectorAll('#project-context .list');
+        const remarks = document.querySelectorAll('#project-context .list #remarks');
+
+        const isExpanded = moreDetails.getAttribute('data-expanded') === 'true';
+
+        if (isExpanded) {
+            lists.forEach(el => el.style.display = 'none');
+            remarks.forEach(el => el.style.display = 'none');
+            moreDetails.innerHTML = '<p>more details↘</p>';
+            moreDetails.setAttribute('data-expanded', 'false');
+        } else {
+            lists.forEach(el => el.style.display = 'block');
+            remarks.forEach(el => el.style.display = 'block');
+            moreDetails.innerHTML = '<p>say less↗</p>';
+            moreDetails.setAttribute('data-expanded', 'true');
+        }
+    }
+
+    /**
      * Initialize mobile-specific features
      */
     function initMobileFeatures() {
@@ -1719,9 +1308,22 @@ function setPrototypesSelected(selectedIndex, imgs, captionContainer) {
                 displayWindow.classList.add('visible');
             }
         }
-    }
 
-    
+        // Hide extra details
+        const lists = document.querySelectorAll('#project-context .list');
+        lists.forEach(el => el.style.display = 'none');
+
+        const remarks = document.getElementById('remarks');
+        if (remarks) remarks.style.display = 'none';
+
+        // Setup toggle button
+        const moreDetails = document.getElementById('more-details');
+        if (moreDetails) {
+            moreDetails.setAttribute('data-expanded', 'false');
+            moreDetails.addEventListener('click', toggleMoreDetails);
+            console.log("✅ Mobile features initialized");
+        }
+    }
 
     // =============================================================================
     // FEATURE INITIALIZATION

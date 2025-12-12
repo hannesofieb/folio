@@ -1,187 +1,665 @@
-body{
-    margin: 0;
-    background-color: var(--white);
-    overflow-x: hidden;
-}
+@media screen and (min-width:801px){
+    #container-project{
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+    }
 
-nav, #cover, #work-archive, .scroll-container h2, footer{
-    padding-left: 2vw;
-}
+    #project-context{
+        width: 25vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0 2%;
+        z-index: 10;
+    }
+    #project-content{
+        width: 70vw;
+        height: 100%;
+        padding: 0 5%;;
+        background-color: var(--white);
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 
-#work-archive, #cv{
-    margin-top: 20vh;
-}
+    #more-details {
+        display: none;
+    }
 
-/* ---------------------------------------------work archive section layout */
-#work-archive{
-    width:96vw;
-    height: max-content;
-    overflow: hidden; /* Ensure the section does not overflow */
-    /* margin: 2% 50% 0 0; */
-}
-
-#work-archive h2, #cv h2{
-    margin: 0 5% 0 0;
-}
-
-#work-archive p{
-    margin: 1% 0 1% 0;
-}
-
-/* table layout */
-#archive-table {
-    width: 96vw;
-    height: 50vh;
-    border-collapse: collapse;
-    margin-top: 5%;
-}
-
-#archive-table tr{
-    min-height: fit-content;
-    border-bottom: 0.5px solid var(--black);
-}
-
-#archive-table th, #archive-table td {
-    padding: 10px;
-    text-align: left;
-    align-content: baseline;
-}
-
-th#proj-date{
-    width: 10%;
-}
-
-th#proj-title{
-    width: 30%;
-}
-
-th#proj-desc{
-    width: 25%;
-}
-
-th#proj-tags{
-    width: 20%;
-    /* margin-left: 5%; */
-}
-
-
-
-
-/* Add styles to display the hero-img on hover */
-.proj-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-}
-
-.hero-img {
-    visibility: hidden;
+    #remarks {
     display: block;
+    }
+}
+
+#project-content .project-nav{
+    width: 100%;
     position: relative;
-    width: 40%;
-    height: auto;
-    margin-right: 10%;
-    z-index: 10;
+    padding: 0;
 }
 
-#archive-table tr:hover .hero-img {
-    visibility: visible;
-}
-
-/* click to see more projects section */
-#pagination {
+#project-content .project-nav ul{
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    font-size: 2em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px 30px;
 }
 
-#pagination button {
-    margin: 0 5px;
-    background-color: #f0f0f000;
-    color: var(--black);
-    border: none;
-    cursor: pointer;
+#project-content .project-nav ul li{
+    line-height: 1em;
 }
 
-#pagination button:disabled {
-    background-color: #f0f0f000;
-    color: #f0f0f000;
-    cursor: not-allowed;
-}
-
-#page-numbers {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 10%;
-}
-
-#pagination .page-number.active {
+#project-content .project-nav ul li:hover{
     text-decoration: underline;
 }
 
-#pagination .page-number:hover{
+#return-to-home{
+    width: 25px;
+    height: 25px;
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    z-index: 2;
+}
+/* ----------------------- Context */
+#project-context h3, #project-context p.caption{
+    padding-left: 0;
+}
+
+#project-context .list{
+    display: flex;
+    flex-direction: row;
+}
+
+.timeline-label {
+    display: inline-block;
+    width: 85px;
+}
+
+#project-context .list h3{
+    width: 80px;
+}
+
+#project-context #remarks h3{
+    width: auto;
+    margin: 10% 0 1% 0;
+}
+
+#project-context #remarks ul{
+    margin-top:4%;
+    padding: 0;
+}
+
+#project-context #remarks li{
+    margin-bottom: 1%;
+}
+
+
+#project-context .list ul{
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* ----------------------- proj nav */
+#proj-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 -3% 5% -3%;
+}
+
+
+/* ----------------------- Project Content */
+
+#hero-frame{
+    width: 73.4vw;
+    height: 70%;
+    padding: 0;
+    margin: 0 -9%;
+}
+
+#hero-frame img{
+    width: 100%; /* Ensure the image fills the width */
+    height: 100%; /* Ensure the image fills the height */
+    object-fit: cover; /* Crop the image to fit the container */
+}
+
+.para{
+    margin: 4% 0 10% 0;
+}
+
+.para {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.para.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+#project-content h1{
+    margin: 0 0 1% 0;
+    padding-left: 0;
+}
+
+#project-content h2{
+    margin-top: 15%;
+    margin-bottom: 2%;
+}
+
+#project-content h2.multi-h3s{
+    margin-bottom: 0;
+}
+
+
+#project-content h3{
+    margin: 3% 0 0 0;
+    padding-left: 0;
+}
+
+#project-content p{
+    margin: 0 0 1% 0;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1% 0;
+    padding-inline-start: 40px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.col li{
+    padding-bottom: 0;
+    list-style: square;
+}
+
+.row li{
+    margin: 0 5%;
+}
+
+div.same-content ul{
+    margin: 0;
+}
+
+div.inline{
+    display: inline;
+}
+
+.reflection{
+    width: 100%;
+    /* border-radius: 50px; */
+    margin-left: -2%;
+}
+
+#project-content .reflection h2{
+    margin-top: 10%;
+}
+
+.small-gallery, .small-gallery-tall{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 2% 0 10% 0;
+    gap: 20px;
+}
+
+.small-gallery-tall{
+    height: 70vh;
+    flex-wrap: nowrap;
+}
+
+.small-gallery img{
+    width: 48%;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+}
+
+.small-gallery-tall img{
+    width: fit-content;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+}
+
+
+.prototypes-mac,
+.prototypes-mobile {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.prototypes-mac::-webkit-scrollbar,
+.prototypes-mobile::-webkit-scrollbar {
+    display: none;
+}
+
+.prototype-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
 }
 
-@media screen and (max-width:600px){
-    #work-archive{
-        width: 96vw;
-        height: auto;
-        overflow: hidden; /* Ensure the section does not overflow */
+.prototypes-mac img,
+.prototypes-mobile img {
+    height: 90%;
+    margin-right: 2%;
+}
+
+.prototypes-mac img.selected,
+.prototypes-mobile img.selected {
+    transform: translateY(10%);
+    transition: all 0.3s ease;
+}
+
+
+
+/* ----------------img styling */
+.multi-carousel {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: 160px;
+    margin-top: 2%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Ensure snapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    gap: 5px; /* Ensure proper spacing */
+}
+
+/* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
+.thumbnail-container {
+    width: 24%;
+    margin-right: 0.5%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the image & underline */
+    position: relative;
+    scroll-snap-align: start;
+}
+
+/* ✅ Force uniform size and cropping */
+.thumbnail-container img {
+    width: 100%;
+    height: 85%;
+    object-fit: cover; /* Ensures all images are cropped to fit */
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+/* ✅ Make sure images zoom slightly when hovered */
+.thumbnail-container img:hover {
+    scale: 1.05;
+    z-index: 1;
+    transition: all 0.1s ease-in-out;
+}
+
+/* ✅ Underline is inside each thumbnail-container */
+.underline {
+    width: 100%;
+    height: 3px;
+    margin-top: 5%;
+    background-color: var(--red);
+    display: none; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* ✅ Underline appears only when a thumbnail is selected */
+.thumbnail-container.selected .underline {
+    display: block;
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* ✅ Ensure selected images are fully visible */
+.multi-carousel img:not(.selected) {
+    opacity: 0.7;
+}
+
+.multi-carousel img.selected {
+    opacity: 1;
+}
+
+/* ✅ Ensure smooth horizontal scrolling & hide scrollbar */
+.multi-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+
+.display-window {
+    width: 100%;
+    margin-top: 1%;
+    position: relative;
+    transition: transform 0.3s ease-in-out; /* Smooth open/close */
+    transform: translateY(100%); /* Starts hidden below */
+}
+
+.display-window.hidden {
+    transform: translateY(100%); /* Slide down to hide */
+    opacity: 0;
+}
+
+.display-window.visible {
+    transform: translateY(0); /* Slide up to show */
+    opacity: 1;
+}
+
+.displayed-img {
+    /* margin-top: 3%; */
+    width: 100%;
+    object-fit: contain;
+}
+
+#project-content .display-caption, #project-content p.caption, .prototypes-caption-container, #project-content .solo-caption {
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 7%;
+}
+
+#project-content p.caption, #project-content .solo-caption {
+    padding: 0;
+}
+
+
+/* ---------------------------------------- for mobile/tablet */
+
+@media  screen and (max-width: 800px) {
+    #container-project{
+        flex-direction: column;
+        width: 100vw;
+        border-radius: 0;
+        overflow-x: hidden;
+    }
+    
+    #return-to-home{
+        width: 35px;
+        height: 35px;
+        position: fixed;
+        top: 2%;
+        right: 7%;
+        z-index: 2;
+    }
+    
+
+    /* ----------------------- Context */
+    #project-content .project-nav{
+        width: 100%;
+        position: relative;
+        padding: 0;
+    }
+    
+    #project-content .project-nav ul{
+        flex-direction: column;
+        margin: 2rem 0 2rem 1.5rem;
+    }
+    #project-context{
+        width: 100%;
+
+    }
+
+    #project-context h2, #project-context p{
+        padding: 2%;
+        margin: 0;
+    }
+    
+
+    #project-context .list, #project-context #period{
+        margin: 2% 2% 0 2%;
+    }
+
+    #project-context #remarks{
+        margin-bottom: 0;
+    }
+
+    #project-context #remarks h3{
+        width: auto;
+        margin: 5% 0 1% 0;
+    }
+
+    #project-context #remarks ul{
+        margin-top:2%;
+        padding: 0;
+    }
+
+    #project-context #remarks li{
+        margin-bottom: 1%;
+    }
+
+
+    #project-context .list ul{
+        display: inline-block;
+        margin-top: 5px;
+    }
+
+    #proj-nav{
+        display: none; 
+    }
+
+
+    /* ----------------------- Project Content */
+    #project-content{
+        width: 100%;
+        padding: 0;
+    }
+
+    #hero-frame{
+        width: 100%;
+        height: 340px;
+        padding: 0;
         margin: 0;
     }
 
-    #archive-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 5%;
+    #hero-frame img{
+        width: 100%; /* Ensure the image fills the width */
+        object-fit: cover; /* Crop the image to fit the container */
     }
 
-    #archive-table th, #archive-table td {
-        padding: 10px;
-        text-align: left;
-        align-content: baseline;
+    .para{
+        margin: 4% 0 10% 0;
+    }
+    
+
+    #project-content h1{
+        margin: 0 0 1% 0;
+        padding-left: 1.5rem;
     }
 
-    th#proj-date{
-        width: 10%;
+    #project-content h2{
+        margin: 15% 0 0 0;
+        padding-left: 1.5rem;
     }
 
-    th#proj-title{
-        width: 30%;
+    #project-content h3{
+        margin: 7% 0 0 0;
+        padding-left: 1.5rem;
     }
 
-    th#proj-desc{
-        width: 25%;
+    #project-content p{
+        margin: 0;
+        padding: 0.5rem 1.5rem 0 1.5rem;
     }
 
-    th#proj-tags{
-        width: 20%;
-        /* margin-left: 5%; */
-    }
-
-    /* click to see more projects section */
-    #pagination {
+    .col{
         display: flex;
-        justify-content: center;
-        margin-top: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 2% 0;
+        padding-inline-start: 40px;
     }
 
-    #pagination button {
-        margin: 0 5px;
-        background-color: #f0f0f000;
-        color: var(--black);
-        border: none;
-        cursor: pointer;
+    .row{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
     }
 
-    #pagination button:disabled {
-        background-color: #f0f0f000;
-        color: #f0f0f000;
-        cursor: not-allowed;
+    .col li{
+        padding-bottom: 0;
+        list-style: square;
     }
 
+    .row li{
+        margin: 0 5%;
+    }
+
+    div.same-content ul{
+        margin: 0;
+    }
+
+    /* ----------------img styling */
+
+     #project-content .solo img{
+        width: 100%;
+        margin: 0 1.5rem;
+    }
+
+    .small-gallery, .small-gallery-tall{
+        width: 96%;
+        flex-direction: row;
+        gap: 5px;
+        margin: 1.5rem;
+    }
+    
+    .small-gallery-tall{
+        height: 40vh;
+        flex-wrap: nowrap;
+
+    }
+    
+    .small-gallery img{
+        width: 90%;
+        margin: 0 1.5rem;
+
+    }
+    
+    .small-gallery-tall img{
+        width: fit-content;
+        object-fit: cover; /* Ensures all images are cropped to fit */
+    }
+
+    .multi-carousel {
+        width: 96%;
+        height: 60px;
+        padding: 2%;
+    }
+
+    /* ✅ Ensure each thumbnail container takes up exactly 25% of `#project-content` */
+    .thumbnail-container {
+        width: 25%;
+        height: 100%;
+    }
+
+    /* ✅ Force uniform size and cropping */
+    .thumbnail-container img {
+        width: 100%;
+        max-height: 90%;
+        margin-bottom: 2%;
+    }
+
+    .thumbnail-container img .selected{
+        width: auto;
+        max-height: 90%;
+    }
+
+    /* ✅ Make sure images zoom slightly when hovered */
+    .thumbnail-container img:hover {
+        height: 100%;
+        z-index: 1;
+        transition: all 0.1s ease-in-out;
+    }
+
+    /* ✅ Underline is inside each thumbnail-container */
+    .underline {
+        display: none;
+        width: 100%;
+        height: 3px;
+        margin: 2% 0 0 0;
+    }
+
+    /* ✅ Underline appears only when a thumbnail is selected */
+    .thumbnail-container.selected .underline {
+        display: block;
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    /* ✅ Ensure smooth horizontal scrolling & hide scrollbar */
+    .multi-carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .display-window {
+        display: block;
+        width: 100%;
+        margin-top: 1%;
+        position: relative;
+        transition: transform 0.3s ease-in-out; /* Smooth open/close */
+        transform: translateY(100%); /* Starts hidden below */
+    }
+
+    .display-window.visible {
+        transform: translateY(0); /* Slide up to show */
+        opacity: 1;
+    }
+
+    .displayed-img {
+        margin-top: 3%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    #project-content .display-caption {
+        font-size: 1em;
+        text-align: center;
+    }
+
+    .prototypes-mac{
+        max-height: 50vh;
+    }
+
+    .prototypes-mobile{
+        max-height: 80vh;
+    }
+    
+    .prototypes-mac::-webkit-scrollbar, .prototypes-mobile::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .prototypes-mac .prototype-container{
+        height: auto;
+    }
+    
+    .prototype-container img{
+        width:100%;
+        height: 90%;
+        margin-right: 2%;
+    }
+
+    .prototypes-mac .prototype-container img.selected{
+        width: 100%;
+        height: auto;
+    }
+
+    .prototypes-mobile .prototype-container img.selected{
+    }
 }

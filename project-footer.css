@@ -1,0 +1,209 @@
+/* =============================================================================
+   FOOTER FAVOURITES - PROJECT CARDS
+   ============================================================================= */
+
+footer {
+    width: 100%;
+    padding: 5% 0 2% 0;
+    margin-top: 1%;
+}
+
+footer .intro-text {
+    font-size: 1.3em;
+    margin: 0 0 10vw 25vw;
+}
+
+/* Favourites Container */
+.favs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 65%;
+    margin-left: 18vw;
+    gap: 5%;
+    margin-bottom: 10vh;
+}
+
+/* Project Card */
+.project-card {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+
+/* Card Link (wraps image and title) */
+.project-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Card Image */
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.2s ease;
+}
+
+.project-card:hover .card-image {
+    opacity: 0.9;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.2em;
+    line-height: 1.2;
+}
+
+/* Card Description */
+.card-description {
+    font-size: 1em;
+    line-height: 1.4;
+    margin: 0 5% 3% 4%;
+    color: var(--gray, #666);
+    flex-grow: 1;
+}
+
+/* Skillset Tags */
+.card-skillset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 0 2% 3%;
+}
+
+.skill-tag {
+    font-size: 1em;
+    padding: 2px 5px;
+    border: 1px solid var(--black);
+    background: transparent;
+}
+
+.project-card:hover .skill-tag {
+    background: var(--black);
+    color: var(--white);
+}
+
+.card-read-more {
+    width: auto;
+    font-size: 1em;
+    text-decoration: underline;
+    margin: 5% 5% 3% 4%;
+    align-self: flex-start;
+}
+
+.card-read-more:hover{
+    text-decoration: underline;
+}
+
+/* Empty/Error States */
+.no-favourites,
+.error {
+    text-align: center;
+    padding: 3%;
+    color: var(--gray, #666);
+    font-style: italic;
+}
+
+/* Footer Caption */
+footer .footer-caption {
+    text-align: left;
+    padding: 2% 2vw;
+    font-size: 0.9em;
+    color: var(--gray, #666);
+}
+
+
+
+/* =============================================================================
+   MOBILE ADJUSTMENTS (≤ 750px)
+   ============================================================================= */
+
+@media screen and (max-width: 750px) {
+    footer{
+        align-items: center;
+    }
+
+    .favs {
+        flex-direction: column;
+        width: 67%;
+        margin: 0;
+        gap: 25%;
+        padding: 0;
+    }
+
+    .project-card{
+        width: 100%;
+        margin-bottom: 10vw;
+        background-color: #f9f9f9;
+    }
+    
+    .card-image {
+        width: 100%;
+        height: 150px;
+    }
+    
+    .card-title {
+        font-size: 1em;
+    }
+    
+    .card-description {
+        font-size: 0.9em;
+        padding: 0;
+    }
+
+    .skill-tag{
+        font-size: 0.9em;
+    }
+}
+
+/* =============================================================================
+   TABLET ADJUSTMENTS (801px - 1200px)
+   ============================================================================= */
+
+@media screen and (min-width: 751px) and (max-width: 1050px) {
+    footer{
+        align-items: center;
+    }
+
+    .favs {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin: 0;
+        gap: 5%;
+        padding: 0;
+    }
+
+    .project-card{
+        width: 100%;
+        margin-bottom: 10vw;
+        background-color: #f9f9f9;
+    }
+    
+    .card-image {
+        width: 100%;
+        height: 150px;
+    }
+    
+    .card-title {
+        font-size: 1em;
+    }
+    
+    .card-description {
+        font-size: 0.9em;
+        padding: 0;
+    }
+
+    .skill-tag{
+        font-size: 0.9em;
+    }
+}
+
