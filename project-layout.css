@@ -846,7 +846,7 @@ div.inline {
     }
 
     .prototypes-mobile {
-        max-height: 80vh;
+        max-height: 50vh;
     }
 
     .prototypes-mac::-webkit-scrollbar,
@@ -1240,7 +1240,7 @@ div.inline {
     }
 
     .prototypes-mobile {
-        max-height: 80vh;
+        max-height: 50vh;
     }
 
     .prototypes-mac::-webkit-scrollbar,
