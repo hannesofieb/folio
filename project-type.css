@@ -168,7 +168,9 @@ div.row p {
 
 #project-content .reflection h1, 
 #project-content .reflection h2, 
-#project-content .reflection p {
+#project-content .reflection h3, 
+#project-content .reflection p,
+#project-content .reflection ul li {
     width: 50%;
     margin-left: 25vw;
     color: var(--white);
@@ -300,13 +302,16 @@ div.row p {
     /* --- Reflection --- */
     #project-content .reflection h1, 
     #project-content .reflection h2, 
-    #project-content .reflection p {
+    #project-content .reflection h3, 
+    #project-content .reflection p,
+    #project-content .reflection ul li{
         width: 90%;
         margin-left: 20px;
         color: var(--white);
     }
 
-    #project-content .reflection h2 {
+    #project-content .reflection h2,
+    #project-content .reflection h3 {
         margin: 4vh 0 1vh 20px;
     }
 }
@@ -438,7 +443,8 @@ div.row p {
         color: var(--white);
     }
 
-    #project-content .reflection h2 {
+    #project-content .reflection h2,
+    #project-content .reflection h3 {
         margin: 4vh 0 1vh 20px;
     }
 }
