@@ -754,6 +754,7 @@ div.inline {
         display: none;
     }
 
+
     .carousel-flex-container:not(.design-decision) .thumbnail-container {
         /* width: 25%; */
         height: 100%;
@@ -794,12 +795,14 @@ div.inline {
 
     .carousel-flex-container:not(.design-decision) {
         flex-direction: column;
+        margin-left: -2vw;
+        margin-top: 1%;
     }
 
     .carousel-flex-container .multi-carousel{
         flex-direction: row;
         margin-bottom: 0;
-        margin-left: 8vw;
+        margin-left: 2vw;
         padding: 0;
     }
 
@@ -884,7 +887,7 @@ div.inline {
     }
 
     #project-content .display-window .caption-container{
-        margin-left: 10vw;
+        margin-left: 0vw;
     }
     
     #project-content .prototypes-caption-container .prototypes-counter, #project-content .carousel-flex-container .display-counter{
@@ -1188,16 +1191,16 @@ div.inline {
 
     .carousel-flex-container:not(.design-decision) {
         flex-direction: column;
+        margin-left: -2vw;
     }
 
     .carousel-flex-container .multi-carousel{
         flex-direction: row;
         margin-bottom: 0;
-        margin-left: 8vw;
+        margin-left: 2vw;
         padding: 0;
     }
 
-    
 
     .carousel-flex-container .displayed-img{
         margin-top: 0;
@@ -1278,7 +1281,7 @@ div.inline {
     }
 
     #project-content .display-window .caption-container{
-        margin-left: 10vw;
+        margin-left: 0vw;
     }
     
     #project-content .prototypes-caption-container .prototypes-counter, #project-content .carousel-flex-container .display-counter{
