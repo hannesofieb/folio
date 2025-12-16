@@ -982,14 +982,14 @@ div.inline {
 
     #project-context {
         width: 100%;
-        overflow-y: visible;  /* CHANGED FROM HIDDEN */
+        overflow-y: clip;  /* CHANGED FROM HIDDEN */
         overflow-x: hidden;
     }
 
     #project-content {
         width: 100%;
         padding: 0;
-        overflow-y: visible;  /* REMOVE scroll container on mobile */
+        overflow-y: clip;  /* REMOVE scroll container on mobile */
         overflow-x: hidden;
     }
 
