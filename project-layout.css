@@ -155,6 +155,7 @@ div.inline {
     flex-direction: row;
     align-items: baseline;
     justify-items: flex-start;
+    padding: 0;
 }
 
 .single-row{
@@ -205,6 +206,11 @@ div.inline {
     width: 48%;
     object-fit: cover;
 }
+
+/* .small-gallery iframe{
+    width: 8%;
+    height: auto;
+} */
 
 .small-gallery-tall img {
     width: fit-content;

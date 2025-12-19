@@ -687,41 +687,46 @@ function parseNestedTagIdentifier(rawTag) {
      * Create element from nested tag definition
      */
     function createNestedElement(tagName, content, classes, id) {
-        const tag = tagName.toLowerCase();
+    const tag = tagName.toLowerCase();
 
-        // Image element
-        if (tag === 'img') {
-            return createImageElement(content, classes, id);
-        }
-
-        // Link element
-        if (tag === 'a') {
-            return createLinkElement(content, classes, id);
-        }
-
-        // Hover element (custom component)
-        if (tag === 'hover') {
-            return createHoverElement(content);
-        }
-
-        // Unordered list
-        if (tag === 'ul') {
-            return createListElement(content, classes, id);
-        }
-
-        // Compound tag (e.g., "p-em")
-        if (tagName.indexOf('-') !== -1) {
-            return createCompoundElement(tagName, content);
-        }
-
-        // Generic element
-        const element = document.createElement(tagName);
-        classes.forEach(cls => element.classList.add(cls));
-        if (id) element.id = id;
-        element.textContent = content;
-
-        return element;
+    // Image element
+    if (tag === 'img') {
+        return createImageElement(content, classes, id);
     }
+
+    // Link element
+    if (tag === 'a') {
+        return createLinkElement(content, classes, id);
+    }
+
+    // ✅ NEW: Iframe element (for nested contexts like carousels)
+    if (tag === 'iframe') {
+        return createIframeElement(content);
+    }
+
+    // Hover element (custom component)
+    if (tag === 'hover') {
+        return createHoverElement(content);
+    }
+
+    // Unordered list
+    if (tag === 'ul') {
+        return createListElement(content, classes, id);
+    }
+
+    // Compound tag (e.g., "p-em")
+    if (tagName.indexOf('-') !== -1) {
+        return createCompoundElement(tagName, content);
+    }
+
+    // Generic element
+    const element = document.createElement(tagName);
+    classes.forEach(cls => element.classList.add(cls));
+    if (id) element.id = id;
+    element.textContent = content;
+
+    return element;
+}
 
     /**
      * Create hover element with image
