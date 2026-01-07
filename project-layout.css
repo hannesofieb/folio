@@ -2,7 +2,6 @@
    PROJECT PAGE STYLES - CLEANED & ORGANIZED
    ============================================================================= */
 body{
-    overflow-y: scroll;
 }
 /* =============================================================================
    LAYOUT - DESKTOP (> 800px)
@@ -570,8 +569,6 @@ div.inline {
         height: auto;           /* Not fixed height */
         min-height: unset;      /* Remove any min-height */
         max-height: unset;      /* Remove any max-height */
-        overflow: visible;      /* Don't create scroll container */
-        overflow-y: visible;
         -webkit-overflow-scrolling: unset;
     }
     
@@ -598,20 +595,17 @@ div.inline {
         margin: 0 2vw;
         border-radius: 0;
         overflow-x: hidden;
-        overflow-y: visible;  /* Don't create scroll container */
         height: auto;  /* Allow natural height */
     }
 
     #project-context {
         width: 100%;
-        overflow-y: visible;  /* CHANGED FROM HIDDEN */
         overflow-x: hidden;
     }
 
     #project-content {
         width: 100%;
         padding: 0;
-        overflow-y: visible;  /* REMOVE scroll container on mobile */
         overflow-x: hidden;
     }
 
@@ -957,8 +951,7 @@ div.inline {
         height: auto;           /* Not fixed height */
         min-height: unset;      /* Remove any min-height */
         max-height: unset;      /* Remove any max-height */
-        overflow: visible;      /* Don't create scroll container */
-        overflow-y: visible;
+        overflow: clip;      /* Don't create scroll container */
         -webkit-overflow-scrolling: unset;
     }
     
@@ -985,20 +978,17 @@ div.inline {
         margin: 0 2vw;
         border-radius: 0;
         overflow-x: hidden;
-        overflow-y: visible;  /* Don't create scroll container */
         height: auto;  /* Allow natural height */
     }
 
     #project-context {
         width: 100%;
-        overflow-y: clip;  /* CHANGED FROM HIDDEN */
         overflow-x: hidden;
     }
 
     #project-content {
         width: 100%;
         padding: 0;
-        overflow-y: clip;  /* REMOVE scroll container on mobile */
         overflow-x: hidden;
     }
 
